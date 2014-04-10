@@ -1,0 +1,21 @@
+#progressbar{
+    width:230px;
+    height:20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ui-progressbar-value{
+/*     bar wasn't showing up; something wrong with ui-darkness theme. Tan looks nice anyway. */
+    background: tan;
+    text-align: center;
+}
+#threejs-container, #overlay{
+    position: absolute;
+    bottom: 0px;
+    top: 0px;
+    width: 100%;
+}
+body{
+    margin: 0px;
+    overflow: hidden;
+}

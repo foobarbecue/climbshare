@@ -4,50 +4,25 @@
 		<title>climbsim</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<style>
-			body {
-				font-family: Monospace;
-				background-color: #000000;
-				margin: 0px;
-				overflow: hidden;
-			}
-
-			#info {
-				color: #fff;
-				position: absolute;
-				top: 10px;
-				width: 100%;
-				text-align: center;
-				z-index: 100;
-				display:block;
-
-			}
-
-			a { color: skyblue }
-			.button { background:#999; color:#eee; padding:0.2em 0.5em; cursor:pointer }
-			.highlight { background:orange; color:#fff; }
-
-			span {
-				display: inline-block;
-				width: 60px;
-				float: left;
-				text-align: center;
-			}
-
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/vendor/ui-darkness/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="css/vendor/ui-darkness/jquery.ui.theme.css">
+		<link rel="stylesheet" type="text/css" href="css/base.css">
 	</head>
 	<body>
 
+	<script src="js/vendor/jquery-2.1.0.min.js"></script>
+	<script src="js/vendor/jquery-ui-1.10.4.min.js"></script>
         <script src="js/vendor/three.min.js"></script>
         <script src="js/vendor/loaders/PLYLoader.js"></script>
         <script src="js/vendor/Detector.js"></script>
         <script src="js/vendor/controls/FlyControls.js"></script>
         <script src="js/streambed.js"></script>
 
-		<script>
+        <div id="threejs-container"></div>
+        <div id="overlay">
+        test
+            <div id="progressbar">loading ...</div>
+        </div>
 
-
-
-		</script>
-	</body>
+        </body>
 </html>

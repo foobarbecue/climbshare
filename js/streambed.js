@@ -6,6 +6,9 @@ var camera, cameraTarget, scene, renderer, mesh;
 var clock = new THREE.Clock();
 var paused = false;
 
+//Do everything inside the jquery onload callback
+$(function(){
+    
 init();
 animate();
 /**
@@ -54,8 +57,8 @@ function curvify(pointlist, pull, material) {
 
 function init() {
         document.addEventListener("keypress", onkeypress, false);
-        container = document.createElement( 'div' );
-        document.body.appendChild( container );
+        $("#progressbar").progressbar();
+        container = $('#threejs-container')[0]
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
         
@@ -75,7 +78,8 @@ function init() {
                 scene.add( mesh );
         } );
         loader.addEventListener( 'progress', function ( event ) {
-            console.log(event.loaded + ' of ' + event.loaded + ' loaded.')
+            console.log(event.loaded + ' of ' + event.total + ' loaded.')
+            $("#progressbar").progressbar("value",( 100 * event.total / event.loaded ));
         } );
         loader.load( './data/models/streambedTrimmed.ply' );
 
@@ -104,7 +108,7 @@ function init() {
         
         // renderer
         renderer = new THREE.WebGLRenderer( { antialias: true } );
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setSize( container.offsetWidth, container.offsetHeight);
         renderer.gammaInput = true;
         renderer.gammaOutput = true;
         container.appendChild( renderer.domElement );
@@ -142,4 +146,7 @@ function animate() {
 function render() {
         controls.update(clock.getDelta());
         renderer.render( scene, camera );
+        // remove progressbar
+        $("#progressbar").fadeOut();
 }
+});
