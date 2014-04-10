@@ -76,11 +76,16 @@ function init() {
                 var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
                 mesh = new THREE.Mesh( geometry, material );
                 scene.add( mesh );
+                $("#progressbar,#progresstext").fadeOut();
         } );
         loader.addEventListener( 'progress', function ( event ) {
             console.log(event.loaded + ' of ' + event.total + ' loaded.')
-            $("#progressbar").progressbar("value",( 100 * event.total / event.loaded ));
+            $("#progressbar").progressbar("value",( 100 * event.loaded / event.total ));
+            $("#progresstext").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
         } );
+        loader.addEventListener( 'complete', function ( event ) {
+            console.log('Done loading.')
+        } );        
         loader.load( './data/models/streambedTrimmed.ply' );
 
         // boulder problems
@@ -95,7 +100,6 @@ function init() {
                  v(-7.532446,-0.632361,4.077475)]
         line.geometry.vertices=rightRoof;
         lineMaterial = new THREE.LineBasicMaterial();
-        scene.add(line);
         scene.add(curvify(line.geometry.vertices));
         
         // lights
@@ -147,6 +151,6 @@ function render() {
         controls.update(clock.getDelta());
         renderer.render( scene, camera );
         // remove progressbar
-        $("#progressbar").fadeOut();
+//         $("#progressbar").fadeOut();
 }
 });

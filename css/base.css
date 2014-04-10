@@ -1,12 +1,18 @@
-#progressbar{
-    width:230px;
+#progressbar, #progresstext{
+    width:20%;
     height:20px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 40%;
+    margin-right: 40%;
+    top:5px;
+    text-align: center;
+    position: fixed;
+}
+#progresstext{
+    z-index:10;
+    color: lightgrey;
 }
 .ui-progressbar-value{
-/*     bar wasn't showing up; something wrong with ui-darkness theme. Tan looks nice anyway. */
-    background: tan;
+    background: rgb(131, 117, 98);
     text-align: center;
 }
 #threejs-container, #overlay{
