@@ -74,6 +74,9 @@ function init() {
                 mesh = new THREE.Mesh( geometry, material );
                 scene.add( mesh );
         } );
+        loader.addEventListener( 'progress', function ( event ) {
+            console.log(event.loaded + ' of ' + event.loaded + ' loaded.')
+        } );
         loader.load( './data/models/streambedTrimmed.ply' );
 
         // boulder problems
