@@ -1,0 +1,3 @@
+[submodule "vendor/threejs-labels"]
+	path = vendor/threejs-labels
+	url = https://github.com/foobarbecue/threejs-labels/
