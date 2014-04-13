@@ -2,7 +2,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var container;
 
-var camera, cameraTarget, scene, renderer, mesh;
+var camera, cameraTarget, scene, renderer, mesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator;
 var clock = new THREE.Clock();
 var paused = false;
 
@@ -56,10 +56,11 @@ function curvify(pointlist, pull, material) {
 }
 
 function init() {
-        document.addEventListener("keypress", onkeypress, false);
         $("#progressbar").progressbar();
         container = $('#threejs-container')[0]
         scene = new THREE.Scene();
+        projector = new THREE.Projector();
+        mouse2D = v(0,0,0)
         camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
         
         // position and point the camera to the center of the scene
@@ -68,7 +69,13 @@ function init() {
         // we use Z up for compatibility with UTM and lat lon
         camera.rotation.order="XYZ"
         camera.rotation.set(Math.PI/2,0,0)
-
+        
+        // make a 3D mouse out of a sphere for manipulating stuff
+        mouse3D = new THREE.Mesh(
+                new THREE.SphereGeometry(0.1,12,12),
+                new THREE.MeshBasicMaterial({color:'red',transparent:true}))
+        scene.add(mouse3D)
+        
         // streambed model
         var loader = new THREE.PLYLoader();
         loader.addEventListener( 'load', function ( event ) {
@@ -123,9 +130,25 @@ function init() {
         controls.dragToLook = true;
         controls.rollSpeed = 0.5;
         controls.movementSpeed = 25;
-
+        // listeners (which should probably go into a custom control at some point)
+        // currently after controls so that 
+        document.addEventListener("keypress", onkeypress, false);
+        $(window).mousemove(onmousemove);
         // resize
         window.addEventListener( 'resize', onWindowResize, false );
+}
+
+function onmousemove( e ){
+        // mouse movement without any buttons pressed should move the 3d mouse
+        e.preventDefault();
+        mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        mouse2D.z = 0.5;
+        projector.unprojectVector(mouse2D.clone(), camera);
+        raycaster = projector.pickingRay( mouse2D.clone(), camera );
+        intersects = raycaster.intersectObject(mesh, true);
+        if (intersects.length > 0){
+        mouse3D.position = intersects[0].face.centroid;
 }
 
 function addDirLight( x, y, z, color, intensity ) {
@@ -148,7 +171,10 @@ function animate() {
 }
 
 function render() {
+        oscillator=(Math.sin(clock.getElapsedTime())+Math.PI/2)/Math.PI;
         controls.update(clock.getDelta());
+        mouse3D.material.color.setRGB(1,0,0);
+        mouse3D.material.opacity=(oscillator/2)+0.5;
         renderer.render( scene, camera );
         // remove progressbar
 //         $("#progressbar").fadeOut();
