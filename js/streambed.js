@@ -67,15 +67,18 @@ function init() {
         camera.position.set(1,-20,5)
 
         // we use Z up for compatibility with UTM and lat lon
-        camera.rotation.order="XYZ"
-        camera.rotation.set(Math.PI/2,0,0)
+//         camera.rotation.order="XYZ"
+//         camera.rotation.set(Math.PI/2,0,0)
+        camera.up.set(0,0,1)
         
         // make a 3D mouse out of a sphere for manipulating stuff
         mouse3D = new THREE.Mesh(
-                new THREE.SphereGeometry(0.1,12,12),
+                new THREE.SphereGeometry(0.1,6,6),
                 new THREE.MeshBasicMaterial({color:'red',transparent:true}))
+        mouse3D.position.set(1,1,1)
         scene.add(mouse3D)
-        
+        $(window).mousemove(onmousemove);
+
         // streambed model
         var loader = new THREE.PLYLoader();
         loader.addEventListener( 'load', function ( event ) {
@@ -125,15 +128,14 @@ function init() {
         container.appendChild( renderer.domElement );
 
         // controls
-        controls = new THREE.FlyControls( camera );
-        controls.domElement = container;
-        controls.dragToLook = true;
-        controls.rollSpeed = 0.5;
-        controls.movementSpeed = 25;
+        controls = new THREE.TrackballControls( camera );
+//         controls.addEventListener( 'change', render )
+//         controls.domElement = container;
+//         controls.dragToLook = true;
+//         controls.rollSpeed = 0.5;
+//         controls.movementSpeed = 25;
         // listeners (which should probably go into a custom control at some point)
-        // currently after controls so that 
-        document.addEventListener("keypress", onkeypress, false);
-        $(window).mousemove(onmousemove);
+        
         // resize
         window.addEventListener( 'resize', onWindowResize, false );
 }
@@ -148,7 +150,12 @@ function onmousemove( e ){
         raycaster = projector.pickingRay( mouse2D.clone(), camera );
         intersects = raycaster.intersectObject(mesh, true);
         if (intersects.length > 0){
-        mouse3D.position = intersects[0].face.centroid;
+            pos = intersects[0].point
+            if (typeof pos != null) {
+            mouse3D.position = pos;
+//         controls.target = mouse3D.position;
+            }
+        }
 }
 
 function addDirLight( x, y, z, color, intensity ) {
@@ -171,11 +178,12 @@ function animate() {
 }
 
 function render() {
-        oscillator=(Math.sin(clock.getElapsedTime())+Math.PI/2)/Math.PI;
+        oscillator=((Math.sin(clock.getElapsedTime()*3))+Math.PI/2);
         controls.update(clock.getDelta());
         mouse3D.material.color.setRGB(1,0,0);
-        mouse3D.material.opacity=(oscillator/2)+0.5;
+        mouse3D.material.opacity=oscillator/Math.PI;
         renderer.render( scene, camera );
+        
         // remove progressbar
 //         $("#progressbar").fadeOut();
 }
