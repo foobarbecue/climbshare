@@ -75,16 +75,12 @@ function init() {
                 new THREE.SphereGeometry(0.1,6,6),
                 new THREE.MeshBasicMaterial({color:'red',transparent:true}));
         scene.add(mouse3D);
-        container.mousemove(onmousemove);
-        container.on('mousedown', function (evt) {
-            container.on('mouseup mousemove', function handler(evt) {
-                if (evt.type === 'mouseup') {
-                // this is a click but not a drag
-                    new Label(mouse3D.position)
-                }
-                container.off('mouseup mousemove', handler);
-            });
-        });
+        container.off('mousedown')
+        container.on('dblclick', function(evt){
+            lbl = new Label(mouse3D.position);
+            content = window.prompt('What words of wisdom would you like to anchor to the rock?')
+            lbl.setContent(content);
+        })
 
         
         
