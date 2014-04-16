@@ -56,8 +56,8 @@ function curvify(pointlist, pull, material) {
 }
 
 function init() {
-        $("#progressbar").progressbar();
-        container = $('#threejs-container')[0]
+        $("#progressBar").progressbar();
+        container = $('#threejs-container')
         scene = new THREE.Scene();
         projector = new THREE.Projector();
         mouse2D = v(0,0,0)
@@ -70,15 +70,24 @@ function init() {
 //         camera.rotation.order="XYZ"
 //         camera.rotation.set(Math.PI/2,0,0)
         camera.up.set(0,0,1)
-        
         // make a 3D mouse out of a sphere for manipulating stuff
         mouse3D = new THREE.Mesh(
                 new THREE.SphereGeometry(0.1,6,6),
-                new THREE.MeshBasicMaterial({color:'red',transparent:true}))
-        mouse3D.position.set(1,1,1)
-        scene.add(mouse3D)
-        $(window).mousemove(onmousemove);
+                new THREE.MeshBasicMaterial({color:'red',transparent:true}));
+        scene.add(mouse3D);
+        container.mousemove(onmousemove);
+        container.on('mousedown', function (evt) {
+            container.on('mouseup mousemove', function handler(evt) {
+                if (evt.type === 'mouseup') {
+                // this is a click but not a drag
+                    new Label(mouse3D.position)
+                }
+                container.off('mouseup mousemove', handler);
+            });
+        });
 
+        
+        
         // streambed model
         var loader = new THREE.PLYLoader();
         loader.addEventListener( 'load', function ( event ) {
@@ -86,15 +95,16 @@ function init() {
                 var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
                 mesh = new THREE.Mesh( geometry, material );
                 scene.add( mesh );
-                $("#progressbar,#progresstext").fadeOut();
+                $("#progressBar,#progressText").fadeOut();
         } );
         loader.addEventListener( 'progress', function ( event ) {
             console.log(event.loaded + ' of ' + event.total + ' loaded.')
-            $("#progressbar").progressbar("value",( 100 * event.loaded / event.total ));
-            $("#progresstext").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
+            $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
+            $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
         } );
         loader.addEventListener( 'complete', function ( event ) {
             console.log('Done loading.')
+            $('#intromessage').fadeIn();
         } );        
         loader.load( './data/models/streambedTrimmed.ply' );
 
@@ -122,22 +132,25 @@ function init() {
         
         // renderer
         renderer = new THREE.WebGLRenderer( { antialias: true } );
-        renderer.setSize( container.offsetWidth, container.offsetHeight);
+        renderer.setSize( container.width(), container.height());
         renderer.gammaInput = true;
         renderer.gammaOutput = true;
-        container.appendChild( renderer.domElement );
+        container.append( renderer.domElement );
 
         // controls
-        controls = new THREE.TrackballControls( camera );
+//         controls = new THREE.TrackballControls( camera );
+        controls = new THREE.OrbitControls( camera );
 //         controls.addEventListener( 'change', render )
-//         controls.domElement = container;
-//         controls.dragToLook = true;
-//         controls.rollSpeed = 0.5;
-//         controls.movementSpeed = 25;
+        controls.domElement = container[0];
+        controls.dragToLook = true;
+        controls.rollSpeed = 0.5;
+        controls.movementSpeed = 25;
         // listeners (which should probably go into a custom control at some point)
-        
+        controls.addEventListener( 'change', render );
         // resize
         window.addEventListener( 'resize', onWindowResize, false );
+        
+        
 }
 
 function onmousemove( e ){
@@ -171,20 +184,18 @@ function onWindowResize() {
 }
 
 function animate() {
-        if (!paused){
             requestAnimationFrame( animate );
+            controls.update();
             render();
-            }
 }
 
 function render() {
         oscillator=((Math.sin(clock.getElapsedTime()*3))+Math.PI/2);
-        controls.update(clock.getDelta());
         mouse3D.material.color.setRGB(1,0,0);
         mouse3D.material.opacity=oscillator/Math.PI;
         renderer.render( scene, camera );
         
-        // remove progressbar
-//         $("#progressbar").fadeOut();
+        // remove progressBar
+//         $("#progressBar").fadeOut();
 }
 });
