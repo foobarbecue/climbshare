@@ -1,3 +1,6 @@
 [submodule "vendor/threejs-labels"]
 	path = vendor/threejs-labels
 	url = https://github.com/foobarbecue/threejs-labels/
+[submodule "vendor/threexdomevents"]
+	path = vendor/threexdomevents
+	url = https://github.com/jeromeetienne/threex.domevents.git

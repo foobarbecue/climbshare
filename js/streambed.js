@@ -20,7 +20,6 @@ function v(x, y, z) {
 
 /**
  * Given @start and @end points, create a curve that is "pulled" at the midpoint towards @pull.
- * Useful for 
  * @param {Vector3} start
  * @param {Vector3} end
  * @param {Vector3} pull
@@ -77,9 +76,8 @@ function init() {
         scene.add(mouse3D);
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
-            lbl = new Label(mouse3D.position);
             content = window.prompt('What words of wisdom would you like to anchor to the rock?')
-            lbl.setContent(content);
+            lbl = new Label(mouse3D.position, content,10);            
         })
 
         
@@ -164,6 +162,15 @@ function onmousemove( e ){
             if (typeof pos != null) {
             mouse3D.position = pos;
 //         controls.target = mouse3D.position;
+            }
+        }
+        //TODO optimize this
+        for (labelInd=0 ; labelInd < LabelPlugin.labels.length; labelInd++){
+            lbl=LabelPlugin.labels[labelInd]
+            intersects = raycaster.intersectObject(lbl.marker, true);
+            if (intersects.length >0){
+                $(lbl.el).fadeIn()
+                lbl.showText=true;
             }
         }
 }

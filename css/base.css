@@ -23,6 +23,7 @@
     position: absolute;
     padding: 1px 4px;
     borderRadius: '2px';
+    background:rgba(255,255,255,0.3);
 }
 
 .ui-progressbar-value{
