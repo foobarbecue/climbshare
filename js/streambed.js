@@ -75,7 +75,7 @@ function init() {
                 new THREE.SphereGeometry(0.1,6,6),
                 new THREE.MeshBasicMaterial({color:'red',transparent:true}));
         scene.add(mouse3D);
-        container.off('mousedown')
+        container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
             lbl = new Label(mouse3D.position);
             content = window.prompt('What words of wisdom would you like to anchor to the rock?')
@@ -115,6 +115,7 @@ function init() {
                  v(-7.596357,-0.482435,3.572817),
                  v(-7.532446,-0.632361,4.077475)]
         line.geometry.vertices=rightRoof;
+        rrLabel = new Label(rightRoof[0],'Right Roof (V3)')
         lineMaterial = new THREE.LineBasicMaterial();
         scene.add(curvify(line.geometry.vertices));
         
