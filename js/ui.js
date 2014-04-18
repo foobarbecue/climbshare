@@ -4,6 +4,7 @@ $(function() {
                        );
     $('#controlPanel>h3').click(
         function(){
-            $(this).next('ul').toggle();
+            $(this).next().toggle();
     });
+    $('.hidden').hide();
 });

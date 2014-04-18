@@ -40,13 +40,21 @@
     left: 0px;
     top:0px;
     margin:10px;
+    padding: 4px;
+    /*this is to make the lines under h3 go all the way to edge*/
+    padding-right:0px;
     border-radius: 10px;    
     width:200px;
-    background:rgba(255,255,255,0.7);    
+    background:rgba(255,255,255,0.8);    
+}
+#controlPanel > :not(h3){
+    margin-right:4px;
 }
 h3{
-    font-variant: smallcaps;
-    margin-left: 4px
+    font-variant: small-caps;
+    border-bottom: thin solid black;
+    margin: 0;
+    font-family: verdana, sans, arial, sans-serif;
 }
 body{
     margin: 0px;
