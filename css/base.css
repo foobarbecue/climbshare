@@ -18,25 +18,39 @@
     right:0;
     margin:5px;
 }
-
 .label3D{
     position: absolute;
     padding: 1px 4px;
-    borderRadius: '2px';
+    border-radius: 10px;
     background:rgba(255,255,255,0.3);
 }
-
 .ui-progressbar-value{
     background: rgb(131, 117, 98);
     text-align: center;
 }
-#threejs-container, #overlay{
+#threejs-container{
     position: absolute;
     bottom: 0px;
     top: 0px;
+    height: 100%;
     width: 100%;
+}
+#controlPanel{
+    position: fixed;
+    left: 0px;
+    top:0px;
+    margin:10px;
+    border-radius: 10px;    
+    width:200px;
+    background:rgba(255,255,255,0.7);    
+}
+h3{
+    font-variant: smallcaps;
+    margin-left: 4px
 }
 body{
     margin: 0px;
     overflow: hidden;
+    font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
+    font-size: smaller;
 }

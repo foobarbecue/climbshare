@@ -319,6 +319,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 	}
 
 	function onMouseDown( event ) {
+            //make sure this was actually a click on the three.js canvas
+             if (event.target != $(scope.domElement).children('canvas')[0]) return;
 
 		if ( scope.enabled === false ) return;
 		event.preventDefault();
