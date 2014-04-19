@@ -2,7 +2,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var container;
 
-var camera, cameraTarget, scene, renderer, mesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator;
+var camera, cameraTarget, scene, renderer, mesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData;
 var clock = new THREE.Clock();
 var paused = false;
 
@@ -77,45 +77,61 @@ function init() {
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
             content = window.prompt('What words of wisdom would you like to anchor to the rock?')
-            lbl = new Label(mouse3D.position, content,10);            
+            lbl = new Label(mouse3D.position, content,10);
         })
 
-        
-        
-        // streambed model
-        var loader = new THREE.PLYLoader();
-        loader.addEventListener( 'load', function ( event ) {
-                var geometry = event.content;
-                var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
-                mesh = new THREE.Mesh( geometry, material );
-                scene.add( mesh );
-                $("#progressBar,#progressText").fadeOut();
-        } );
-        loader.addEventListener( 'progress', function ( event ) {
-            console.log(event.loaded + ' of ' + event.total + ' loaded.')
-            $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
-            $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
-        } );
-        loader.addEventListener( 'complete', function ( event ) {
-            console.log('Done loading.')
-            $('#intromessage').fadeIn();
-        } );        
-        loader.load( './data/models/streambedTrimmed.ply' );
 
-        // boulder problems
-        line = new THREE.Line();
-            // Some sample data for now. This will
-            // eventually be loaded from a file or db.
-        rightRoof = [v(-6.741744,1.987208,2.180861),
-                 v(-6.619035,1.239210,2.984409),
-                 v(-6.731589,0.466374,3.441104),
-                 v(-7.651319,-0.011100,3.294760),
-                 v(-7.596357,-0.482435,3.572817),
-                 v(-7.532446,-0.632361,4.077475)]
-        line.geometry.vertices=rightRoof;
-        rrLabel = new Label(rightRoof[0],'Right Roof (V3)')
-        lineMaterial = new THREE.LineBasicMaterial();
-        scene.add(curvify(line.geometry.vertices));
+        // load boulder problems
+        $.getJSON("data/data.json",
+            function(data){
+                climbData=data;
+                loadBoulder('streambed');
+            }
+          )
+        
+        $('#boulderList').select(
+            function (){loadBoulder(this.val())}
+        )
+        
+        function loadBoulder(boulderName){
+            boulder = climbData.boulders[boulderName]
+        // loading boulder
+            var loader = new THREE.PLYLoader();
+            loader.addEventListener( 'load', function ( event ) {
+                    var geometry = event.content;
+                    var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
+                    mesh = new THREE.Mesh( geometry, material );
+                    scene.add( mesh );
+                    $("#progressBar,#progressText").fadeOut();
+            } );
+            loader.addEventListener( 'progress', function ( event ) {
+                console.log(event.loaded + ' of ' + event.total + ' loaded.')
+                $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
+                $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
+            } );
+            loader.addEventListener( 'complete', function ( event ) {
+                console.log('Done loading.')
+                $('#intromessage').fadeIn();
+            } );
+            
+            loader.load('data/models/' + boulder.model3D);
+            // load all of the climbs
+            $.each(boulder.climbs, loadClimb);
+        }
+        
+        function loadClimb(climbName, climb){
+            line = new THREE.Line();
+            line.geometry.vertices = $.map(climb.vertices, function(element){return [v(element)]});
+            label = new Label(line.geometry.vertices[0],climbName);
+            lineMaterial = new THREE.LineBasicMaterial();
+            scene.add(curvify(line.geometry.vertices));
+        }
+        
+        function addToBoulderList(boulderName, boulder){
+            //TODO implement changing 3d model with this <select>
+            boulderOpt = new Option(boulderName,boulder.model3D);
+            $('#boulderList').append(new Option(boulderName));
+        }
         
         // lights
         scene.add( new THREE.AmbientLight( 0x777777 ) );
