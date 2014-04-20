@@ -115,16 +115,15 @@ function init() {
             } );
             
             loader.load('data/models/' + boulder.model3D);
+            addToBoulderList(boulderName, boulder);
             // load all of the climbs
             $.each(boulder.climbs, loadClimb);
         }
         
         function loadClimb(climbName, climb){
-            line = new THREE.Line();
-            line.geometry.vertices = $.map(climb.vertices, function(element){return [v(element)]});
-            label = new Label(line.geometry.vertices[0],climbName);
-            lineMaterial = new THREE.LineBasicMaterial();
-            scene.add(curvify(line.geometry.vertices));
+            vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
+            label = new Label(vertices[0],climbName);
+            scene.add(curvify(vertices));
         }
         
         function addToBoulderList(boulderName, boulder){
@@ -149,9 +148,7 @@ function init() {
         container.append( renderer.domElement );
 
         // controls
-//         controls = new THREE.TrackballControls( camera );
         controls = new THREE.OrbitControls( camera );
-//         controls.addEventListener( 'change', render )
         controls.domElement = container[0];
         controls.dragToLook = true;
         controls.rollSpeed = 0.5;
