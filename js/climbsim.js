@@ -2,7 +2,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var container;
 
-var camera, cameraTarget, scene, renderer, mesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData;
+var camera, cameraTarget, scene, renderer, boulderMesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData;
 var clock = new THREE.Clock();
 var paused = false;
 
@@ -66,8 +66,6 @@ function init() {
         camera.position.set(1,-20,5)
 
         // we use Z up for compatibility with UTM and lat lon
-//         camera.rotation.order="XYZ"
-//         camera.rotation.set(Math.PI/2,0,0)
         camera.up.set(0,0,1)
         // make a 3D mouse out of a sphere for manipulating stuff
         mouse3D = new THREE.Mesh(
@@ -78,8 +76,24 @@ function init() {
         container.on('dblclick', function(evt){
             content = window.prompt('What words of wisdom would you like to anchor to the rock?')
             lbl = new Label(mouse3D.position, content,10);
+            updateLabelList();
         })
 
+        function updateLabelList(){
+            $('#climbList').html('')
+            $.each(LabelPlugin.labels, function(ind, lbl){
+                labelLi=$('<li>' + lbl.content + '</li>');
+                $('#labelList').append($('<li>' + lbl.content + '</li>'));
+                labelLi.mouseover(function(){lbl.showMarker=true});
+            })
+        }
+        function updateClimbList(){
+            currentBoulder=climbData.boulders[$('#boulderList').val()]
+            $('#climbList').html('')
+            $.each(currentBoulder.climbs, function(climbName, climb){
+                $('#climbList').append($('<li>' + climbName + '</li>'));
+            })
+        }
 
         // load boulder problems
         $.getJSON("data/data.json",
@@ -94,14 +108,15 @@ function init() {
         )
         
         function loadBoulder(boulderName){
+            scene.remove(boulderMesh)
             boulder = climbData.boulders[boulderName]
         // loading boulder
             var loader = new THREE.PLYLoader();
             loader.addEventListener( 'load', function ( event ) {
                     var geometry = event.content;
                     var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
-                    mesh = new THREE.Mesh( geometry, material );
-                    scene.add( mesh );
+                    boulderMesh = new THREE.Mesh( geometry, material );
+                    scene.add(boulderMesh);
                     $("#progressBar,#progressText").fadeOut();
             } );
             loader.addEventListener( 'progress', function ( event ) {
@@ -118,6 +133,8 @@ function init() {
             addToBoulderList(boulderName, boulder);
             // load all of the climbs
             $.each(boulder.climbs, loadClimb);
+            updateClimbList();
+            
         }
         
         function loadClimb(climbName, climb){
@@ -169,7 +186,7 @@ function onmousemove( e ){
         mouse2D.z = 0.5;
         projector.unprojectVector(mouse2D.clone(), camera);
         raycaster = projector.pickingRay( mouse2D.clone(), camera );
-        intersects = raycaster.intersectObject(mesh, true);
+        intersects = raycaster.intersectObject(boulderMesh, true);
         if (intersects.length > 0){
             pos = intersects[0].point
             if (typeof pos != null) {

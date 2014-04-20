@@ -51,11 +51,11 @@
     margin-right:4px;
 }
 h3{
-    font-variant: small-caps;
     border-bottom: thin solid black;
     margin: 0;
     font-family: verdana, sans, arial, sans-serif;
-    text-transform: uppercase;
+    font-size: smaller;
+    font-variant: small-caps;
 }
 body{
     margin: 0px;
