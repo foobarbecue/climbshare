@@ -18,6 +18,11 @@
     right:0;
     margin:5px;
 }
+#login-buttons{
+    position: fixed;
+    right: 0;
+    z-index: 20;
+}
 .label3D{
     position: absolute;
     padding: 1px 4px;
