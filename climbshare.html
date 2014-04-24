@@ -1,0 +1,45 @@
+<head>
+  <title>climbshare</title>
+</head>
+
+<body>
+  {{> loginButtons}}
+    <div id="threejs-container"></div>
+    <div id="progressBar"></div>
+    <div id="progressText"></div>
+  {{> controlPanel}}
+</body>
+
+<template name="controlPanel">
+    <div id="controlPanel">
+        <h3>Instructions</h3>
+            <div class='hidden'>
+            <ul>
+                <li>left-click and drag to orbit</li>
+                <li>right-click and drag to pan</li>
+                <li>scrollwheel to move forwards and back</li>
+                <li>double click on wall to add items</li>
+            </ul>
+            </div>
+        
+        <h3>Boulders / walls</h3>
+            <div class='hidden'>
+            <select id='boulderList'>
+            </select>
+            </div>
+        <h3>Routes / problems</h3>
+        <div class='hidden'>
+        <ul id='climbList'>
+        </ul>        
+        </div>
+        <h3>Labels</h3>
+        <div class='hidden'>
+        <ul id='labelList'>
+        </ul>
+        </div>
+        <h3>About</h3>
+        <div class='hidden'>Climbsim is an
+        <a href="https://github.com/foobarbecue/climbsim" target="_new">open source</a> project.</div>
+        
+    </div>
+</template>

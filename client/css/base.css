@@ -1,0 +1,65 @@
+#progressBar, #progressText{
+    width:20%;
+    height:20px;
+    margin-left: 40%;
+    margin-right: 40%;
+    top:5px;
+    text-align: center;
+    position: fixed;
+}
+#progressText{
+    z-index:10;
+    color: lightgrey;
+}
+#introMessage{
+    z-index:10;
+    color:white;
+    top:0;
+    right:0;
+    margin:5px;
+}
+.label3D{
+    position: absolute;
+    padding: 1px 4px;
+    border-radius: 10px;
+    background:rgba(255,255,255,0.3);
+}
+.ui-progressbar-value{
+    background: rgb(131, 117, 98);
+    text-align: center;
+}
+#threejs-container{
+    position: absolute;
+    bottom: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+}
+#controlPanel{
+    position: fixed;
+    left: 0px;
+    top:0px;
+    margin:10px;
+    padding: 4px;
+    /*this is to make the lines under h3 go all the way to edge*/
+    padding-right:0px;
+    border-radius: 10px;    
+    width:200px;
+    background:rgba(255,255,255,0.8);    
+}
+#controlPanel > :not(h3){
+    margin-right:4px;
+}
+h3{
+    border-bottom: thin solid black;
+    margin: 0;
+    font-family: verdana, sans, arial, sans-serif;
+    font-size: smaller;
+    font-variant: small-caps;
+}
+body{
+    margin: 0px;
+    overflow: hidden;
+    font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
+    font-size: smaller;
+}

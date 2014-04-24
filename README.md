@@ -1,5 +1,5 @@
-climbsim
-========
+climbshare
+==========
 
 In-browser interactive 3D climbing and bouldering guides.
 

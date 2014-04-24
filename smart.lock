@@ -1,0 +1,21 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "three": {},
+      "jquery-ui": {}
+    },
+    "packages": {
+      "three": {
+        "git": "https://github.com/logankoester/meteor-three.git",
+        "tag": "v0.57.0",
+        "commit": "9498f8c1a11537c5a4b2d483395eba8c93c79329"
+      },
+      "jquery-ui": {
+        "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
+        "tag": "v1.9.2",
+        "commit": "c437d45edcf1367df8d5ffa8bad2867758030bd2"
+      }
+    }
+  }
+}
