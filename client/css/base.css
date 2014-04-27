@@ -23,6 +23,9 @@
     right: 0;
     z-index: 20;
 }
+.login-display-name{
+    color: white
+}
 .label3D{
     position: absolute;
     padding: 1px 4px;

@@ -77,7 +77,14 @@ function init() {
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
             content = window.prompt('What words of wisdom would you like to anchor to the rock?')
-            lbl = new Label(mouse3D.position, content,10);
+            Labels.insert({
+                content:content,
+                position:{
+                    x:mouse3D.position.x,
+                    y:mouse3D.position.y,
+                    z:mouse3D.position.z
+                }
+            });
             updateLabelList();
         })
 
