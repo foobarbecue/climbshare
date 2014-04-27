@@ -83,7 +83,9 @@ function init() {
                     x:mouse3D.position.x,
                     y:mouse3D.position.y,
                     z:mouse3D.position.z
-                }
+                },
+                createdBy:Meteor.user(),
+                createdOn:TimeSync.serverTime(),
             });
             updateLabelList();
         })

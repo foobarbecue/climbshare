@@ -3,7 +3,8 @@
   "dependencies": {
     "basePackages": {
       "three": {},
-      "jquery-ui": {}
+      "jquery-ui": {},
+      "timesync": {}
     },
     "packages": {
       "three": {
@@ -15,6 +16,11 @@
         "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
         "tag": "v1.9.2",
         "commit": "c437d45edcf1367df8d5ffa8bad2867758030bd2"
+      },
+      "timesync": {
+        "git": "https://github.com/mizzao/meteor-timesync.git",
+        "tag": "v0.1.5",
+        "commit": "3ee7eb21f60650de2ca32661b7c964e464e578e3"
       }
     }
   }
