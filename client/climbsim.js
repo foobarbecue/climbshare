@@ -87,7 +87,6 @@ function init() {
                 createdBy:Meteor.user(),
                 createdOn:TimeSync.serverTime(),
             });
-            updateLabelList();
         })
 
         // load boulder problems
