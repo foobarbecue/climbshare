@@ -206,7 +206,7 @@ function onWindowResize() {
 function animate() {
         requestAnimationFrame( animate );
         controls.update();
-        $.map(Labels.find().fetch(),positionLabel)
+        Labels.find().map(positionLabel);
         render();
 }
 
