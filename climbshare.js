@@ -1,4 +1,6 @@
 if (Meteor.isClient) {
+   Meteor.subscribe("labels");
+    
    Template.controlPanel.labels = function() {
        return Labels.find();
    }
@@ -8,15 +10,8 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-    if (Labels.find().count() == 0) {
-        Labels.insert({
-            'content':'This is label content',
-            'position':{
-                'x':-0.49109,
-                'y':0.3798,
-                'z':0.9137}
-        })
-    }
-  });
+    Meteor.publish("labels", function() {
+        return Labels.find();
+    });
+    Labels.allow();
 }
