@@ -1,6 +1,7 @@
 {
   "packages": {
     "three": {},
-    "jquery-ui": {}
+    "jquery-ui": {},
+    "timesync": {}
   }
 }
