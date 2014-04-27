@@ -8,7 +8,14 @@
     <div id="progressBar"></div>
     <div id="progressText"></div>
   {{> controlPanel}}
+  {{> labels3D}}
 </body>
+
+<template name="labels3D">
+{{#each labels}}
+    <div class="{{_id}} label3D">{{content}}</div>
+{{/each}}
+</template>
 
 <template name="controlPanel">
     <div id="controlPanel">
@@ -35,6 +42,11 @@
         <h3>Labels</h3>
         <div class='hidden'>
         <ul id='labelList'>
+        {{#each labels}}
+          <li class="{{_id}} ctrlPnlItm">
+          {{content}}
+          </li>
+        {{/each}}
         </ul>
         </div>
         <h3>About</h3>

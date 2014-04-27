@@ -4,7 +4,9 @@ var container;
 
 var camera, cameraTarget, scene, renderer, boulderMesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData;
 var clock = new THREE.Clock();
+var projector = new THREE.Projector();
 var paused = false;
+
 
 //Do everything inside the jquery onload callback
 $(function(){
@@ -79,22 +81,6 @@ function init() {
             updateLabelList();
         })
 
-        function updateLabelList(){
-            $('#climbList').html('')
-            $.each(LabelPlugin.labels, function(ind, lbl){
-                labelLi=$('<li>' + lbl.content + '</li>');
-                $('#labelList').append($('<li>' + lbl.content + '</li>'));
-                labelLi.mouseover(function(){lbl.showMarker=true});
-            })
-        }
-        function updateClimbList(){
-            currentBoulder=climbData.boulders[$('#boulderList').val()]
-            $('#climbList').html('')
-            $.each(currentBoulder.climbs, function(climbName, climb){
-                $('#climbList').append($('<li>' + climbName + '</li>'));
-            })
-        }
-
         // load boulder problems
         $.getJSON("data/data.json",
             function(data){
@@ -120,7 +106,6 @@ function init() {
                     $("#progressBar,#progressText").fadeOut();
             } );
             loader.addEventListener( 'progress', function ( event ) {
-                console.log(event.loaded + ' of ' + event.total + ' loaded.')
                 $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
                 $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
             } );
@@ -133,13 +118,14 @@ function init() {
             addToBoulderList(boulderName, boulder);
             // load all of the climbs
             $.each(boulder.climbs, loadClimb);
-            updateClimbList();
+//             updateClimbList();
             
         }
         
         function loadClimb(climbName, climb){
             vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
-            label = new Label(vertices[0],climbName);
+//             TODO
+//             label = new Label(vertices[0],climbName);
             scene.add(curvify(vertices));
         }
         
@@ -194,15 +180,15 @@ function onmousemove( e ){
 //         controls.target = mouse3D.position;
             }
         }
-        //TODO optimize this
-        for (labelInd=0 ; labelInd < LabelPlugin.labels.length; labelInd++){
-            lbl=LabelPlugin.labels[labelInd]
-            intersects = raycaster.intersectObject(lbl.marker, true);
-            if (intersects.length >0){
-                $(lbl.el).fadeIn()
-                lbl.showText=true;
-            }
-        }
+        //TODO label hovering
+//         for (labelInd=0 ; labelInd < LabelPlugin.labels.length; labelInd++){
+//             lbl=LabelPlugin.labels[labelInd]
+//             intersects = raycaster.intersectObject(lbl.marker, true);
+//             if (intersects.length >0){
+//                 $(lbl.el).fadeIn()
+//                 lbl.showText=true;
+//             }
+//         }
 }
 
 function addDirLight( x, y, z, color, intensity ) {
@@ -218,9 +204,10 @@ function onWindowResize() {
 }
 
 function animate() {
-            requestAnimationFrame( animate );
-            controls.update();
-            render();
+        requestAnimationFrame( animate );
+        controls.update();
+        $.map(Labels.find().fetch(),positionLabel)
+        render();
 }
 
 function render() {
@@ -228,8 +215,23 @@ function render() {
         mouse3D.material.color.setRGB(1,0,0);
         mouse3D.material.opacity=oscillator/Math.PI;
         renderer.render( scene, camera );
-        
-        // remove progressBar
-//         $("#progressBar").fadeOut();
 }
+
+// moves div of a label to the correct 2D coordinates
+// based on its 3D .position value
+function positionLabel(label){
+    labelElement=$('.label3D.'+label._id)[0]
+    if(labelElement){
+    p3D=v(label.position.x, label.position.y, label.position.z); 
+    p2D=projector.projectVector(p3D,camera)
+    //scale from normalized device coordinates to window
+    labelElement.style.left= (p2D.x + 1)/2 * window.innerWidth + 'px';
+    labelElement.style.top= - (p2D.y - 1)/2 * window.innerHeight + 'px';
+    }
+}
+
+//hack because I can't figure out how to do globals in meteor
+//TODO fix this
+window.scene=scene;
+window.camera=camera;
 });
