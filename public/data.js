@@ -12,6 +12,7 @@ boulders = [
             }
           ],
           "climbType": "boulder problem",
+          "climbName": "Right Roof",
           "rating": "V3",
           "vertices": [
             [
@@ -47,6 +48,8 @@ boulders = [
           ]
         },
         "High Traverse": {
+        "climbName":"High Traverse",
+        "climbType":"boulder problem",
         "vertices": [
           [
             -8.1331,
