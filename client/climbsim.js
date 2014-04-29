@@ -125,15 +125,13 @@ function init() {
             loader.load('data/models/' + boulder.model3D);
             addToBoulderList(boulderName, boulder);
             // load all of the climbs
-            $.each(boulder.climbs, loadClimb);
+            $.each(Climbs.find().fetch(), loadClimb);
 //             updateClimbList();
             
         }
         
-        function loadClimb(climbName, climb){
+        function loadClimb(climb){
             vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
-//             TODO
-//             label = new Label(vertices[0],climbName);
             scene.add(curvify(vertices));
         }
         
