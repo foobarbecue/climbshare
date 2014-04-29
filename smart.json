@@ -2,6 +2,8 @@
   "packages": {
     "three": {},
     "jquery-ui": {},
-    "timesync": {}
+    "timesync": {},
+    "fixture-loader": {},
+    "collection2": {}
   }
 }

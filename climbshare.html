@@ -15,6 +15,9 @@
 {{#each labels}}
     <div class="{{_id}} label3D">{{content}}</div>
 {{/each}}
+{{#each climbs}}
+    <div class="{{label._id}} label3D">{{label.content}}</div>
+{{/each}}
 </template>
 
 <template name="controlPanel">
