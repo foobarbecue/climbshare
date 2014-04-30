@@ -10,7 +10,11 @@ if (Meteor.isClient) {
    }
    Template.labels3D.climbs= function() {
        return Climbs.find();
-   }   
+   }
+   
+   $(function(){
+   Climbs.find().map(loadClimb)
+   });
 }
 
 if (Meteor.isServer) {
@@ -18,17 +22,18 @@ if (Meteor.isServer) {
          return Labels.find();
     });
     Meteor.publish("climbs", function() {
-         return Labels.find();
+         return Climbs.find();
     });    
     Labels.allow({});
-//     Climbs.allow({
-//         insert:function(){return true},
-//         update:function(){return true}
-//     });
+    Climbs.allow({});
     
-    // add climbs to 
-    for (var boulderName in data.boulders){
-        insertBoulder(data.boulders[boulderName]);
-        console.log('inserted boulder: ' + boulderName)
-    }
+    Meteor.methods({
+    readData: function(){
+        for (var boulderName in data.boulders){
+            insertBoulder(data.boulders[boulderName]);
+            console.log('inserted boulder: ' + boulderName);
+            return boulderName
+        }        
+    }})
+
 }
