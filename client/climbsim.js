@@ -112,6 +112,8 @@ function init() {
                     boulderMesh = new THREE.Mesh( geometry, material );
                     scene.add(boulderMesh);
                     $("#progressBar,#progressText").fadeOut();
+                    // putting this here so it doesn't get called too early...
+                    Climbs.find().map(loadClimb)
             } );
             loader.addEventListener( 'progress', function ( event ) {
                 $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
@@ -124,15 +126,17 @@ function init() {
             
             loader.load('data/models/' + boulder.model3D);
             addToBoulderList(boulderName, boulder);
-            // load all of the climbs
-            $.each(Climbs.find().fetch(), loadClimb);
+               // load all of the climbs
+            
 //             updateClimbList();
             
         }
         
-        function loadClimb(climb){
+        loadClimb = function(climb){
             vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
+            addedClimbVerts = curvify(vertices)
             scene.add(curvify(vertices));
+            return addedClimbVerts
         }
         
         function addToBoulderList(boulderName, boulder){
@@ -213,6 +217,7 @@ function animate() {
         requestAnimationFrame( animate );
         controls.update();
         Labels.find().map(positionLabel);
+        
         render();
 }
 
@@ -237,7 +242,8 @@ function positionLabel(label){
 }
 
 //hack because I can't figure out how to do globals in meteor
-//TODO fix this
+//TODO fix this by using smart packages
 window.scene=scene;
 window.camera=camera;
+window.loadClimb=loadClimb;
 });
