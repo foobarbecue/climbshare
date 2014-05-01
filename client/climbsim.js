@@ -76,6 +76,7 @@ function init() {
         scene.add(mouse3D);
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
+            if (Meteor.user() != null){
             content = window.prompt('What words of wisdom would you like to anchor to the rock?')
             Labels.insert({
                 content:content,
@@ -87,6 +88,10 @@ function init() {
                 createdBy:Meteor.user(),
                 createdOn:TimeSync.serverTime(),
             });
+            }
+            else{
+                alert('Sign up / log in to add data.')
+            }
         })
 
         // load boulder problems
