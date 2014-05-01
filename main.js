@@ -12,9 +12,6 @@ if (Meteor.isClient) {
        return Climbs.find();
    }
    
-   $(function(){
-   Climbs.find().map(loadClimb)
-   });
 }
 
 if (Meteor.isServer) {
@@ -24,7 +21,16 @@ if (Meteor.isServer) {
     Meteor.publish("climbs", function() {
          return Climbs.find();
     });    
-    Labels.allow({});
+    Labels.allow({
+        insert: function(user){
+            if (user != null){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    });
     Climbs.allow({});
     
     Meteor.methods({
