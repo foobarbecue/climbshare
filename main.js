@@ -33,7 +33,9 @@ if (Meteor.isServer) {
         remove: function(user, label){
             return label.createdBy === userId
         }
-        
+        update: function(user, label){
+            return label.createdBy === userId
+        }        
     });
     Climbs.allow({});
     
