@@ -18,18 +18,22 @@ if (Meteor.isServer) {
     Meteor.publish("labels", function() {
          return Labels.find();
     });
+    Meteor.publish("OwnLabels", function() {
+         return Labels.find();
+    });
+
     Meteor.publish("climbs", function() {
          return Climbs.find();
     });    
     Labels.allow({
-        insert: function(user){
-            if (user != null){
-                return true;
-            }
-            else{
-                return false;
-            }
+        insert: function(userId){
+            // only logged in users can create new labels
+            return user != null
         }
+        remove: function(user, label){
+            return label.createdBy === userId
+        }
+        
     });
     Climbs.allow({});
     
