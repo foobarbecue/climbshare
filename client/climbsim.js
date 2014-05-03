@@ -88,6 +88,7 @@ function init() {
                 createdBy:Meteor.userId(),
                 createdByName:Meteor.userId(),
                 createdOn:TimeSync.serverTime(),
+                refersTo:Session.get('loaded3Dmodel')
             });
             }
             else{
@@ -108,6 +109,7 @@ function init() {
         )
         
         function loadBoulder(boulderName){
+            Session.set('loaded3Dmodel',boulderName)
             scene.remove(boulderMesh)
             boulder = climbData.boulders[boulderName]
         // loading boulder
