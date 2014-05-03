@@ -3,7 +3,7 @@
 </head>
 
 <body>
-  {{> loginButtons}}
+  {{> loginButtons align="right"}}
     <div id="threejs-container"></div>
     <div id="progressBar"></div>
     <div id="progressText"></div>
@@ -42,15 +42,17 @@
         <ul id='climbList'>
         </ul>        
         </div>
-        <h3>Labels</h3>
+        <h3>User data</h3>
         <div class='hidden'>
-        <ul id='labelList'>
+        <div id='labelList'>
         {{#each labels}}
-          <li class="{{_id}} ctrlPnlItm">
+          <tr>
+          <span class="{{_id}} ctrlPnlItm ">
           {{content}}
-          </li>
+          </span>
+          </tr>
         {{/each}}
-        </ul>
+        </div>
         </div>
         <h3>About</h3>
         <div class='hidden'>Climbsim is an

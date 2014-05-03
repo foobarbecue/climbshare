@@ -85,7 +85,7 @@ function init() {
                     y:mouse3D.position.y,
                     z:mouse3D.position.z
                 },
-                createdBy:Meteor.user(),
+                createdBy:Meteor.userId(),
                 createdOn:TimeSync.serverTime(),
             });
             }
