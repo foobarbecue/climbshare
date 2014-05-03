@@ -28,12 +28,12 @@ if (Meteor.isServer) {
     Labels.allow({
         insert: function(userId){
             // only logged in users can create new labels
-            return user != null
-        }
-        remove: function(user, label){
+            return userId != null
+        },
+        remove: function(userId, label){
             return label.createdBy === userId
-        }
-        update: function(user, label){
+        },
+        update: function(userId, label){
             return label.createdBy === userId
         }        
     });
