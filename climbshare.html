@@ -9,15 +9,24 @@
     <div id="progressText"></div>
   {{> controlPanel}}
   {{> labels3D}}
+  {{> label3Ddetails}}
 </body>
 
 <template name="labels3D">
 {{#each labels}}
-    <div class="{{_id}} label3D">{{content}}</div>
+    <div id="{{_id}}" class="{{_id}} label3D">{{content}}</div>
 {{/each}}
 {{#each climbs}}
-    <div class="{{label._id}} label3D">{{label.content}}</div>
+    <div id="{{_id}}" class="{{label._id}} label3D">{{label.content}}</div>
 {{/each}}
+</template>
+
+<template name="label3Ddetails">
+<div class="label3Ddetails">
+    <h2>{{label.content}}</h2>
+    <div>Created by: {{label.createdByName}}</div>
+    <div>At: {{label.createdOn}}</div>
+</div>
 </template>
 
 <template name="controlPanel">
@@ -44,15 +53,15 @@
         </div>
         <h3>User data</h3>
         <div class='hidden'>
-        <div id='labelList'>
+        <table id='labelList'>
         {{#each labels}}
-          <tr>
-          <span class="{{_id}} ctrlPnlItm ">
-          {{content}}
-          </span>
+          <tr class="{{_id}} ctrlPnlItm">
+            <td>{{content}}</td>
+            <td>{{createdByName}}</td>
+            <td>{{content}}</td>
           </tr>
         {{/each}}
-        </div>
+        </table>
         </div>
         <h3>About</h3>
         <div class='hidden'>Climbsim is an

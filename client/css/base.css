@@ -42,7 +42,7 @@
     height: 100%;
     width: 100%;
 }
-#controlPanel{
+#controlPanel, .label3Ddetails{
     position: fixed;
     left: 0px;
     top:0px;
@@ -52,8 +52,14 @@
     padding-right:0px;
     border-radius: 10px;    
     width:200px;
-    background:rgba(255,255,255,0.8);    
+    background:rgba(255,255,255,0.8); 
 }
+.label3Ddetails{
+    display: none;
+    position: absolute;
+    bottom: 0px;
+}
+
 #controlPanel > :not(h3){
     margin-right:4px;
 }
@@ -69,4 +75,7 @@ body{
     overflow: hidden;
     font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
     font-size: smaller;
+}
+.selected{
+    color: red;
 }
