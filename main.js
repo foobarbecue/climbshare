@@ -1,4 +1,7 @@
+
+
 if (Meteor.isClient) {
+
     // initial variables
     Session.set("selectedLabel",null)
     
@@ -13,8 +16,13 @@ if (Meteor.isClient) {
         return Labels.find();
     }
     Template.controlPanel.models3D = function() {
+        $('select').val(Session.get('loadedBoulder'));
         return Boulders.find();
     }
+    Template.controlPanel.events({
+        "change #boulderList":function(e, tmpl) {
+            Session.set("loadedBoulder",e.target.value)
+    }})
 
     Template.labels3D.labels = function(requestedUserId) {
         return Labels.find({'createdBy':requestedUserId});
@@ -34,9 +42,18 @@ if (Meteor.isClient) {
         try{return Labels.findOne(Session.get("selectedLabel"))}
         catch(TypeError){return null}
     }   
+    
+    Deps.autorun(function(){
+        boulderName = Session.get('loadedBoulder');
+        loadBoulder(boulderName);
+    }
+    )
+    
     Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
     })
+    
+    
     }
 
 if (Meteor.isServer) {
@@ -68,10 +85,9 @@ if (Meteor.isServer) {
     
     Meteor.methods({
     readData: function(){
-        for (var boulderName in data.boulders){
-            insertBoulder(data.boulders[boulderName]);
-            console.log('inserted boulder: ' + boulderName);
-            return boulderName
+        for (var name in data.boulders){
+            insertBoulder(data.boulders[name]);
+            console.log('inserted boulder: ' + name);
         }        
     }})
 

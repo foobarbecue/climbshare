@@ -76,7 +76,7 @@ function init() {
         container.on('dblclick', function(evt){
             if (Meteor.user() != null){
             content = window.prompt('What words of wisdom would you like to anchor to the rock?')
-            Labels3D.insert({
+            Labels.insert({
                 content:content,
                 position:{
                     x:mouse3D.position.x,
@@ -86,26 +86,18 @@ function init() {
                 createdBy:Meteor.userId(),
                 createdByName:Meteor.userId(),
                 createdOn:TimeSync.serverTime(),
-                refersTo:Session.get('loaded3Dmodel')
+                refersTo:Session.get('loadedBoulder')
             });
             }
             else{
                 alert('Sign up / log in to add data.')
             }
         })
-
-        // load boulder problems
-        $.getJSON("data/data.json",
-            function(data){
-                climbData=data;
-                loadBoulder('streambed');
-            }
-          )
         
-        function loadBoulder(boulderName){
-            Session.set('loaded3Dmodel',boulderName)
+        loadBoulder = function(boulderName){
+            boulder = Boulders.findOne({name:boulderName})
+            // clear previous 3d model
             scene.remove(boulderMesh)
-            boulder = climbData.boulders[boulderName]
         // loading boulder
             var loader = new THREE.PLYLoader();
             loader.addEventListener( 'load', function ( event ) {
@@ -125,12 +117,7 @@ function init() {
                 console.log('Done loading.')
                 $('#intromessage').fadeIn();
             } );
-            
             loader.load('data/models/' + boulder.model3D);
-               // load all of the climbs
-            
-//             updateClimbList();
-            
         }
         
         loadClimb = function(climb){
@@ -231,4 +218,5 @@ function positionLabel(label){
 window.scene=scene;
 window.camera=camera;
 window.loadClimb=loadClimb;
+window.loadBoulder=loadBoulder;
 });
