@@ -4,9 +4,7 @@
     "basePackages": {
       "three": {},
       "jquery-ui": {},
-      "timesync": {},
-      "fixture-loader": {},
-      "collection2": {}
+      "timesync": {}
     },
     "packages": {
       "three": {
@@ -21,23 +19,8 @@
       },
       "timesync": {
         "git": "https://github.com/mizzao/meteor-timesync.git",
-        "tag": "v0.1.5",
-        "commit": "3ee7eb21f60650de2ca32661b7c964e464e578e3"
-      },
-      "fixture-loader": {
-        "git": "https://github.com/deepwell/meteor-fixture-loader.git",
-        "tag": "v0.1.0",
-        "commit": "379bd596e225af47bf70bbff889231a12472d6a7"
-      },
-      "collection2": {
-        "git": "https://github.com/aldeed/meteor-collection2.git",
-        "tag": "v0.3.11",
-        "commit": "7e970671305657678e8508d8107d5e6c5e158559"
-      },
-      "simple-schema": {
-        "git": "https://github.com/aldeed/meteor-simple-schema.git",
-        "tag": "v0.4.0",
-        "commit": "2cc6aac0d35a4e00b065c1437d540b2aefba5241"
+        "tag": "v0.1.6",
+        "commit": "83067433f511bc13a11ae8c87e9a4d331256915e"
       }
     }
   }
