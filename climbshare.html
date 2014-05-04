@@ -46,6 +46,9 @@
         <h3>Boulders / walls</h3>
             <div class='hidden'>
             <select id='boulderList'>
+            {{#each models3D}}
+            <option value="{{name}}">{{name}}</option>
+            {{/each}}
             </select>
             </div>
         <h3>Routes / problems</h3>
@@ -53,7 +56,25 @@
         <ul id='climbList'>
         </ul>        
         </div>
-        <h3>User data</h3>
+        <h3>Show</h3>
+        <div class='hidden'>
+            <input type="checkbox" id="showBeta">beta
+            <input type="checkbox" id="showWarning">warning
+            <input type="checkbox" id="showOther">other
+        <select id="showUserData">
+            <option value="everyone">everyone</option>
+            {{#each users}}
+                <option value="{{username}}">{{username}}</option>
+            {{/each}}
+        </select>
+        </div>
+        <h3>Add</h3>
+        <div class='hidden'>
+            <button id="createBeta">beta</button>
+            <button id="createWarning">warning</button>
+            <button id="createOther">other</button>
+        </div>
+        <h3>Users</h3>
         <div class='hidden'>
         <table id='labelList'>
         {{#each labels}}

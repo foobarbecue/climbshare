@@ -63,10 +63,8 @@ function init() {
         projector = new THREE.Projector();
         mouse2D = v(0,0,0)
         camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
-        
         // position and point the camera to the center of the scene
         camera.position.set(1,-20,5)
-
         // we use Z up for compatibility with UTM and lat lon
         camera.up.set(0,0,1)
         // make a 3D mouse out of a sphere for manipulating stuff
@@ -78,7 +76,7 @@ function init() {
         container.on('dblclick', function(evt){
             if (Meteor.user() != null){
             content = window.prompt('What words of wisdom would you like to anchor to the rock?')
-            Labels.insert({
+            Labels3D.insert({
                 content:content,
                 position:{
                     x:mouse3D.position.x,
@@ -103,10 +101,6 @@ function init() {
                 loadBoulder('streambed');
             }
           )
-        
-        $('#boulderList').select(
-            function (){loadBoulder(this.val())}
-        )
         
         function loadBoulder(boulderName){
             Session.set('loaded3Dmodel',boulderName)
@@ -133,7 +127,6 @@ function init() {
             } );
             
             loader.load('data/models/' + boulder.model3D);
-            addToBoulderList(boulderName, boulder);
                // load all of the climbs
             
 //             updateClimbList();
@@ -145,12 +138,6 @@ function init() {
             addedClimbVerts = curvify(vertices)
             scene.add(curvify(vertices));
             return addedClimbVerts
-        }
-        
-        function addToBoulderList(boulderName, boulder){
-            //TODO implement changing 3d model with this <select>
-            boulderOpt = new Option(boulderName,boulder.model3D);
-            $('#boulderList').append(new Option(boulderName));
         }
         
         // lights
@@ -195,18 +182,8 @@ function onmousemove( e ){
             pos = intersects[0].point
             if (typeof pos != null) {
             mouse3D.position = pos;
-//         controls.target = mouse3D.position;
             }
         }
-        //TODO label hovering
-//         for (labelInd=0 ; labelInd < LabelPlugin.labels.length; labelInd++){
-//             lbl=LabelPlugin.labels[labelInd]
-//             intersects = raycaster.intersectObject(lbl.marker, true);
-//             if (intersects.length >0){
-//                 $(lbl.el).fadeIn()
-//                 lbl.showText=true;
-//             }
-//         }
 }
 
 function addDirLight( x, y, z, color, intensity ) {
