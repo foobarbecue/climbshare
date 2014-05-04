@@ -1,3 +1,6 @@
+body{
+    display: flex;
+}
 #progressBar, #progressText{
     width:20%;
     height:20px;
@@ -44,10 +47,12 @@
     height: 100%;
     width: 100%;
 }
+.flexcontainer{
+    display: flex;
+    flex-direction: column;
+    z-index:30;
+}
 #controlPanel, .label3Ddetails{
-    position: fixed;
-    left: 0px;
-    top:0px;
     margin:10px;
     padding: 4px;
     /*this is to make the lines under h3 go all the way to edge*/
