@@ -51,7 +51,7 @@ if (Meteor.isClient) {
     Meteor.startup(function(){
         climbsimInit();
         climbsimAnimate();
-    Deps.autorun(function(){
+    boulderLoaderComputation=Deps.autorun(function(){
         try{
             boulderName = Session.get('loadedBoulder');
             loadBoulder(boulderName);
@@ -59,8 +59,8 @@ if (Meteor.isClient) {
         catch(TypeError){
             console.log('failed to load '+boulderName)
         }
-    }
-    )        
+    })
+    Session.set('loadedBoulder','Streambed')
     }
     )
     

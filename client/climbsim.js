@@ -123,6 +123,9 @@ init = function() {
 }
 
 loadBoulder = function(boulderName){
+    if (typeof(boulderName) === "undefined"){
+        boulderName = Session.get('loadedBoulder')
+    }
     boulder = Boulders.findOne({name:boulderName})
     // clear previous 3d model
     scene.remove(boulderMesh)
