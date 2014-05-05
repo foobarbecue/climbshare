@@ -25,7 +25,7 @@ if (Meteor.isClient) {
     }})
 
     Template.labels3D.labels = function(requestedUserId) {
-        return Labels.find({'createdBy':requestedUserId});
+        return Labels.find();
     }
     Template.labels3D.events({
         'mouseenter .label3D': function(event) {
@@ -42,7 +42,17 @@ if (Meteor.isClient) {
         try{return Labels.findOne(Session.get("selectedLabel"))}
         catch(TypeError){return null}
     }   
-    
+    Template.label3Ddetails.climb = function(){
+        try{
+            var lbl = Labels.findOne(Session.get("selectedLabel"))
+            if (lbl.refers_to_type === "climb"){
+                return Climbs.find(lbl.refers_to_id)
+            }
+        }
+        catch(TypeError){
+            return false
+        }
+    }       
     
     Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
