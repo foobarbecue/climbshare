@@ -26,8 +26,11 @@
 <template name="label3Ddetails">
 <div class="label3Ddetails">
     <h2>{{label.content}}</h2>
-    <div>Created by: {{label.createdByName}}</div>
+    <div>Created by: {{label.createdBy}}</div>
     <div>At: {{label.createdOn}}</div>
+    {{#if climb}}
+        <div>Difficulty: {{rating}}</div>
+    {{/if}}
 </div>
 </template>
 
