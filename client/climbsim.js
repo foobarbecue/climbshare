@@ -2,17 +2,14 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var container;
 
-var camera, cameraTarget, scene, renderer, boulderMesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData;
+var camera, cameraTarget, scene, renderer, boulderMesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData, loadClimb, climbsimInit, climbsimAnimate;
 var clock = new THREE.Clock();
 var projector = new THREE.Projector();
 var paused = false;
 
 
 //Do everything inside the jquery onload callback
-$(function(){
-    
-init();
-animate();
+
 /**
  * Convenience function for making Vector3s
  */
@@ -56,7 +53,7 @@ function curvify(pointlist, pull, material) {
     return curvifiedProblem
 }
 
-function init() {
+init = function() {
         $("#progressBar").progressbar();
         container = $('#threejs-container')
         scene = new THREE.Scene();
@@ -94,38 +91,7 @@ function init() {
             }
         })
         
-        loadBoulder = function(boulderName){
-            boulder = Boulders.findOne({name:boulderName})
-            // clear previous 3d model
-            scene.remove(boulderMesh)
-        // loading boulder
-            var loader = new THREE.PLYLoader();
-            loader.addEventListener( 'load', function ( event ) {
-                    var geometry = event.content;
-                    var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
-                    boulderMesh = new THREE.Mesh( geometry, material );
-                    scene.add(boulderMesh);
-                    $("#progressBar,#progressText").fadeOut();
-                    // putting this here so it doesn't get called too early...
-                    Climbs.find().map(loadClimb)
-            } );
-            loader.addEventListener( 'progress', function ( event ) {
-                $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
-                $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
-            } );
-            loader.addEventListener( 'complete', function ( event ) {
-                console.log('Done loading.')
-                $('#intromessage').fadeIn();
-            } );
-            loader.load('data/models/' + boulder.model3D);
-        }
-        
-        loadClimb = function(climb){
-            vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
-            addedClimbVerts = curvify(vertices)
-            scene.add(curvify(vertices));
-            return addedClimbVerts
-        }
+
         
         // lights
         scene.add( new THREE.AmbientLight( 0x777777 ) );
@@ -154,6 +120,39 @@ function init() {
         window.addEventListener( 'resize', onWindowResize, false );
         
         
+}
+
+loadBoulder = function(boulderName){
+    boulder = Boulders.findOne({name:boulderName})
+    // clear previous 3d model
+    scene.remove(boulderMesh)
+// loading boulder
+    var loader = new THREE.PLYLoader();
+    loader.addEventListener( 'load', function ( event ) {
+            var geometry = event.content;
+            var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
+            boulderMesh = new THREE.Mesh( geometry, material );
+            scene.add(boulderMesh);
+            $("#progressBar,#progressText").fadeOut();
+            // putting this here so it doesn't get called too early...
+            Climbs.find().map(loadClimb)
+    } );
+    loader.addEventListener( 'progress', function ( event ) {
+        $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
+        $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
+    } );
+    loader.addEventListener( 'complete', function ( event ) {
+        console.log('Done loading.')
+        $('#intromessage').fadeIn();
+    } );
+    loader.load('data/models/' + boulder.model3D);
+}
+
+loadClimb = function(climb){
+    vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
+    addedClimbVerts = curvify(vertices)
+    scene.add(curvify(vertices));
+    return addedClimbVerts
 }
 
 function onmousemove( e ){
@@ -219,4 +218,5 @@ window.scene=scene;
 window.camera=camera;
 window.loadClimb=loadClimb;
 window.loadBoulder=loadBoulder;
-});
+window.climbsimInit=init;
+window.climbsimAnimate=animate;

@@ -43,16 +43,21 @@ if (Meteor.isClient) {
         catch(TypeError){return null}
     }   
     
-    Deps.autorun(function(){
-        boulderName = Session.get('loadedBoulder');
-        loadBoulder(boulderName);
-    }
-    )
     
     Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
     })
     
+    Meteor.startup(function(){
+        climbsimInit();
+        climbsimAnimate();
+    Deps.autorun(function(){
+        boulderName = Session.get('loadedBoulder');
+        loadBoulder(boulderName);
+    }
+    )        
+    }
+    )
     
     }
 
