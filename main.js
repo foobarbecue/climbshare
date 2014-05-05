@@ -52,8 +52,13 @@ if (Meteor.isClient) {
         climbsimInit();
         climbsimAnimate();
     Deps.autorun(function(){
-        boulderName = Session.get('loadedBoulder');
-        loadBoulder(boulderName);
+        try{
+            boulderName = Session.get('loadedBoulder');
+            loadBoulder(boulderName);
+        }
+        catch(TypeError){
+            console.log('failed to load '+boulderName)
+        }
     }
     )        
     }
