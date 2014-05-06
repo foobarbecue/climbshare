@@ -4,7 +4,8 @@
     "basePackages": {
       "three": {},
       "jquery-ui": {},
-      "timesync": {}
+      "timesync": {},
+      "user-status": {}
     },
     "packages": {
       "three": {
@@ -21,6 +22,11 @@
         "git": "https://github.com/mizzao/meteor-timesync.git",
         "tag": "v0.1.6",
         "commit": "83067433f511bc13a11ae8c87e9a4d331256915e"
+      },
+      "user-status": {
+        "git": "https://github.com/mizzao/meteor-user-status.git",
+        "tag": "v0.4.0",
+        "commit": "e2a1c7a4075f28b87b361387688e083a4b047a08"
       }
     }
   }

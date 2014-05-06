@@ -10,13 +10,22 @@
   {{> labels3D}}
   <div class='flexcontainer'>
   {{> controlPanel}}
-  {{> label3Ddetails}}
   </div>
 </body>
 
 <template name="labels3D">
 {{#each labels}}
-    <div id="{{_id}}" class="{{_id}} label3D">{{content}}</div>
+    <div id="{{_id}}" class="{{_id}} label3D">
+        {{content}}
+        <div class="hidden">
+    <div>Created by: {{createdBy}}</div>
+    <div>At: {{createdOn}}</div>
+    {{#if climb}}
+        <div>Difficulty: {{rating}}</div>
+    {{/if}}
+            
+        </div>
+    </div>
 {{/each}}
 {{#each climbs}}
     <div id="{{_id}}" class="{{label._id}} label3D">{{label.content}}</div>
@@ -26,11 +35,6 @@
 <template name="label3Ddetails">
 <div class="label3Ddetails">
     <h2>{{label.content}}</h2>
-    <div>Created by: {{label.createdBy}}</div>
-    <div>At: {{label.createdOn}}</div>
-    {{#if climb}}
-        <div>Difficulty: {{rating}}</div>
-    {{/if}}
 </div>
 </template>
 
@@ -67,7 +71,7 @@
         <select id="showUserData">
             <option value="everyone">everyone</option>
             {{#each users}}
-                <option value="{{username}}">{{username}}</option>
+                <option value="{{profile}}">{{profile.name}} {{profile.username}}</option>
             {{/each}}
         </select>
         </div>
@@ -79,15 +83,10 @@
         </div>
         <h3>Users</h3>
         <div class='hidden'>
-        <table id='labelList'>
-        {{#each labels}}
-          <tr class="{{_id}} ctrlPnlItm">
-            <td>{{content}}</td>
-            <td>{{createdByName}}</td>
-            <td>{{content}}</td>
-          </tr>
-        {{/each}}
-        </table>
+            {{#each users}}
+                {{profile.name}} {{profile.username}}
+                {{# if status.online}}(online){{/if}}
+            {{/each}}
         </div>
         <h3>About</h3>
         <div class='hidden'>Climbsim is an
