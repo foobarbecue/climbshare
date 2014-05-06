@@ -9,11 +9,14 @@ if (Meteor.isClient) {
     Meteor.subscribe("labels");
     Meteor.subscribe("climbs");
     Meteor.subscribe("boulders");
-//     Meteor.subscribe("users");
+    Meteor.subscribe("users");
    
     // template definitions
     Template.controlPanel.labels = function() {
         return Labels.find();
+    }
+    Template.controlPanel.users = function() {
+        return Meteor.users.find();
     }
     Template.controlPanel.models3D = function() {
         $('select').val(Session.get('loadedBoulder'));
@@ -31,29 +34,14 @@ if (Meteor.isClient) {
         'mouseenter .label3D': function(event) {
             Session.set("selectedLabel", event.currentTarget.id);
             $(event.currentTarget).addClass('selected');
-            $('.label3Ddetails').fadeIn();  
+            $(event.currentTarget).children('div').fadeIn();
         },
         'mouseleave .label3D': function(event) {
             $(event.currentTarget).removeClass('selected');
-            $('.label3Ddetails').fadeOut();
+            $(event.currentTarget).children('div').fadeOut();
         }
     })
-    Template.label3Ddetails.label = function(){
-        try{return Labels.findOne(Session.get("selectedLabel"))}
-        catch(TypeError){return null}
-    }   
-    Template.label3Ddetails.climb = function(){
-        try{
-            var lbl = Labels.findOne(Session.get("selectedLabel"))
-            if (lbl.refers_to_type === "climb"){
-                return Climbs.find(lbl.refers_to_id)
-            }
-        }
-        catch(TypeError){
-            return false
-        }
-    }       
-    
+
     Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
     })
@@ -86,9 +74,9 @@ if (Meteor.isServer) {
     Meteor.publish("boulders", function() {
          return Boulders.find();
     });      
-/*    Meteor.publish("users", function() {
-         return Users.find();
-    });*/    
+    Meteor.publish("users", function() {
+         return Meteor.users.find();
+    });
     Labels.allow({
         insert: function(userId){
             // only logged in users can create new labels

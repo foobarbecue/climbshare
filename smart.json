@@ -2,6 +2,7 @@
   "packages": {
     "three": {},
     "jquery-ui": {},
-    "timesync": {}
+    "timesync": {},
+    "user-status": {}
   }
 }

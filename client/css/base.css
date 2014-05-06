@@ -83,6 +83,9 @@ body{
     font-family: ‘Lucida Sans Unicode’, ‘Lucida Grande’, sans-serif;
     font-size: smaller;
 }
+.hidden{
+    display:none;
+}
 .selected{
-    color: red;
+    background: white;
 }
