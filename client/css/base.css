@@ -89,3 +89,8 @@ body{
 .selected{
     background: white;
 }
+.expandArrow, .expandedArrow{
+    float: right;
+    font-size: smaller;
+    margin-right: 3px;
+}

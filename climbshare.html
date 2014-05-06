@@ -22,13 +22,14 @@
     <div>At: {{createdOn}}</div>
     {{#if climb}}
         <div>Difficulty: {{rating}}</div>
-    {{/if}}
-            
+    {{/if}}        
         </div>
     </div>
-{{/each}}
+
+
+    {{/each}}
 {{#each climbs}}
-    <div id="{{_id}}" class="{{label._id}} label3D">{{label.content}}</div>
+<div id="{{_id}}" class="{{label._id}} label3D">{{label.content}}</div>
 {{/each}}
 </template>
 
@@ -65,9 +66,10 @@
         </div>
         <h3>Show</h3>
         <div class='hidden'>
-            <input type="checkbox" id="showBeta">beta
-            <input type="checkbox" id="showWarning">warning
-            <input type="checkbox" id="showOther">other
+            <input type="checkbox" id="showOther">other<br />
+            <input type="checkbox" id="showBeta">beta<br />
+            <input type="checkbox" id="showWarning">warning<br />
+            <input type="checkbox" id="showOther">other<br />
         <select id="showUserData">
             <option value="everyone">everyone</option>
             {{#each users}}
