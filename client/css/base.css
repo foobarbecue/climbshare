@@ -88,6 +88,7 @@ body{
 }
 .selected{
     background: white;
+    border: thin red solid;
 }
 .expandArrow, .expandedArrow{
     float: right;

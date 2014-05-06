@@ -10,7 +10,16 @@ if (Meteor.isClient) {
     Meteor.subscribe("climbs");
     Meteor.subscribe("boulders");
     Meteor.subscribe("users");
-   
+
+    // scene manipulation functions (probably should be in climbsim.js)
+    function colorAllClimbsWhite(){
+            $(threeScene.children).each(function(){
+                if (this instanceof THREE.Line){
+                        this.material.color.set('white');
+                }
+            })        
+    }
+    
     // template definitions
     Template.controlPanel.labels = function() {
         return Labels.find();
@@ -38,6 +47,7 @@ if (Meteor.isClient) {
         },
         'mouseleave .label3D': function(event) {
             $(event.currentTarget).removeClass('selected');
+            colorAllClimbsWhite();
             $(event.currentTarget).children('div').fadeOut();
         }
     })
@@ -47,9 +57,16 @@ if (Meteor.isClient) {
     })
     
     Meteor.startup(function(){
-        climbsimInit();
+        climbsimInit();    function colorAllClimbsWhite(){
+            $(threeScene.children).each(function(){
+                if (this instanceof THREE.Line){
+                        this.material.color.set('white');
+                }
+            })        
+    }
         climbsimAnimate();
-    boulderLoaderComputation=Deps.autorun(function(){
+    // Load the currently selected 3D boulder model
+    Deps.autorun(function(){
         try{
             boulderName = Session.get('loadedBoulder');
             loadBoulder(boulderName);
@@ -58,10 +75,23 @@ if (Meteor.isClient) {
             console.log('failed to load '+boulderName)
         }
     })
+    
+    // Color the currently selected climb
+    Deps.autorun(function(){
+        var labelId = Session.get('selectedLabel');
+        var label = Labels.findOne(labelId);
+        if (label && (label.refers_to_type == "climb")){
+            climbId = label.refers_to_id
+            selectedThreeObj = threeScene.getObjectByName(climbId);
+            colorAllClimbsWhite();
+            // turn the selected one red
+            selectedThreeObj.material.color.set('red');
+        }
+    })
+    
     Session.set('loadedBoulder','Streambed')
     }
     )
-    
     }
 
 if (Meteor.isServer) {
