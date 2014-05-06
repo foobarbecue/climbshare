@@ -18,10 +18,10 @@
     <div id="{{_id}}" class="{{_id}} label3D">
         {{content}}
         <div class="hidden">
-    <div>Created by: {{createdBy}}</div>
-    <div>At: {{createdOn}}</div>
+    <div><i>Created by</i> {{createdBy}}</div>
+    <div><i>At</i> {{createdOn}}</div>
     {{#if climb}}
-        <div>Difficulty: {{rating}}</div>
+        <div><i>Difficulty</i> {{rating}}</div>
     {{/if}}        
         </div>
     </div>
@@ -66,9 +66,9 @@
         </div>
         <h3>Show</h3>
         <div class='hidden'>
-            <input type="checkbox" id="showOther">other<br />
+            <input type="checkbox" id="showOther">climbs<br />
             <input type="checkbox" id="showBeta">beta<br />
-            <input type="checkbox" id="showWarning">warning<br />
+            <input type="checkbox" id="showWarning">warnings<br />
             <input type="checkbox" id="showOther">other<br />
         <select id="showUserData">
             <option value="everyone">everyone</option>
@@ -87,7 +87,7 @@
         <div class='hidden'>
             {{#each users}}
                 {{profile.name}} {{profile.username}}
-                {{# if status.online}}(online){{/if}}
+                {{# if status.online}}(online now){{/if}}
             {{/each}}
         </div>
         <h3>About</h3>

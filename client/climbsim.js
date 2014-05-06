@@ -2,7 +2,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var container;
 
-var camera, cameraTarget, scene, renderer, boulderMesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData, loadClimb, climbsimInit, climbsimAnimate;
+var camera, cameraTarget, renderer, boulderMesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData, loadClimb, climbsimInit, climbsimAnimate;
 var clock = new THREE.Clock();
 var projector = new THREE.Projector();
 var paused = false;
@@ -53,10 +53,10 @@ function curvify(pointlist, pull, material) {
     return curvifiedProblem
 }
 
-init = function() {
+var init = function() {
         $("#progressBar").progressbar();
         container = $('#threejs-container')
-        scene = new THREE.Scene();
+        window.threeScene = new THREE.Scene();
         projector = new THREE.Projector();
         mouse2D = v(0,0,0)
         camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
@@ -68,7 +68,7 @@ init = function() {
         mouse3D = new THREE.Mesh(
                 new THREE.SphereGeometry(0.1,6,6),
                 new THREE.MeshBasicMaterial({color:'red',transparent:true}));
-        scene.add(mouse3D);
+        window.threeScene.add(mouse3D);
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
             if (Meteor.user() != null){
@@ -94,12 +94,12 @@ init = function() {
 
         
         // lights
-        scene.add( new THREE.AmbientLight( 0x777777 ) );
+        window.threeScene.add( new THREE.AmbientLight( 0x777777 ) );
 
         // grid
         grid = new THREE.GridHelper(100,1)
         grid.rotateX(Math.PI/2)
-        scene.add(grid);
+        window.threeScene.add(grid);
         
         // renderer
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -122,20 +122,20 @@ init = function() {
         
 }
 
-loadBoulder = function(boulderName){
+var loadBoulder = function(boulderName){
     if (typeof(boulderName) === "undefined"){
         boulderName = Session.get('loadedBoulder')
     }
     boulder = Boulders.findOne({name:boulderName})
     // clear previous 3d model
-    scene.remove(boulderMesh)
+    window.threeScene.remove(boulderMesh)
 // loading boulder
     var loader = new THREE.PLYLoader();
     loader.addEventListener( 'load', function ( event ) {
             var geometry = event.content;
             var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
             boulderMesh = new THREE.Mesh( geometry, material );
-            scene.add(boulderMesh);
+            window.threeScene.add(boulderMesh);
             $("#progressBar,#progressText").fadeOut();
             // putting this here so it doesn't get called too early...
             Climbs.find().map(loadClimb)
@@ -151,11 +151,12 @@ loadBoulder = function(boulderName){
     loader.load('data/models/' + boulder.model3D);
 }
 
-loadClimb = function(climb){
+var loadClimb = function(climb){
     vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
-    addedClimbVerts = curvify(vertices)
-    scene.add(curvify(vertices));
-    return addedClimbVerts
+    climbCurvified = curvify(vertices)
+    climbCurvified.name=climb._id
+    window.threeScene.add(climbCurvified);
+    return climbCurvified
 }
 
 function onmousemove( e ){
@@ -178,7 +179,7 @@ function onmousemove( e ){
 function addDirLight( x, y, z, color, intensity ) {
         var directionalLight = new THREE.DirectionalLight( color, intensity );
         directionalLight.position.set( x, y, z )
-        scene.add( directionalLight );
+        window.threeScene.add( directionalLight );
 }
 
 function onWindowResize() {
@@ -199,7 +200,7 @@ function render() {
         oscillator=((Math.sin(clock.getElapsedTime()*3))+Math.PI/2);
         mouse3D.material.color.setRGB(1,0,0);
         mouse3D.material.opacity=oscillator/Math.PI;
-        renderer.render( scene, camera );
+        renderer.render( window.threeScene, camera );
 }
 
 // moves div of a label to the correct 2D coordinates
@@ -217,7 +218,6 @@ function positionLabel(label){
 
 //hack because I can't figure out how to do globals in meteor
 //TODO fix this by using smart packages
-window.scene=scene;
 window.camera=camera;
 window.loadClimb=loadClimb;
 window.loadBoulder=loadBoulder;
