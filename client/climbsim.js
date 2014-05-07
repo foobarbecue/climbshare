@@ -138,7 +138,7 @@ var loadBoulder = function(boulderName){
             window.threeScene.add(boulderMesh);
             $("#progressBar,#progressText").fadeOut();
             // putting this here so it doesn't get called too early...
-            Climbs.find().map(loadClimb)
+            Climbs.find({boulder_id:boulder._id}).map(loadClimb)
     } );
     loader.addEventListener( 'progress', function ( event ) {
         $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
