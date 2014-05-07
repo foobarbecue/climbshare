@@ -39,6 +39,19 @@ if (Meteor.isClient) {
     Template.labels3D.labels = function(requestedUserId) {
         return Labels.find();
     }
+    Template.labels3D.helpers({
+        username: function(){
+            var user = Meteor.users.findOne(this.createdBy);
+            if (user){
+                return user.profile.name || user.profile.username;
+            }
+            else{
+                return this.createdBy;
+            }
+        }
+    });
+        
+    
     Template.labels3D.events({
         'mouseenter .label3D': function(event) {
             Session.set("selectedLabel", event.currentTarget.id);
