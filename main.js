@@ -102,7 +102,7 @@ if (Meteor.isClient) {
         }
     })
     
-    Session.set('loadedBoulder','Streambed')
+    Session.set('loadedBoulder','NMT gym bouldering cave')
     }
     )
     }
