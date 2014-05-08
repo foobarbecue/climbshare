@@ -36,8 +36,11 @@ if (Meteor.isClient) {
             Session.set("loadedBoulder",e.target.value)
     }})
 
-    Template.labels3D.labels = function(requestedUserId) {
-        return Labels.find();
+    Template.labels3D.labels = function() {
+        loadedBoulder=Boulders.findOne({name:Session.get('loadedBoulder')});
+        if(typeof(loadedBoulder) !== 'undefined'){
+            return Labels.find({"refers_to_boulder":loadedBoulder._id});
+        };
     }
     Template.labels3D.helpers({
         username: function(){
@@ -130,7 +133,7 @@ if (Meteor.isServer) {
         },
         update: function(userId, label){
             return label.createdBy === userId
-        }        
+        }
     });
     Climbs.allow({});
     

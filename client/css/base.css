@@ -95,3 +95,7 @@ body{
     font-size: smaller;
     margin-right: 3px;
 }
+.deleteButton{
+    font-color: red;
+    text-align: right;
+}
