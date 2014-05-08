@@ -35,6 +35,7 @@ body{
     border-top-left-radius: 0px;
     background:rgba(255,255,255,0.3);
     border: thin black solid;
+    float: left;
 }
 .ui-progressbar-value{
     background: rgb(131, 117, 98);
@@ -96,6 +97,6 @@ body{
     margin-right: 3px;
 }
 .deleteButton{
-    font-color: red;
-    text-align: right;
+    color: red;
+    float: right;
 }

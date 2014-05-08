@@ -59,12 +59,16 @@ if (Meteor.isClient) {
         'mouseenter .label3D': function(event) {
             Session.set("selectedLabel", event.currentTarget.id);
             $(event.currentTarget).addClass('selected');
-            $(event.currentTarget).children('div').fadeIn();
+            $(event.currentTarget).children('.hidden').fadeIn();
         },
         'mouseleave .label3D': function(event) {
             $(event.currentTarget).removeClass('selected');
             colorAllClimbsWhite();
-            $(event.currentTarget).children('div').fadeOut();
+            $(event.currentTarget).children('.hidden').fadeOut();
+        },
+        'click .deleteButton': function(event) {
+            Labels.remove($(event.currentTarget).parents('.label3D').attr('id'));
+            
         }
     })
 
@@ -105,7 +109,7 @@ if (Meteor.isClient) {
         }
     })
     
-    Session.set('loadedBoulder','NMT gym bouldering cave')
+    Session.set('loadedBoulder','Streambed')
     }
     )
     }
