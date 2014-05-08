@@ -83,7 +83,7 @@ var init = function() {
                 createdBy:Meteor.userId(),
                 createdByName:Meteor.userId(),
                 createdOn:TimeSync.serverTime(),
-                refers_to_boulder:Session.get('loadedBoulder')._id
+                refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id
             });
             }
             else{
