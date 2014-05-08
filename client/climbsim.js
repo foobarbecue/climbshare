@@ -83,7 +83,7 @@ var init = function() {
                 createdBy:Meteor.userId(),
                 createdByName:Meteor.userId(),
                 createdOn:TimeSync.serverTime(),
-                refers_to_boulder:Session.get('loadedBoulder')
+                refers_to_boulder:Session.get('loadedBoulder')._id
             });
             }
             else{
@@ -122,6 +122,14 @@ var init = function() {
         
 }
 
+function removeAllClimbs(){
+    $(threeScene.children).each(function(){
+        if (this instanceof THREE.Line && !(this instanceof THREE.GridHelper)){
+            threeScene.remove(this);
+        }
+    });
+}
+
 var loadBoulder = function(boulderName){
     if (typeof(boulderName) === "undefined"){
         boulderName = Session.get('loadedBoulder')
@@ -129,6 +137,9 @@ var loadBoulder = function(boulderName){
     boulder = Boulders.findOne({name:boulderName})
     // clear previous 3d model
     window.threeScene.remove(boulderMesh)
+    // clear all climbs
+    removeAllClimbs();
+    
 // loading boulder
     var loader = new THREE.PLYLoader();
     loader.addEventListener( 'load', function ( event ) {
