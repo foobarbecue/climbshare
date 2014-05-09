@@ -61,8 +61,9 @@
             </div>
         <h3>Routes / problems</h3>
         <div class='hidden'>
-        <ul id='climbList'>
-        </ul>        
+            {{#each climbs}}
+                <div>{{climbName}}</div>
+            {{/each}}
         </div>
         <h3>Show</h3>
         <div class='hidden'>

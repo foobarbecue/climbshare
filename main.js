@@ -35,7 +35,12 @@ if (Meteor.isClient) {
         "change #boulderList":function(e, tmpl) {
             Session.set("loadedBoulder",e.target.value)
     }})
-
+    Template.controlPanel.climbs = function(){
+        boulder_id=Boulders.findOne({name:Session.get('loadedBoulder')});
+        if (typeof boulder_id !== 'undefined'){
+            return Climbs.find({boulder_id:boulder_id._id});
+        }
+    }
     Template.labels3D.labels = function() {
         loadedBoulder=Boulders.findOne({name:Session.get('loadedBoulder')});
         if(typeof(loadedBoulder) !== 'undefined'){
