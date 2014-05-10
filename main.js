@@ -34,11 +34,16 @@ if (Meteor.isClient) {
     Template.controlPanel.events({
         "change #boulderList":function(e, tmpl) {
             Session.set("loadedBoulder",e.target.value)
-    }})
+        },
+        "mouseenter .ctrlPnlClimb":function(e, tmpl){
+            label=Labels.findOne(e.currentTarget.id)
+            Session.set("selectedLabel",label._id)
+        }
+    })
     Template.controlPanel.climbs = function(){
-        boulder_id=Boulders.findOne({name:Session.get('loadedBoulder')});
-        if (typeof boulder_id !== 'undefined'){
-            return Climbs.find({boulder_id:boulder_id._id});
+        boulder=Boulders.findOne({name:Session.get('loadedBoulder')});
+        if (typeof boulder !== 'undefined'){
+            return Labels.find({refers_to_boulder:boulder._id});
         }
     }
     Template.labels3D.labels = function() {
@@ -51,7 +56,7 @@ if (Meteor.isClient) {
         username: function(){
             var user = Meteor.users.findOne(this.createdBy);
             if (user){
-                return user.profile.name || user.profile.username;
+                return user.username || user.profile.name || user.profile.username;
             }
             else{
                 return this.createdBy;
@@ -63,8 +68,9 @@ if (Meteor.isClient) {
     Template.labels3D.events({
         'mouseenter .label3D': function(event) {
             Session.set("selectedLabel", event.currentTarget.id);
-            $(event.currentTarget).addClass('selected');
-            $(event.currentTarget).children('.hidden').fadeIn();
+//             moved to Deps.autorun
+//             $(event.currentTarget).addClass('selected');
+//             $(event.currentTarget).children('.hidden').fadeIn();
         },
         'mouseleave .label3D': function(event) {
             $(event.currentTarget).removeClass('selected');
@@ -101,18 +107,26 @@ if (Meteor.isClient) {
         }
     })
     
-    // Color the currently selected climb
+    // Color the currently selected label and climb
     Deps.autorun(function(){
-        var labelId = Session.get('selectedLabel');
-        var label = Labels.findOne(labelId);
-        if (label && (label.refers_to_type == "climb")){
-            climbId = label.refers_to_id
-            selectedThreeObj = threeScene.getObjectByName(climbId);
+        labelId = Session.get('selectedLabel');
+        if (typeof labelId === 'undefined'){
+            $('label3D,ctrlPnlClimb').removeClass('selected');
             colorAllClimbsWhite();
-            // turn the selected one red
-            selectedThreeObj.material.color.set('red');
         }
-    })
+        else {
+            $('.label3D,.ctrlPnlClimb').children('.hidden').hide();
+            $('.label3D,.ctrlPnlClimb').removeClass('selected');
+            $('.'+labelId).addClass('selected');
+            $('.'+labelId).children('.hidden').fadeIn();
+            var label = Labels.findOne(labelId);
+            if (label && (label.refers_to_type == "climb")){
+                climbId = label.refers_to_id
+                selectedThreeObj = threeScene.getObjectByName(climbId);
+                colorAllClimbsWhite();
+                // turn the selected one red
+                selectedThreeObj.material.color.set('red');
+        }}})
     
     Session.set('loadedBoulder','Streambed')
     }
