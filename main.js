@@ -21,16 +21,21 @@ if (Meteor.isClient) {
     }
     
     // template definitions
-    Template.controlPanel.labels = function() {
-        return Labels.find();
-    }
-    Template.controlPanel.users = function() {
-        return Meteor.users.find();
-    }
-    Template.controlPanel.models3D = function() {
-        $('select').val(Session.get('loadedBoulder'));
-        return Boulders.find();
-    }
+    Template.controlPanel.helpers({
+        labels: function() {return Labels.find();},
+        users: function() {return Meteor.users.find();},
+        models3D: function() {
+                $('select').val(Session.get('loadedBoulder'));
+                return Boulders.find();
+            },
+        climbs: function(){
+            boulder=Boulders.findOne({name:Session.get('loadedBoulder')});
+            if (typeof boulder !== 'undefined'){
+                return Labels.find({refers_to_boulder:boulder._id});
+            }
+        }
+    })
+    
     Template.controlPanel.events({
         "change #boulderList":function(e, tmpl) {
             Session.set("loadedBoulder",e.target.value)
@@ -40,12 +45,6 @@ if (Meteor.isClient) {
             Session.set("selectedLabel",label._id)
         }
     })
-    Template.controlPanel.climbs = function(){
-        boulder=Boulders.findOne({name:Session.get('loadedBoulder')});
-        if (typeof boulder !== 'undefined'){
-            return Labels.find({refers_to_boulder:boulder._id});
-        }
-    }
     Template.labels3D.labels = function() {
         loadedBoulder=Boulders.findOne({name:Session.get('loadedBoulder')});
         if(typeof(loadedBoulder) !== 'undefined'){
@@ -53,6 +52,12 @@ if (Meteor.isClient) {
         };
     }
     Template.labels3D.helpers({
+        labels: function(){
+        boulder=Boulders.findOne({name:Session.get('loadedBoulder')});
+        if (typeof boulder !== 'undefined'){
+            return Labels.find({refers_to_boulder:boulder._id});
+        }
+    },
         username: function(){
             var user = Meteor.users.findOne(this.createdBy);
             if (user){
