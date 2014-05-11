@@ -73,9 +73,7 @@ if (Meteor.isClient) {
 //             $(event.currentTarget).children('.hidden').fadeIn();
         },
         'mouseleave .label3D': function(event) {
-            $(event.currentTarget).removeClass('selected');
-            colorAllClimbsWhite();
-            $(event.currentTarget).children('.hidden').fadeOut();
+            Session.set("selectedLabel", undefined);
         },
         'click .deleteButton': function(event) {
             Labels.remove($(event.currentTarget).parents('.label3D').attr('id'));
@@ -111,7 +109,8 @@ if (Meteor.isClient) {
     Deps.autorun(function(){
         labelId = Session.get('selectedLabel');
         if (typeof labelId === 'undefined'){
-            $('label3D,ctrlPnlClimb').removeClass('selected');
+            $('.label3D,.ctrlPnlClimb').removeClass('selected');
+            $('.label3D,.ctrlPnlClimb').children('.hidden').hide();
             colorAllClimbsWhite();
         }
         else {
