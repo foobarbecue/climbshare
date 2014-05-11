@@ -1,10 +1,8 @@
-
-
 if (Meteor.isClient) {
 
     // initial variables
-    Session.set("selectedLabel",null)
-    
+    Session.set("selectedLabel", null)
+
     // subscriptions
     Meteor.subscribe("labels");
     Meteor.subscribe("climbs");
@@ -12,164 +10,181 @@ if (Meteor.isClient) {
     Meteor.subscribe("users");
 
     // scene manipulation functions (probably should be in climbsim.js)
-    function colorAllClimbsWhite(){
-            $(threeScene.children).each(function(){
-                if (this instanceof THREE.Line){
-                        this.material.color.set('white');
-                }
-            })        
+    function colorAllClimbsWhite() {
+        $(threeScene.children).each(function () {
+            if (this instanceof THREE.Line) {
+                this.material.color.set('white');
+            }
+        })
     }
-    
+
     // template definitions
     Template.controlPanel.helpers({
-        labels: function() {return Labels.find();},
-        users: function() {return Meteor.users.find();},
-        models3D: function() {
-                $('select').val(Session.get('loadedBoulder'));
-                return Boulders.find();
-            },
-        climbs: function(){
-            boulder=Boulders.findOne({name:Session.get('loadedBoulder')});
-            if (typeof boulder !== 'undefined'){
-                return Labels.find({refers_to_boulder:boulder._id});
+        labels: function () {
+            return Labels.find();
+        },
+        users: function () {
+            return Meteor.users.find();
+        },
+        models3D: function () {
+            $('select').val(Session.get('loadedBoulder'));
+            return Boulders.find();
+        },
+        climbs: function () {
+            boulder = Boulders.findOne({
+                name: Session.get('loadedBoulder')
+            });
+            if (typeof boulder !== 'undefined') {
+                return Labels.find({
+                    refers_to_boulder: boulder._id
+                });
             }
         }
     })
-    
+
     Template.controlPanel.events({
-        "change #boulderList":function(e, tmpl) {
-            Session.set("loadedBoulder",e.target.value)
+        "change #boulderList": function (e, tmpl) {
+            Session.set("loadedBoulder", e.target.value)
         },
-        "mouseenter .ctrlPnlClimb":function(e, tmpl){
-            label=Labels.findOne(e.currentTarget.id)
-            Session.set("selectedLabel",label._id)
+        "mouseenter .ctrlPnlClimb": function (e, tmpl) {
+            label = Labels.findOne(e.currentTarget.id)
+            Session.set("selectedLabel", label._id)
         }
     })
-    Template.labels3D.labels = function() {
-        loadedBoulder=Boulders.findOne({name:Session.get('loadedBoulder')});
-        if(typeof(loadedBoulder) !== 'undefined'){
-            return Labels.find({"refers_to_boulder":loadedBoulder._id});
+    Template.labels3D.labels = function () {
+        loadedBoulder = Boulders.findOne({
+            name: Session.get('loadedBoulder')
+        });
+        if (typeof (loadedBoulder) !== 'undefined') {
+            return Labels.find({
+                "refers_to_boulder": loadedBoulder._id
+            });
         };
     }
     Template.labels3D.helpers({
-        labels: function(){
-        boulder=Boulders.findOne({name:Session.get('loadedBoulder')});
-        if (typeof boulder !== 'undefined'){
-            return Labels.find({refers_to_boulder:boulder._id});
-        }
-    },
-        username: function(){
-            var user = Meteor.users.findOne(this.createdBy);
-            if (user){
-                return user.username || user.profile.name || user.profile.username;
+        labels: function () {
+            boulder = Boulders.findOne({
+                name: Session.get('loadedBoulder')
+            });
+            if (typeof boulder !== 'undefined') {
+                return Labels.find({
+                    refers_to_boulder: boulder._id
+                });
             }
-            else{
+        },
+        username: function () {
+            var user = Meteor.users.findOne(this.createdBy);
+            if (user) {
+                return user.username || user.profile.name || user.profile.username;
+            } else {
                 return this.createdBy;
             }
         }
     });
-        
-    
+
+
     Template.labels3D.events({
-        'mouseenter .label3D': function(event) {
+        'mouseenter .label3D': function (event) {
             Session.set("selectedLabel", event.currentTarget.id);
-//             moved to Deps.autorun
-//             $(event.currentTarget).addClass('selected');
-//             $(event.currentTarget).children('.hidden').fadeIn();
+            //             moved to Deps.autorun
+            //             $(event.currentTarget).addClass('selected');
+            //             $(event.currentTarget).children('.hidden').fadeIn();
         },
-        'mouseleave .label3D': function(event) {
+        'mouseleave .label3D': function (event) {
             Session.set("selectedLabel", undefined);
         },
-        'click .deleteButton': function(event) {
+        'click .deleteButton': function (event) {
             Labels.remove($(event.currentTarget).parents('.label3D').attr('id'));
-            
+
         }
     })
 
     Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
     })
-    
-    Meteor.startup(function(){
-        climbsimInit();    function colorAllClimbsWhite(){
-            $(threeScene.children).each(function(){
-                if (this instanceof THREE.Line){
-                        this.material.color.set('white');
+
+    Meteor.startup(function () {
+        climbsimInit();
+
+        function colorAllClimbsWhite() {
+            $(threeScene.children).each(function () {
+                if (this instanceof THREE.Line) {
+                    this.material.color.set('white');
                 }
-            })        
-    }
+            })
+        }
         climbsimAnimate();
-    // Load the currently selected 3D boulder model
-    Deps.autorun(function(){
-        try{
-            boulderName = Session.get('loadedBoulder');
-            loadBoulder(boulderName);
-        }
-        catch(TypeError){
-            console.log('failed to load '+boulderName)
-        }
-    })
-    
-    // Color the currently selected label and climb
-    Deps.autorun(function(){
-        labelId = Session.get('selectedLabel');
-        if (typeof labelId === 'undefined'){
-            $('.label3D,.ctrlPnlClimb').removeClass('selected');
-            $('.label3D,.ctrlPnlClimb').children('.hidden').hide();
-            colorAllClimbsWhite();
-        }
-        else {
-            $('.label3D,.ctrlPnlClimb').children('.hidden').hide();
-            $('.label3D,.ctrlPnlClimb').removeClass('selected');
-            $('.'+labelId).addClass('selected');
-            $('.'+labelId).children('.hidden').fadeIn();
-            var label = Labels.findOne(labelId);
-            if (label && (label.refers_to_type == "climb")){
-                climbId = label.refers_to_id
-                selectedThreeObj = threeScene.getObjectByName(climbId);
+        // Load the currently selected 3D boulder model
+        Deps.autorun(function () {
+            try {
+                boulderName = Session.get('loadedBoulder');
+                loadBoulder(boulderName);
+            } catch (TypeError) {
+                console.log('failed to load ' + boulderName)
+            }
+        })
+
+        // Color the currently selected label and climb
+        Deps.autorun(function () {
+            labelId = Session.get('selectedLabel');
+            if (typeof labelId === 'undefined') {
+                $('.label3D,.ctrlPnlClimb').removeClass('selected');
+                $('.label3D,.ctrlPnlClimb').children('.hidden').hide();
                 colorAllClimbsWhite();
-                // turn the selected one red
-                selectedThreeObj.material.color.set('red');
-        }}})
-    
-    Session.set('loadedBoulder','Streambed')
-    }
-    )
-    }
+            } else {
+                $('.label3D,.ctrlPnlClimb').children('.hidden').hide();
+                $('.label3D,.ctrlPnlClimb').removeClass('selected');
+                $('.' + labelId).addClass('selected');
+                $('.' + labelId).children('.hidden').fadeIn();
+                var label = Labels.findOne(labelId);
+                if (label && (label.refers_to_type == "climb")) {
+                    climbId = label.refers_to_id
+                    selectedThreeObj = threeScene.getObjectByName(climbId);
+                    colorAllClimbsWhite();
+                    // turn the selected one red
+                    selectedThreeObj.material.color.set('red');
+                }
+            }
+        })
+
+        Session.set('loadedBoulder', 'Streambed')
+    })
+}
 
 if (Meteor.isServer) {
-    Meteor.publish("labels", function() {
-         return Labels.find();
+    Meteor.publish("labels", function () {
+        return Labels.find();
     });
-    Meteor.publish("climbs", function() {
-         return Climbs.find();
-    });  
-    Meteor.publish("boulders", function() {
-         return Boulders.find();
-    });      
-    Meteor.publish("users", function() {
-         return Meteor.users.find();
+    Meteor.publish("climbs", function () {
+        return Climbs.find();
+    });
+    Meteor.publish("boulders", function () {
+        return Boulders.find();
+    });
+    Meteor.publish("users", function () {
+        return Meteor.users.find();
     });
     Labels.allow({
-        insert: function(userId){
+        insert: function (userId) {
             // only logged in users can create new labels
             return userId != null
         },
-        remove: function(userId, label){
+        remove: function (userId, label) {
             return label.createdBy === userId
         },
-        update: function(userId, label){
+        update: function (userId, label) {
             return label.createdBy === userId
         }
     });
     Climbs.allow({});
-    
+
     Meteor.methods({
-    readData: function(){
-        for (var name in data.boulders){
-            insertBoulder(data.boulders[name]);
-            console.log('inserted boulder: ' + name);
-        }        
-    }})
+        readData: function () {
+            for (var name in data.boulders) {
+                insertBoulder(data.boulders[name]);
+                console.log('inserted boulder: ' + name);
+            }
+        }
+    })
 
 }
