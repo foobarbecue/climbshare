@@ -79,16 +79,6 @@ if (Meteor.isClient) {
             } else {
                 return this.createdBy;
             }
-        },
-        editOptions:function(){
-            return {
-                value: this.content,
-                showbuttons: false,
-                onsubmit: function(val){
-                    //TODO this is very bad
-                    Labels.upsert({content:val})
-                }
-            }
         }
     });
 
@@ -105,7 +95,11 @@ if (Meteor.isClient) {
         },
         'click .deleteButton': function (event) {
             Labels.remove($(event.currentTarget).parents('.label3D').attr('id'));
-
+        },
+        'input contenteditable': function(event) {
+            Labels.update(
+                $(event.currentTarget).parents('.label3D').attr('id'),
+                {content:event.currentTarget.textContent});
         }
     })
 
