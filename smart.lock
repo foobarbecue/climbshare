@@ -5,8 +5,7 @@
       "three": {},
       "jquery-ui": {},
       "timesync": {},
-      "user-status": {},
-      "meteor-editable": {}
+      "user-status": {}
     },
     "packages": {
       "three": {
@@ -28,11 +27,6 @@
         "git": "https://github.com/mizzao/meteor-user-status.git",
         "tag": "v0.4.0",
         "commit": "e2a1c7a4075f28b87b361387688e083a4b047a08"
-      },
-      "meteor-editable": {
-        "git": "https://github.com/davidworkman9/meteor-editable.git",
-        "tag": "v0.0.6",
-        "commit": "7f2b8a473b700b0e18ecee436e399edec9f20a98"
       }
     }
   }
