@@ -39,7 +39,7 @@ if (Meteor.isClient) {
                     refers_to_boulder: boulder._id
                 });
             }
-        }
+        },
     })
 
     Template.controlPanel.events({
@@ -79,6 +79,16 @@ if (Meteor.isClient) {
             } else {
                 return this.createdBy;
             }
+        },
+        editOptions:function(){
+            return {
+                value: this.content,
+                showbuttons: false,
+                onsubmit: function(val){
+                    //TODO this is very bad
+                    Labels.upsert({content:val})
+                }
+            }
         }
     });
 
@@ -99,6 +109,10 @@ if (Meteor.isClient) {
         }
     })
 
+    function generalizedUsername(){
+        
+    }
+    
     Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
     })
@@ -126,6 +140,7 @@ if (Meteor.isClient) {
 
         // Color the currently selected label and climb
         Deps.autorun(function () {
+            // 
             labelId = Session.get('selectedLabel');
             if (typeof labelId === 'undefined') {
                 $('.label3D,.ctrlPnlClimb').removeClass('selected');
@@ -149,6 +164,10 @@ if (Meteor.isClient) {
 
         Session.set('loadedBoulder', 'Streambed')
     })
+}
+
+function editLabel(){
+    
 }
 
 if (Meteor.isServer) {
