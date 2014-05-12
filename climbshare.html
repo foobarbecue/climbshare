@@ -1,5 +1,7 @@
 <head>
   <title>climbshare</title>
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/js/jquery-editable-poshytip.min.js"></script>  
 </head>
 
 <body>
@@ -16,7 +18,8 @@
 <template name="labels3D">
 {{#each labels}}
     <div id="{{_id}}" class="{{_id}} label3D">
-        {{content}}<span class="deleteButton hidden">[X]</span>
+    {{> m_editable editOptions }}
+        <span class="deleteButton hidden">[X]</span>
         <span class="hidden">
     <div><i>Created by</i> {{username}}</div>
     <div><i>At</i> {{createdOn}}</div>
@@ -25,8 +28,6 @@
     {{/if}}        
         </span>
     </div>
-
-
     {{/each}}
 {{#each climbs}}
 <div id="{{_id}}" class="{{label._id}} label3D">{{label.content}}</div>

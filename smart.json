@@ -3,6 +3,7 @@
     "three": {},
     "jquery-ui": {},
     "timesync": {},
-    "user-status": {}
+    "user-status": {},
+    "meteor-editable": {}
   }
 }
