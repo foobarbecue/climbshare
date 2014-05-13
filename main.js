@@ -96,11 +96,17 @@ if (Meteor.isClient) {
         'click .deleteButton': function (event) {
             Labels.remove($(event.currentTarget).parents('.label3D').attr('id'));
         },
-        'input contenteditable': function(event) {
+        'input .label3Dcontent': function(event) {
+            console.log('changed'),
             Labels.update(
                 $(event.currentTarget).parents('.label3D').attr('id'),
-                {content:event.currentTarget.textContent});
-        }
+                {$set:{content:event.currentTarget.textContent}});
+        },
+        'keydown .label3Dcontent': function(event){
+            console.log(event.which)
+            if (event.which == 13){
+                $(event.currentTarget).blur();
+        }}
     })
 
     function generalizedUsername(){
