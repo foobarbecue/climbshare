@@ -320,7 +320,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	function onMouseDown( event ) {
             //make sure this was actually a click on the three.js canvas
-             if (event.target != $(scope.domElement).children('canvas')[0]) return;
+             if (event.target == $(scope.domElement).children('canvas')[0]){
 
 		if ( scope.enabled === false ) return;
 		event.preventDefault();
@@ -351,7 +351,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 		scope.domElement.addEventListener( 'mousemove', onMouseMove, false );
 		scope.domElement.addEventListener( 'mouseup', onMouseUp, false );
 		scope.dispatchEvent( startEvent );
-
+             }
 	}
 
 	function onMouseMove( event ) {

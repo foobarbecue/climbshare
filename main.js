@@ -79,6 +79,9 @@ if (Meteor.isClient) {
             } else {
                 return this.createdBy;
             }
+        },
+        typeIcon: function (){
+            return '/img/'+this.refers_to_type+'.png'
         }
     });
 
@@ -91,7 +94,10 @@ if (Meteor.isClient) {
             //             $(event.currentTarget).children('.hidden').fadeIn();
         },
         'mouseleave .label3D': function (event) {
-            Session.set("selectedLabel", undefined);
+            console.log($(':focus'))
+            if (!($(':focus').is($('select.labelType')))){
+                Session.set("selectedLabel", undefined);
+            }
         },
         'click .deleteButton': function (event) {
             Labels.remove($(event.currentTarget).parents('.label3D').attr('id'));

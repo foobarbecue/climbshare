@@ -19,13 +19,21 @@
 {{#each labels}}
     <div id="{{_id}}" class="{{_id}} label3D">
     <span class="label3Dcontent" contenteditable="true">{{content}}</span>
-        <span class="deleteButton hidden">[X]</span>
-        <span class="hidden">
+    <img class="{{_id typeIcon}}" src="{{typeIcon}}">
+    <select class="labelType hidden">
+        <option value="beta">beta</option>
+        <option value="warning">warning</option>
+        <option value="climb">climb name</option>
+        <option value="climb">other</option>
+    </select>
+    {{#if climb}}
+        <div><i>Difficulty</i> {rating}}</div>
+    {{/if}}
+    <span class="deleteButton hidden">[X]</span>
+    <span class="hidden">
     <div><i>Created by</i> {{username}}</div>
     <div><i>At</i> {{createdOn}}</div>
-    {{#if climb}}
-        <div><i>Difficulty</i> {{rating}}</div>
-    {{/if}}        
+   
         </span>
     </div>
     {{/each}}
