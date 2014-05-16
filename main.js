@@ -110,9 +110,15 @@ if (Meteor.isClient) {
         },
         'keydown .label3Dcontent': function(event){
             console.log(event.which)
+            // Handle presses of the return key as ending input rather than 
+            // starting a new line
             if (event.which == 13){
                 $(event.currentTarget).blur();
-        }}
+            }
+        },
+        'change .labelType': function(event, tmpl){
+            Labels.update(this._id, {$set:{refers_to_type:event.currentTarget.value}})
+        }
     })
 
     function generalizedUsername(){
