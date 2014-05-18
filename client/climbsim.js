@@ -156,9 +156,10 @@ var loadBoulder = function(boulderName){
         $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
     } );
     loader.addEventListener( 'complete', function ( event ) {
-        console.log('Done loading.')
-        $('#intromessage').fadeIn();
+        console.log('Done loading.');
+        $('#intromessage,#progressText').fadeIn();
     } );
+    $("#progressBar").fadeIn();
     loader.load('data/models/' + boulder.model3D);
 }
 
