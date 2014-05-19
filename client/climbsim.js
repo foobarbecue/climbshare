@@ -171,7 +171,6 @@ var loadBoulder = function(boulderName){
             $("#progressBar,#progressText").fadeOut();
             // putting this here so it doesn't get called too early...
             Climbs.find({boulder_id:boulder._id}).map(loadClimb);
-            positionLabelIcons();
     } );
     loader.addEventListener( 'progress', function ( event ) {
         $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));

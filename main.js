@@ -84,7 +84,10 @@ if (Meteor.isClient) {
             return '/img/'+this.refers_to_type+'.png'
         }
     });
-
+    Template.labels3D.rendered = function(){
+        alert('drew labels');
+        positionLabelIcons();
+    }
 
     Template.labels3D.events({
         'mouseenter .label3D': function (event) {
