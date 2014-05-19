@@ -84,11 +84,12 @@ if (Meteor.isClient) {
             return '/img/'+this.refers_to_type+'.png'
         }
     });
-    Template.labels3D.rendered = function(){
-        alert('drew labels');
-        positionLabelIcons();
-    }
 
+    Template.labels3D.rendered = function(){
+        alert('rendered');
+        positionLabelIcons;
+    }
+    
     Template.labels3D.events({
         'mouseenter .label3D': function (event) {
             Session.set("selectedLabel", event.currentTarget.id);
@@ -125,10 +126,6 @@ if (Meteor.isClient) {
         }
     })
 
-    function generalizedUsername(){
-        
-    }
-    
     Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
     })
@@ -153,8 +150,6 @@ if (Meteor.isClient) {
                 console.log('failed to load ' + boulderName)
             }
         })
-
-        Deps.autorun(positionLabelIcons);
         
         // Color the currently selected label and climb
         Deps.autorun(function () {

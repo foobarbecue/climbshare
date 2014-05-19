@@ -175,6 +175,8 @@ var loadBoulder = function(boulderName){
     loader.addEventListener( 'progress', function ( event ) {
         $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
         $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
+        // shouldn't need this, but Template.labels3D.rendered fires early and only once. I think because of this bug: https://groups.google.com/forum/#!topic/meteor-talk/47Orrrz7kjg
+        positionLabelIcons();
     } );
     loader.addEventListener( 'complete', function ( event ) {
         console.log('Done loading.');
