@@ -53,6 +53,27 @@ function curvify(pointlist, pull, material) {
     return curvifiedProblem
 }
 
+// TODO should go in UI.js once packaging figured out
+function positionLabelIcons(){
+    // position label images on top of right edge of labels
+    Labels.find().forEach(function(lbl){
+        var lbl_el=$('.label3D.'+lbl._id);
+        // only attempt if label is already drawn
+        if (lbl_el.length > 0){
+            var lbl_type_img=lbl_el.children('img');
+            lbl_type_img.position(
+                {my:'center',
+                 at:'right top',
+                 of:lbl_el,
+                 offset:'0 8',
+                 using: function(pos) {
+                    $(this).animate(pos, 200, "linear");
+                }
+                });
+        }
+    })
+}
+
 var init = function() {
         $("#progressBar").progressbar();
         container = $('#threejs-container')
@@ -149,7 +170,8 @@ var loadBoulder = function(boulderName){
             window.threeScene.add(boulderMesh);
             $("#progressBar,#progressText").fadeOut();
             // putting this here so it doesn't get called too early...
-            Climbs.find({boulder_id:boulder._id}).map(loadClimb)
+            Climbs.find({boulder_id:boulder._id}).map(loadClimb);
+            positionLabelIcons();
     } );
     loader.addEventListener( 'progress', function ( event ) {
         $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
@@ -204,7 +226,6 @@ function animate() {
         requestAnimationFrame( animate );
         controls.update();
         Labels.find().map(positionLabel);
-        
         render();
 }
 
@@ -235,3 +256,4 @@ window.loadClimb=loadClimb;
 window.loadBoulder=loadBoulder;
 window.climbsimInit=init;
 window.climbsimAnimate=animate;
+window.positionLabelIcons=positionLabelIcons;

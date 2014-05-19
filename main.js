@@ -118,6 +118,7 @@ if (Meteor.isClient) {
         },
         'change .labelType': function(event, tmpl){
             Labels.update(this._id, {$set:{refers_to_type:event.currentTarget.value}})
+            event.target.blur();
         }
     })
 
@@ -150,6 +151,8 @@ if (Meteor.isClient) {
             }
         })
 
+        Deps.autorun(positionLabelIcons);
+        
         // Color the currently selected label and climb
         Deps.autorun(function () {
             // 
@@ -172,6 +175,7 @@ if (Meteor.isClient) {
                     selectedThreeObj.material.color.set('red');
                 }
             }
+            positionLabelIcons();
         })
 
         Session.set('loadedBoulder', 'Streambed')
