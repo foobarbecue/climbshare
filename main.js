@@ -73,20 +73,31 @@ if (Meteor.isClient) {
                 name: Session.get('loadedBoulder')
             });
             var displayFilterData = Session.get('filter');
-            // set initial values in case DOM isn't available yet
-            if (!displayFilterData){
-                displayFilterData=['climbs','warnings','other']
+            if (!!displayFilterData){
+                // massage control panel show / hide form data into an array
+                displayFilterArray = displayFilterData.map(function(obj){return obj.name});
+            }
+            else{
+                // set initial values in case DOM isn't available yet            
+                displayFilterArray=['climbs','warnings','other']
             }
             if (!!boulder) {
-                // massage control panel show / hide form data into an array
-                displayFilterData = displayFilterData.map(function(obj){return obj.name});
                 // have "other" checkbox control display of labels with no type yet
                 if ($.inArray('other', displayFilterData) > -1){
-                    displayFilterData.push(undefined); 
+                    displayFilterArray.push(undefined); 
                 }
+                displayFilterData.forEach(function(obj){
+                    if(obj.name == "createdBy"){
+                        createdBy = obj.value
+                    }
+                });
+                if (createdBy == "everyone"){
+                    createdBy = {$exists:true}
+                };
                 return Labels.find({
                     refers_to_boulder: boulder._id,
-                    refers_to_type: { '$in' : displayFilterData }
+                    refers_to_type: { '$in' : displayFilterArray },
+                    createdBy: createdBy
                 });
             }
         },

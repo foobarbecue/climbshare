@@ -80,13 +80,13 @@
         <div class='hidden'>
             <form id='filterDisplay'>
             <input type="checkbox" name="climb" checked>climbs<br />
-            <input type="checkbox" name="beta" checked>beta<br />
+            <input type="checkbox" name="beta" >beta<br />
             <input type="checkbox" name="warning" checked>warnings<br />
             <input type="checkbox" name="other" checked>other<br />
-        <select name="created_by">
+        <select name="createdBy">
             <option value="everyone">everyone</option>
             {{#each users}}
-                <option value="{{profile}}">{{profile.name}} {{profile.username}}</option>
+                <option value="{{_id}}">{{username}}</option>
             {{/each}}
         </select>
             </form>
