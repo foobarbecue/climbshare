@@ -36,7 +36,7 @@ if (Meteor.isClient) {
             });
             if (typeof boulder !== 'undefined') {
                 return Labels.find({
-                    refers_to_boulder: boulder._id
+                    refers_to_boulder: boulder._id,
                 });
             }
         },
@@ -49,6 +49,12 @@ if (Meteor.isClient) {
         "mouseenter .ctrlPnlClimb": function (e, tmpl) {
             label = Labels.findOne(e.currentTarget.id)
             Session.set("selectedLabel", label._id)
+        },
+        "change #filterDisplay": function (e){
+            var filterInputData = $(e.currentTarget).serializeArray() 
+            Session.set("filter", filterInputData);
+            Meteor.flush();
+            positionLabelIcons();            
         }
     })
     Template.labels3D.labels = function () {
@@ -66,9 +72,21 @@ if (Meteor.isClient) {
             boulder = Boulders.findOne({
                 name: Session.get('loadedBoulder')
             });
-            if (typeof boulder !== 'undefined') {
+            var displayFilterData = Session.get('filter');
+            // set initial values in case DOM isn't available yet
+            if (!displayFilterData){
+                displayFilterData=['climbs','warnings','other']
+            }
+            if (!!boulder) {
+                // massage control panel show / hide form data into an array
+                displayFilterData = displayFilterData.map(function(obj){return obj.name});
+                // have "other" checkbox control display of labels with no type yet
+                if ($.inArray('other', displayFilterData) > -1){
+                    displayFilterData.push(undefined); 
+                }
                 return Labels.find({
-                    refers_to_boulder: boulder._id
+                    refers_to_boulder: boulder._id,
+                    refers_to_type: { '$in' : displayFilterData }
                 });
             }
         },
@@ -91,9 +109,10 @@ if (Meteor.isClient) {
         }
     });
 
-    Template.labels3D.rendered = function(){
-        positionLabelIcons;
-    }
+//     TODO can't get this to work
+//     Template.labels3D.rendered = function(){
+//         Deps.afterFlush(positionLabelIcons)
+//     }
     
     Template.labels3D.events({
         'mouseenter .label3D': function (event) {

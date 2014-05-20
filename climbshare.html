@@ -19,7 +19,7 @@
 {{#each labels}}
     <div id="{{_id}}" class="{{_id}} label3D">
     <span class="label3Dcontent" contenteditable="true">{{content}}</span>
-    <img class="{{_id typeIcon}}" src="{{typeIcon}}">
+    <img class="{{_id}}" src="{{typeIcon}}">
     {{#if climb}}
         <div class="hidden"><i>Difficulty</i> {{rating}}</div>
         {{else}}
@@ -62,7 +62,7 @@
             </ul>
             </div>
         
-        <h3>Boulders / walls</h3>
+        <h3>Boulders &amp; walls</h3>
             <div class='hidden'>
             <select id='boulderList'>
             {{#each models3D}}
@@ -70,30 +70,26 @@
             {{/each}}
             </select>
             </div>
-        <h3>Routes / problems</h3>
+        <h3>Routes &amp; problems</h3>
         <div class='hidden'>
             {{#each climbs}}
                 <div id="{{_id}}" class="ctrlPnlClimb {{_id}}">{{content}}</div>
             {{/each}}
         </div>
-        <h3>Show</h3>
+        <h3>Show / hide</h3>
         <div class='hidden'>
-            <input type="checkbox" id="showOther">climbs<br />
-            <input type="checkbox" id="showBeta">beta<br />
-            <input type="checkbox" id="showWarning">warnings<br />
-            <input type="checkbox" id="showOther">other<br />
-        <select id="showUserData">
+            <form id='filterDisplay'>
+            <input type="checkbox" name="climb" checked>climbs<br />
+            <input type="checkbox" name="beta" checked>beta<br />
+            <input type="checkbox" name="warning" checked>warnings<br />
+            <input type="checkbox" name="other" checked>other<br />
+        <select name="created_by">
             <option value="everyone">everyone</option>
             {{#each users}}
                 <option value="{{profile}}">{{profile.name}} {{profile.username}}</option>
             {{/each}}
         </select>
-        </div>
-        <h3>Add</h3>
-        <div class='hidden'>
-            <button id="createBeta">beta</button>
-            <button id="createWarning">warning</button>
-            <button id="createOther">other</button>
+            </form>
         </div>
         <h3>Users</h3>
         <div class='hidden'>
