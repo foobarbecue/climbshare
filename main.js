@@ -82,12 +82,12 @@ if (Meteor.isClient) {
             else{
                 // set initial values in case DOM isn't available yet            
                 displayFilterData=[{name:'createdBy',value:'everyone'}]
-                displayFilterArray=['climbs','warnings','other'];
+                displayFilterArray=['climbs','warnings','other',null];
             }
             if (!!boulder) {
                 // have "other" checkbox control display of labels with no type yet
                 if ($.inArray('other', displayFilterData) > -1){
-                    displayFilterArray.push(undefined); 
+                    displayFilterArray.push(null); 
                 }
                 var createdBy = undefined;
                 displayFilterData.forEach(function(obj){

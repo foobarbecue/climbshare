@@ -66,9 +66,9 @@ function positionLabelIcons(){
                  at:'right top',
                  of:lbl_el,
                  offset:'0 8',
-                 using: function(pos) {
-                    $(this).animate(pos, 200, "linear");
-                }
+//                  using: function(pos) {
+//                     $(this).animate(pos, 50, "linear");
+//                 }
                 });
         }
     })
@@ -93,9 +93,8 @@ var init = function() {
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
             if (Meteor.user() != null){
-            content = window.prompt('What words of wisdom would you like to anchor to the rock?')
             Labels.insert({
-                content:content,
+                content:'type here',
                 position:{
                     x:mouse3D.position.x,
                     y:mouse3D.position.y,
@@ -105,7 +104,7 @@ var init = function() {
                 createdByName:Meteor.userId(),
                 createdOn:TimeSync.serverTime(),
                 refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
-                refers_to_type:undefined
+                refers_to_type:null
             });
             }
             else{
