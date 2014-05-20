@@ -86,7 +86,7 @@ if (Meteor.isClient) {
             }
             if (!!boulder) {
                 // have "other" checkbox control display of labels with no type yet
-                if ($.inArray('other', displayFilterData) > -1){
+                if ($.inArray('other', displayFilterArray) > -1){
                     displayFilterArray.push(null); 
                 }
                 var createdBy = undefined;
@@ -118,7 +118,12 @@ if (Meteor.isClient) {
             return this.refers_to_type == 'climb'
         },
         selected: function (value){
-            return (value == this.refers_to_type ? 'selected' : '')
+            if (this.refers_to_type == null && value == 'other'){
+                return 'selected'
+            }
+            else{
+                return (value == this.refers_to_type ? 'selected' : '')
+            }
         }
     });
 

@@ -8,7 +8,23 @@ var projector = new THREE.Projector();
 var paused = false;
 
 
-//Do everything inside the jquery onload callback
+// jquery helper for selecting text in contenteditable span
+jQuery.fn.selectText = function(){
+    var doc = document;
+    var element = this[0];
+    console.log(this, element);
+    if (doc.body.createTextRange) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(element);
+        range.select();
+    } else if (window.getSelection) {
+        var selection = window.getSelection();        
+        var range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+};
 
 /**
  * Convenience function for making Vector3s
@@ -65,7 +81,7 @@ function positionLabelIcons(){
                 {my:'center',
                  at:'right top',
                  of:lbl_el,
-                 offset:'0 8',
+                 offset:'0 10',
 //                  using: function(pos) {
 //                     $(this).animate(pos, 50, "linear");
 //                 }
@@ -93,7 +109,7 @@ var init = function() {
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
             if (Meteor.user() != null){
-            Labels.insert({
+            insertRes=Labels.insert({
                 content:'type here',
                 position:{
                     x:mouse3D.position.x,
@@ -101,11 +117,14 @@ var init = function() {
                     z:mouse3D.position.z
                 },
                 createdBy:Meteor.userId(),
+                //TODO Well that's obviously wrong. Same value in two fields.
                 createdByName:Meteor.userId(),
                 createdOn:TimeSync.serverTime(),
                 refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
                 refers_to_type:null
             });
+             $("#" + insertRes + " .label3Dcontent").focus();
+             $("#" + insertRes + " .label3Dcontent").selectText();
             }
             else{
                 alert('Sign up / log in to add data.')
