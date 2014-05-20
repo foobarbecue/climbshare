@@ -72,6 +72,8 @@ if (Meteor.isClient) {
             boulder = Boulders.findOne({
                 name: Session.get('loadedBoulder')
             });
+//             // if we don't have a boulder set, no point in showing any labels
+            if (!boulder) {return []};
             var displayFilterData = Session.get('filter');
             if (!!displayFilterData){
                 // massage control panel show / hide form data into an array
@@ -79,28 +81,28 @@ if (Meteor.isClient) {
             }
             else{
                 // set initial values in case DOM isn't available yet            
-                displayFilterArray=['climbs','warnings','other']
+                displayFilterData=[{name:'createdBy',value:'everyone'}]
+                displayFilterArray=['climbs','warnings','other'];
             }
             if (!!boulder) {
                 // have "other" checkbox control display of labels with no type yet
                 if ($.inArray('other', displayFilterData) > -1){
                     displayFilterArray.push(undefined); 
                 }
+                var createdBy = undefined;
                 displayFilterData.forEach(function(obj){
                     if(obj.name == "createdBy"){
                         createdBy = obj.value
-                    }
-                });
-                if (createdBy == "everyone"){
-                    createdBy = {$exists:true}
-                };
+                    }})
+                if (!createdBy || createdBy === "everyone"){
+                        createdBy = {$exists:true}
+                }
                 return Labels.find({
                     refers_to_boulder: boulder._id,
                     refers_to_type: { '$in' : displayFilterArray },
                     createdBy: createdBy
                 });
-            }
-        },
+        }},
         username: function () {
             var user = Meteor.users.findOne(this.createdBy);
             if (user) {
@@ -211,7 +213,8 @@ if (Meteor.isClient) {
             positionLabelIcons();
         })
 
-        Session.set('loadedBoulder', 'Streambed')
+        Session.set('loadedBoulder', 'Streambed');
+        positionLabelIcons();
     })
 }
 
