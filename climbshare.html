@@ -20,15 +20,17 @@
     <div id="{{_id}}" class="{{_id}} label3D">
     <span class="label3Dcontent" contenteditable="true">{{content}}</span>
     <img class="{{_id typeIcon}}" src="{{typeIcon}}">
-    <select class="labelType hidden">
-        <option value="beta">beta</option>
-        <option value="warning">warning</option>
-        <option value="climb">climb name</option>
-        <option value="other">other</option>
-    </select>
     {{#if climb}}
-        <div><i>Difficulty</i> {rating}}</div>
+        <div class="hidden"><i>Difficulty</i> {{rating}}</div>
+        {{else}}
+    <select class="labelType hidden">
+        <!--These multiple ifs for selecting are lame-->
+        <option value="beta" {{selected "beta"}}>beta</option>
+        <option value="warning" {{selected "warning"}}>warning</option>
+        <option value="other" {{selected "other"}}>other</option>
+    </select>
     {{/if}}
+    
     <span class="deleteButton hidden">[X]</span>
     <span class="hidden">
     <div><i>Created by</i> {{username}}</div>

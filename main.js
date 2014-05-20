@@ -82,11 +82,16 @@ if (Meteor.isClient) {
         },
         typeIcon: function (){
             return '/img/'+this.refers_to_type+'.png'
+        },
+        climb: function (){
+            return this.refers_to_type == 'climb'
+        },
+        selected: function (value){
+            return (value == this.refers_to_type ? 'selected' : '')
         }
     });
 
     Template.labels3D.rendered = function(){
-        alert('rendered');
         positionLabelIcons;
     }
     
