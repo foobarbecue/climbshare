@@ -109,7 +109,7 @@ var init = function() {
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
             if (Meteor.user() != null){
-            insertRes=Labels.insert({
+            labelID=Labels.insert({
                 content:'type here',
                 position:{
                     x:mouse3D.position.x,
@@ -123,8 +123,8 @@ var init = function() {
                 refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
                 refers_to_type:null
             });
-             $("#" + insertRes + " .label3Dcontent").focus();
-             $("#" + insertRes + " .label3Dcontent").selectText();
+             $("#" + labelID + " .label3Dcontent").focus();
+             $("#" + labelID + " .label3Dcontent").selectText();
             }
             else{
                 alert('Sign up / log in to add data.')
@@ -277,3 +277,4 @@ window.loadBoulder=loadBoulder;
 window.climbsimInit=init;
 window.climbsimAnimate=animate;
 window.positionLabelIcons=positionLabelIcons;
+window.removeAllClimbs=removeAllClimbs;

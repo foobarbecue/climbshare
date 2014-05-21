@@ -57,8 +57,7 @@ if (Meteor.isClient) {
             Meteor.flush();
             positionLabelIcons();            
         },
-        "mousedown #submitClimbshareFeedback": function(){
-            
+        "mousedown #submitClimbshareFeedback": function(){    
             if (Meteor.userId()){
                 Feedback.insert({
                     content:$('#climbshareFeedback textarea').val(),
@@ -112,6 +111,12 @@ if (Meteor.isClient) {
                 if (!createdBy || createdBy === "everyone"){
                         createdBy = {$exists:true}
                 }
+                if ($.inArray('climb', displayFilterArray) > -1){
+                    // TODO should share a function with the initial climb loading
+                    Climbs.find({boulder_id:boulder._id}).map(loadClimb);
+                } else {
+                    removeAllClimbs();
+                };
                 return Labels.find({
                     refers_to_boulder: boulder._id,
                     refers_to_type: { '$in' : displayFilterArray },
