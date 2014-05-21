@@ -37,6 +37,7 @@ if (Meteor.isClient) {
             if (typeof boulder !== 'undefined') {
                 return Labels.find({
                     refers_to_boulder: boulder._id,
+                    refers_to_type: 'climb'
                 });
             }
         },
