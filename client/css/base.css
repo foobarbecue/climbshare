@@ -25,12 +25,12 @@ body{
     position: fixed;
     z-index: 20;
     color: white;
-    padding: 10px;
+    padding: 14px;
     right: 0px;
 }
 .label3D{
     position: absolute;
-    padding: 1px 20px 1px 3px;
+    padding: 0px 10px 0px 4px;
     border-radius: 10px;
     border-top-left-radius: 0px;
     background:rgba(255,255,255,0.3);
@@ -95,6 +95,7 @@ body{
 .selected{
     background: white;
     border: thin red solid;
+    z-index: 300;
 }
 .expandArrow, .expandedArrow{
     float: right;

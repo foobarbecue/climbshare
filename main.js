@@ -124,6 +124,9 @@ if (Meteor.isClient) {
             else{
                 return (value == this.refers_to_type ? 'selected' : '')
             }
+        },
+        editable: function (){
+            return this.createdBy === Meteor.userId() ? "true" : "false";
         }
     });
 

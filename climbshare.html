@@ -16,7 +16,7 @@
 <template name="labels3D">
 {{#each labels}}
     <div id="{{_id}}" class="{{_id}} label3D">
-    <span class="label3Dcontent" contenteditable="true">{{content}}</span>
+    <span class="label3Dcontent" contenteditable={{editable}}>{{content}}</span>
     <img class="{{_id}}" src="{{typeIcon}}">
     {{#if climb}}
         <div class="hidden"><i>Difficulty</i> {{rating}}</div>
