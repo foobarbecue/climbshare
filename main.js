@@ -54,8 +54,8 @@ if (Meteor.isClient) {
         "change #filterDisplay": function (e){
             var filterInputData = $(e.currentTarget).serializeArray() 
             Session.set("filter", filterInputData);
-            Meteor.flush();
-            positionLabelIcons();            
+            Deps.flush();
+            positionLabelIcons();     
         },
         "mousedown #submitClimbshareFeedback": function(){    
             if (Meteor.userId()){
@@ -149,11 +149,6 @@ if (Meteor.isClient) {
             return this.createdBy === Meteor.userId() ? "true" : "false";
         }
     });
-
-//     TODO can't get this to work
-//     Template.labels3D.rendered = function(){
-//         Deps.afterFlush(positionLabelIcons)
-//     }
     
     Template.labels3D.events({
         'mouseenter .label3D': function (event) {
@@ -242,7 +237,6 @@ if (Meteor.isClient) {
         })
 
         Session.set('loadedBoulder', 'Streambed');
-        positionLabelIcons();
     })
 }
 
