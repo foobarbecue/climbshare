@@ -77,12 +77,12 @@ if (Meteor.isClient) {
             var displayFilterData = Session.get('filter');
             if (!!displayFilterData){
                 // massage control panel show / hide form data into an array
-                displayFilterArray = displayFilterData.map(function(obj){return obj.name});
+                var displayFilterArray = displayFilterData.map(function(obj){return obj.name});
             }
             else{
                 // set initial values in case DOM isn't available yet            
-                displayFilterData=[{name:'createdBy',value:'everyone'}]
-                displayFilterArray=['climbs','warnings','other',null];
+                var displayFilterData=[{name:'createdBy',value:'everyone'}]
+                var displayFilterArray=['climb','warning','other'];
             }
             if (!!boulder) {
                 // have "other" checkbox control display of labels with no type yet
