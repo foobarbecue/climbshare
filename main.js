@@ -55,6 +55,20 @@ if (Meteor.isClient) {
             Session.set("filter", filterInputData);
             Meteor.flush();
             positionLabelIcons();            
+        },
+        "mousedown #submitClimbshareFeedback": function(){
+            
+            if (Meteor.userId()){
+                Feedback.insert({
+                    content:$('#climbshareFeedback textarea').val(),
+                    createdBy:Meteor.userId(),
+                    createdOn:TimeSync.serverTime()
+                })
+                alert("Feedback submitted.")
+            }
+            else{
+                alert("Please log in to submit feedback.")
+            }
         }
     })
     Template.labels3D.labels = function () {
@@ -226,10 +240,6 @@ if (Meteor.isClient) {
     })
 }
 
-function editLabel(){
-    
-}
-
 if (Meteor.isServer) {
     Meteor.publish("labels", function () {
         return Labels.find();
@@ -256,6 +266,12 @@ if (Meteor.isServer) {
         }
     });
     Climbs.allow({});
+    Feedback.allow({
+        insert: function(userId){
+            // only logged in users can submit feedback
+            return userId != null            
+        }
+    });
 
     Meteor.methods({
         readData: function () {
