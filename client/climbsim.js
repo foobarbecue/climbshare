@@ -184,8 +184,9 @@ var loadBoulder = function(boulderName){
     var loader = new THREE.PLYLoader();
     loader.addEventListener( 'load', function ( event ) {
             var geometry = event.content;
+            var bufferGeom = THREE.BufferGeometryUtils.fromGeometry(geometry, {'vertexColors': THREE.VertexColors});
             var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
-            boulderMesh = new THREE.Mesh( geometry, material );
+            boulderMesh = new THREE.Mesh( bufferGeom, material );
             window.threeScene.add(boulderMesh);
             $("#progressBar,#progressText").fadeOut();
             // putting this here so it doesn't get called too early...
