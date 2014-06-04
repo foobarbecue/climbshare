@@ -236,7 +236,7 @@ if (Meteor.isClient) {
             positionLabelIcons();
         })
 
-        Session.set('loadedBoulder', 'Streambed');
+        Session.set('loadedBoulder', 'Major wall');
     })
 }
 

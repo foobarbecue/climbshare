@@ -179,31 +179,40 @@ var loadBoulder = function(boulderName){
     window.threeScene.remove(boulderMesh)
     // clear all climbs
     removeAllClimbs();
+    // load CTM model
+    var loader = new THREE.CTMLoader();
+    loader.load('data/models/' + boulder.model3D, 
+                function(geometry){
+                    var boulderMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
+                    var boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
+                    threeScene.add(boulderMesh);
+                    Climbs.find({boulder_id:boulder._id}).map(loadClimb);
+                    })
+    
+    
+    
+    // TODO restore progress bar. It got clobbered on switch to CTM.
     
 // loading boulder
-    var loader = new THREE.PLYLoader();
-    loader.addEventListener( 'load', function ( event ) {
-            var geometry = event.content;
-            var bufferGeom = THREE.BufferGeometryUtils.fromGeometry(geometry, {'vertexColors': THREE.VertexColors});
-            var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
-            boulderMesh = new THREE.Mesh( bufferGeom, material );
-            window.threeScene.add(boulderMesh);
-            $("#progressBar,#progressText").fadeOut();
-            // putting this here so it doesn't get called too early...
-            Climbs.find({boulder_id:boulder._id}).map(loadClimb);
-    } );
-    loader.addEventListener( 'progress', function ( event ) {
-        $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
-        $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
-        // shouldn't need this, but Template.labels3D.rendered fires early and only once. I think because of this bug: https://groups.google.com/forum/#!topic/meteor-talk/47Orrrz7kjg
-        positionLabelIcons();
-    } );
-    loader.addEventListener( 'complete', function ( event ) {
-        console.log('Done loading.');
-        $('#intromessage,#progressText').fadeIn();
-    } );
-    $("#progressBar").fadeIn();
-    loader.load('data/models/' + boulder.model3D);
+//             var bufferGeom = THREE.BufferGeometryUtils.fromGeometry(geometry, {'vertexColors': THREE.VertexColors});
+//             var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
+//             boulderMesh = new THREE.Mesh( geometry, material );
+//             window.threeScene.add(boulderMesh);
+//             $("#progressBar,#progressText").fadeOut();
+
+    //             // putting this here so it doesn't get called too early...
+
+//     loader.addEventListener( 'progress', function ( event ) {
+//         $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
+//         $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
+//         // shouldn't need this, but Template.labels3D.rendered fires early and only once. I think because of this bug: https://groups.google.com/forum/#!topic/meteor-talk/47Orrrz7kjg
+//         positionLabelIcons();
+//     } );
+//     loader.addEventListener( 'complete', function ( event ) {
+//         console.log('Done loading.');
+//         $('#intromessage,#progressText').fadeIn();
+//     } );
+//     $("#progressBar").fadeIn();
 }
 
 var loadClimb = function(climb){
