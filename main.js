@@ -167,10 +167,13 @@ if (Meteor.isClient) {
             Labels.remove($(event.currentTarget).parents('.label3D').attr('id'));
         },
         'input .label3Dcontent': function(event) {
-            console.log('changed'),
-            Labels.update(
+            event.preventDefault();
+            console.log('changed');
+            if (settings.showTyping){
+                Labels.update(
                 $(event.currentTarget).parents('.label3D').attr('id'),
                 {$set:{content:event.currentTarget.textContent}});
+            }
         },
         'keydown .label3Dcontent': function(event){
             console.log(event.which)
@@ -178,6 +181,9 @@ if (Meteor.isClient) {
             // starting a new line
             if (event.which == 13){
                 $(event.currentTarget).blur();
+            Labels.update(
+                $(event.currentTarget).parents('.label3D').attr('id'),
+                {$set:{content:event.currentTarget.textContent}});                
             }
         },
         'change .labelType': function(event, tmpl){
