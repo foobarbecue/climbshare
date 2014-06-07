@@ -271,12 +271,22 @@ if (Meteor.isServer) {
             return label.createdBy === userId
         }
     });
-    Climbs.allow({});
+    Climbs.allow({
+        insert: function(userId){
+            return userId != null            
+        },
+        remove: function (userId, climb) {
+            return climb.createdBy === userId
+        },
+        update: function (userId, climb) {
+            return climb.createdBy === userId
+        }                       
+    });
     Feedback.allow({
         insert: function(userId){
             // only logged in users can submit feedback
             return userId != null            
-        }
+        }       
     });
 
     Meteor.methods({
