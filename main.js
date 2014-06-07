@@ -242,7 +242,7 @@ if (Meteor.isClient) {
             positionLabelIcons();
         })
 
-        Session.set('loadedBoulder', 'Major wall');
+        Session.set('loadedBoulder', 'Streambed');
     })
 }
 

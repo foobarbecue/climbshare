@@ -30,7 +30,7 @@ body{
 }
 .label3D{
     position: absolute;
-    padding: 0px 10px 0px 4px;
+    padding: 0px 12px 0px 4px;
     border-radius: 10px;
     border-top-left-radius: 0px;
     background:rgba(255,255,255,0.3);

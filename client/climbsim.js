@@ -181,11 +181,14 @@ var loadBoulder = function(boulderName){
     removeAllClimbs();
     // load CTM model
     var loader = new THREE.CTMLoader();
+    
     loader.load('data/models/' + boulder.model3D, 
                 function(geometry){
                     var boulderMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
-                    var boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
+                    boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
+                    boulderMesh.name = boulderName;
                     threeScene.add(boulderMesh);
+                    $("#progressBar,#progressText").fadeOut();                    
                     Climbs.find({boulder_id:boulder._id}).map(loadClimb);
                     })
     
