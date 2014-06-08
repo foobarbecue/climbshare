@@ -2,11 +2,10 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var container;
 
-var camera, cameraTarget, renderer, boulderMesh, mouse2D, mouse3D, raycaster, intersects, projector, oscillator, climbData, loadClimb, climbsimInit, climbsimAnimate;
+var camera, cameraTarget, renderer, boulderMesh, mouse2D, raycaster, intersects, projector, oscillator, climbData, loadClimb, climbsimInit, climbsimAnimate;
 var clock = new THREE.Clock();
 var projector = new THREE.Projector();
 var paused = false;
-
 
 // jquery helper for selecting text in contenteditable span
 jQuery.fn.selectText = function(){
@@ -255,7 +254,7 @@ function onWindowResize() {
         renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function animate() {
+animate = function() {
         requestAnimationFrame( animate );
         controls.update();
         Labels.find().map(positionLabel);

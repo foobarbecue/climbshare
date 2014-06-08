@@ -5,7 +5,7 @@ function addNewClimb(){
         boulder_id: boulder._id,
         createdBy:Meteor.userId(),
     });
-    if !!newClimb{
+    if (!!newClimb){
         Session.set('addClimbVertices')
         return newClimb
     }
