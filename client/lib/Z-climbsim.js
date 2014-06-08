@@ -1,4 +1,7 @@
-if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+// if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+// This object contains the scene and all manipulators of it
+Climbsim = {};
 
 var container;
 
@@ -7,89 +10,7 @@ var clock = new THREE.Clock();
 var projector = new THREE.Projector();
 var paused = false;
 
-// jquery helper for selecting text in contenteditable span
-jQuery.fn.selectText = function(){
-    var doc = document;
-    var element = this[0];
-    console.log(this, element);
-    if (doc.body.createTextRange) {
-        var range = document.body.createTextRange();
-        range.moveToElementText(element);
-        range.select();
-    } else if (window.getSelection) {
-        var selection = window.getSelection();        
-        var range = document.createRange();
-        range.selectNodeContents(element);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-};
-
-/**
- * Convenience function for making Vector3s
- */
-function v(x, y, z) {
-    return new THREE.Vector3(x, y, z);
-}
-
-/**
- * Given @start and @end points, create a curve that is "pulled" at the midpoint towards @pull.
- * @param {Vector3} start
- * @param {Vector3} end
- * @param {Vector3} pull
- */
-function midPullPoint(start, end, pull) {
-    // have to work on a clone because lerp modifes in place
-    midPullPointSln = start.clone()
-    midPullPointSln.lerp(end, 0.5);
-    midPullPointSln.add(pull);
-    return midPullPointSln
-}
-
-/**
- * Given a list of vectors representing a boulder problem, produce splines that curve away
- * from the rock so as to stay visible.
- * @param {Array} pointlist
- * @param {Vector3} pull
- * @param {Material} material
- */
-function curvify(pointlist, pull, material) {
-    var pull = pull || v(0,-1,0)
-    var material = material || new THREE.LineBasicMaterial();
-    var cp = new THREE.CurvePath();
-    for ( var i=0 ; i < pointlist.length-1 ; i++){
-        start = pointlist[i]
-        end = pointlist[i+1]
-        midPointPulled=midPullPoint(start, end, pull)
-        curveSegment=new THREE.QuadraticBezierCurve3(start, midPointPulled, end); 
-        cp.add(curveSegment);
-    }
-    curvifiedProblem = new THREE.Line(cp.createPointsGeometry(200) , material)
-    return curvifiedProblem
-}
-
-// TODO should go in UI.js once packaging figured out
-function positionLabelIcons(){
-    // position label images on top of right edge of labels
-    Labels.find().forEach(function(lbl){
-        var lbl_el=$('.label3D.'+lbl._id);
-        // only attempt if label is already drawn
-        if (lbl_el.length > 0){
-            var lbl_type_img=lbl_el.children('img');
-            lbl_type_img.position(
-                {my:'center',
-                 at:'right top',
-                 of:lbl_el,
-                 offset:'0 10',
-//                  using: function(pos) {
-//                     $(this).animate(pos, 50, "linear");
-//                 }
-                });
-        }
-    })
-}
-
-var init = function() {
+Climbsim.init = function() {
         $("#progressBar").progressbar();
         container = $('#threejs-container')
         window.threeScene = new THREE.Scene();
@@ -161,7 +82,7 @@ var init = function() {
         
 }
 
-function removeAllClimbs(){
+Climbsim.removeAllClimbs = function(){
     $(threeScene.children).each(function(){
         if (this instanceof THREE.Line && !(this instanceof THREE.GridHelper)){
             threeScene.remove(this);
@@ -169,7 +90,15 @@ function removeAllClimbs(){
     });
 }
 
-var loadBoulder = function(boulderName){
+Climbsim.loadClimb = function(climb){
+    vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
+    climbCurvified = curvify(vertices)
+    climbCurvified.name=climb._id
+    window.threeScene.add(climbCurvified);
+    return climbCurvified
+}
+
+Climbsim.loadBoulder = function(boulderName){
     if (typeof(boulderName) === "undefined"){
         boulderName = Session.get('loadedBoulder')
     }
@@ -177,10 +106,9 @@ var loadBoulder = function(boulderName){
     // clear previous 3d model
     window.threeScene.remove(boulderMesh)
     // clear all climbs
-    removeAllClimbs();
+    this.removeAllClimbs();
     // load CTM model
     var loader = new THREE.CTMLoader();
-    
     loader.load('data/models/' + boulder.model3D, 
                 function(geometry){
                     var boulderMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
@@ -188,42 +116,10 @@ var loadBoulder = function(boulderName){
                     boulderMesh.name = boulderName;
                     threeScene.add(boulderMesh);
                     $("#progressBar,#progressText").fadeOut();                    
-                    Climbs.find({boulder_id:boulder._id}).map(loadClimb);
+                    Climbs.find({boulder_id:boulder._id}).map(Climbsim.loadClimb);
                     })
-    
-    
-    
-    // TODO restore progress bar. It got clobbered on switch to CTM.
-    
-// loading boulder
-//             var bufferGeom = THREE.BufferGeometryUtils.fromGeometry(geometry, {'vertexColors': THREE.VertexColors});
-//             var material = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
-//             boulderMesh = new THREE.Mesh( geometry, material );
-//             window.threeScene.add(boulderMesh);
-//             $("#progressBar,#progressText").fadeOut();
-
-    //             // putting this here so it doesn't get called too early...
-
-//     loader.addEventListener( 'progress', function ( event ) {
-//         $("#progressBar").progressbar("value",( 100 * event.loaded / event.total ));
-//         $("#progressText").text( Math.floor(100 * event.loaded / event.total) + '% loaded' );
-//         // shouldn't need this, but Template.labels3D.rendered fires early and only once. I think because of this bug: https://groups.google.com/forum/#!topic/meteor-talk/47Orrrz7kjg
-//         positionLabelIcons();
-//     } );
-//     loader.addEventListener( 'complete', function ( event ) {
-//         console.log('Done loading.');
-//         $('#intromessage,#progressText').fadeIn();
-//     } );
-//     $("#progressBar").fadeIn();
 }
 
-var loadClimb = function(climb){
-    vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
-    climbCurvified = curvify(vertices)
-    climbCurvified.name=climb._id
-    window.threeScene.add(climbCurvified);
-    return climbCurvified
-}
 
 function onmousemove( e ){
         // mouse movement without any buttons pressed should move the 3d mouse
@@ -254,8 +150,8 @@ function onWindowResize() {
         renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-animate = function() {
-        requestAnimationFrame( animate );
+Climbsim.animate = function() {
+        requestAnimationFrame( Climbsim.animate );
         controls.update();
         Labels.find().map(positionLabel);
         render();
@@ -280,13 +176,3 @@ function positionLabel(label){
     labelElement.style.top= - (p2D.y - 1)/2 * window.innerHeight + 'px';
     }
 }
-
-//hack because I can't figure out how to do globals in meteor
-//TODO fix this by using smart packages
-window.camera=camera;
-window.loadClimb=loadClimb;
-window.loadBoulder=loadBoulder;
-window.climbsimInit=init;
-window.climbsimAnimate=animate;
-window.positionLabelIcons=positionLabelIcons;
-window.removeAllClimbs=removeAllClimbs;

@@ -1,0 +1,108 @@
+<head>
+  <title>climbshare</title>   
+</head>
+
+<body>
+  {{> loginButtons align="right"}}
+    <div id="threejs-container"></div>
+    <div id="progressBar"></div>
+    <div id="progressText"></div>
+  {{> labels3D}}
+  <div class='flexcontainer'>
+  {{> controlPanel}}
+  </div>
+</body>
+
+<template name="labels3D">
+{{#each labels}}
+    <div id="{{_id}}" class="{{_id}} label3D">
+    <span class="label3Dcontent" contenteditable={{editable}}>{{content}}</span>
+    <img class="{{_id}}" src="{{typeIcon}}">
+    {{#if climb}}
+        <div class="hidden"><i>Difficulty</i> {{rating}}</div>
+        {{else}}
+    <select class="labelType hidden">
+        <!--These multiple ifs for selecting are lame-->
+        <option value="beta" {{selected "beta"}}>beta</option>
+        <option value="warning" {{selected "warning"}}>warning</option>
+        <option value="other" {{selected "other"}}>other</option>
+    </select>
+    {{/if}}
+    
+    <span class="deleteButton hidden">[X]</span>
+    <span class="hidden">
+    <div><i>Created by</i> {{username}}</div>
+    <div><i>At</i> {{createdOn}}</div>
+   
+        </span>
+    </div>
+    {{/each}}
+{{#each climbs}}
+<div id="{{_id}}" class="{{label._id}} label3D">{{label.content}}</div>
+{{/each}}
+</template>
+
+<template name="label3Ddetails">
+<div class="label3Ddetails">
+    <h2>{{label.content}}</h2>
+</div>
+</template>
+
+<template name="controlPanel">
+    <div id="controlPanel">
+        <h3>Instructions</h3>
+            <div class='hidden'>
+            <ul>
+                <li>left-click and drag to orbit</li>
+                <li>right-click and drag to pan</li>
+                <li>scrollwheel to move forwards and back</li>
+                <li>double click on wall to add items</li>
+            </ul>
+            </div>
+        
+        <h3>Boulders &amp; walls</h3>
+            <div class='hidden'>
+            <select id='boulderList'>
+            {{#each models3D}}
+            <option value="{{name}}">{{name}}</option>
+            {{/each}}
+            </select>
+            </div>
+        <h3>Routes &amp; problems</h3>
+        <div class='hidden'>
+            {{#each climbs}}
+                <div id="{{_id}}" class="ctrlPnlClimb {{_id}}">{{content}}</div>
+            {{/each}}
+        </div>
+        <h3>Show / hide</h3>
+        <div class='hidden'>
+            <form id='filterDisplay'>
+            <input type="checkbox" name="climb" checked>climbs<br />
+            <input type="checkbox" name="beta" >beta<br />
+            <input type="checkbox" name="warning" checked>warnings<br />
+            <input type="checkbox" name="other" checked>other<br />
+        <select name="createdBy">
+            <option value="everyone" selected="selected">everyone</option>
+            {{#each users}}
+                <option value="{{_id}}">{{username}}</option>
+            {{/each}}
+        </select>
+            </form>
+        </div>
+        <h3>Users</h3>
+        <div class='hidden'>
+            {{#each users}}
+                {{profile.name}} {{profile.username}}
+                {{# if status.online}}(online now){{/if}}
+            {{/each}}
+        </div>
+        <h3>About</h3>
+        <div class='hidden'>Climbshare is an open project enabling collaborative documentation of climbs in 3D. Please help by contributing <a href="https://github.com/foobarbecue/climbshare" target="_new">code</a> or <a href="https://www.gittip.com/foobarbecue/">a tip</a>. You can also <a href="https://github.com/foobarbecue/climbshare/issues">report bugs and suggest improvements</a>, or leave miscelleneous feedback in the box below.
+        <div id="climbshareFeedback">
+        <textarea name="feedback">type feedback here</textarea>
+        <button id="submitClimbshareFeedback">submit</button>
+        </div>
+        </div>
+        
+    </div>
+</template>

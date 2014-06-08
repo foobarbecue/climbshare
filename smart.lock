@@ -2,17 +2,12 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "three": {},
       "jquery-ui": {},
       "timesync": {},
-      "user-status": {}
+      "user-status": {},
+      "ogv-threejs": {}
     },
     "packages": {
-      "three": {
-        "git": "https://github.com/logankoester/meteor-three.git",
-        "tag": "v0.57.0",
-        "commit": "9498f8c1a11537c5a4b2d483395eba8c93c79329"
-      },
       "jquery-ui": {
         "git": "https://github.com/TimHeckel/meteor-jquery-ui.git",
         "tag": "v1.9.2",
@@ -25,8 +20,13 @@
       },
       "user-status": {
         "git": "https://github.com/mizzao/meteor-user-status.git",
-        "tag": "v0.4.0",
-        "commit": "e2a1c7a4075f28b87b361387688e083a4b047a08"
+        "tag": "v0.4.1",
+        "commit": "ccca026086e3aa6e44df066c9d5fe4bd412219fc"
+      },
+      "ogv-threejs": {
+        "git": "https://github.com/inderpreetsingh/meteor-threejs-ogv",
+        "tag": "v1.0.0",
+        "commit": "076295aee895e03c06a931eb56c8493924e10333"
       }
     }
   }
