@@ -5,7 +5,7 @@ Climbsim = {};
 
 var container;
 
-var camera, cameraTarget, renderer, boulderMesh, mouse2D, raycaster, intersects, projector, oscillator, climbData, loadClimb, climbsimInit, climbsimAnimate;
+var camera, cameraTarget, renderer, boulderMesh, mouse2D, raycaster, intersects, projector, oscillator, climbData, climbsimInit, climbsimAnimate;
 var clock = new THREE.Clock();
 var projector = new THREE.Projector();
 var paused = false;
@@ -28,26 +28,39 @@ Climbsim.init = function() {
         window.threeScene.add(mouse3D);
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
-            if (Meteor.user() != null){
-            labelID=Labels.insert({
-                content:'type here',
-                position:{
-                    x:mouse3D.position.x,
-                    y:mouse3D.position.y,
-                    z:mouse3D.position.z
-                },
-                createdBy:Meteor.userId(),
-                //TODO Well that's obviously wrong. Same value in two fields.
-                createdByName:Meteor.userId(),
-                createdOn:TimeSync.serverTime(),
-                refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
-                refers_to_type:null
-            });
-             $("#" + labelID + " .label3Dcontent").focus();
-             $("#" + labelID + " .label3Dcontent").selectText();
-            }
-            else{
-                alert('Sign up / log in to add data.')
+            switch (Session.get('mouseTool')){
+                case 'addNewClimb':
+                    Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
+                    Climbsim.addLabelForClimb(Climbsim.latestClimb);
+                    Session.set('mouseTool','addVertexToClimb');
+                    break;
+                case 'addVertexToClimb':
+                    Climbsim.addVertexToClimb(Climbsim.latestClimb);
+                    Climbsim.loadClimb(Climbsim.latestClimb);
+                    break;
+                case 'addLabel':
+                    if (Meteor.user() != null){
+                    labelID=Labels.insert({
+                        content:'type here',
+                        position:{
+                            x:mouse3D.position.x,
+                            y:mouse3D.position.y,
+                            z:mouse3D.position.z
+                        },
+                        createdBy:Meteor.userId(),
+                        //TODO Well that's obviously wrong. Same value in two fields.
+                        createdByName:Meteor.userId(),
+                        createdOn:TimeSync.serverTime(),
+                        refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
+                        refers_to_type:null
+                    });
+                    $("#" + labelID + " .label3Dcontent").focus();
+                    $("#" + labelID + " .label3Dcontent").selectText();
+                    }
+                    else{
+                        alert('Sign up / log in to add data.')
+                    }
+                    break;
             }
         })
         
@@ -91,11 +104,17 @@ Climbsim.removeAllClimbs = function(){
 }
 
 Climbsim.loadClimb = function(climb){
-    vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
-    climbCurvified = curvify(vertices)
-    climbCurvified.name=climb._id
-    window.threeScene.add(climbCurvified);
-    return climbCurvified
+    if (climb.vertices.length > 1){
+        vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
+        climbCurvified = curvify(vertices)
+        climbCurvified.name=climb._id
+        window.threeScene.add(climbCurvified);
+        return climbCurvified
+    }
+    else{
+        // climb does not have enough vertices to draw
+        return null
+    }
 }
 
 Climbsim.loadBoulder = function(boulderName){
@@ -120,6 +139,51 @@ Climbsim.loadBoulder = function(boulderName){
                     })
 }
 
+Climbsim.addNewClimb = function (){
+    boulder = Boulders.findOne({name:Session.get('loadedBoulder')});
+    newClimb = Climbs.insert({
+        climbName: 'new climb',
+        boulder_id: boulder._id,
+        createdBy:Meteor.userId(),
+        vertices:[[
+            mouse3D.position.x,
+            mouse3D.position.y,
+            mouse3D.position.z
+        ]]
+    });
+    if (!!newClimb){
+        Session.set('addClimbVertices')
+        return newClimb
+    }
+}
+
+Climbsim.addLabelForClimb = function(climb){
+    climb = climb || Climbsim.latestClimb
+    Labels.insert(
+        {content:climb.climbName,
+        position:{
+            x:climb.vertices[0][0],
+            y:climb.vertices[0][1],
+            z:climb.vertices[0][2]
+        },
+        refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
+        refers_to_id:climb.id,
+        refers_to_type:'climb',
+        createdBy:'automatic',
+        createdOn:new Date()}
+    )
+}
+
+Climbsim.addVertexToClimb = function(climb){
+    // if climb not passed in as argument, work on the one that's selected.
+    // TODO should factor this out or otherwise simplify.
+    climb = climb || Climbs.findOne(Labels.findOne(Session.get('selectedLabel')).refers_to_id)
+    climb.vertices.push([
+        mouse3D.position.x,
+        mouse3D.position.y,
+        mouse3D.position.z        
+    ])
+}
 
 function onmousemove( e ){
         // mouse movement without any buttons pressed should move the 3d mouse
