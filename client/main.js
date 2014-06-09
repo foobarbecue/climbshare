@@ -190,6 +190,17 @@ Template.labels3D.events({
     }
 })
 
+Template.toolbox.events({
+    'click #addNewClimb': function(){
+        if (Session.get('mouseTool') === 'addVertexToClimb'){
+            Session.set('mouseTool','addLabel');
+        }
+        else{
+            Session.set('mouseTool','addNewClimb');
+        }
+    }
+})
+
 Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
     })

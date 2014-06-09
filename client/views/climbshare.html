@@ -11,6 +11,7 @@
   <div class='flexcontainer'>
   {{> controlPanel}}
   </div>
+  {{> toolbox}}
 </body>
 
 <template name="labels3D">
@@ -104,5 +105,13 @@
         </div>
         </div>
         
+    </div>
+</template>
+
+<template name="toolbox">
+    <div id="toolbox">
+    <!--TODO display which tool is active-->
+        <img id="addNewClimb" src="/img/climb.png">
+        Click to add a new climb, click again to finish.
     </div>
 </template>

@@ -53,7 +53,7 @@ body{
     flex-direction: column;
     z-index:30;
 }
-#controlPanel, .label3Ddetails{
+#controlPanel, .label3Ddetails, #toolbox{
     margin:10px;
     padding: 4px;
     /*this is to make the lines under h3 go all the way to edge*/
@@ -105,4 +105,9 @@ body{
 .deleteButton{
     color: red;
     float: right;
+}
+#toolbox{
+    position: absolute;
+    bottom:10px;
+    left:10px;
 }
