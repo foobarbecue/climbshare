@@ -24,8 +24,6 @@ body{
 #login-buttons{
     position: fixed;
     z-index: 20;
-    color: white;
-    padding: 14px;
     right: 0px;
 }
 .label3D{
@@ -53,13 +51,11 @@ body{
     flex-direction: column;
     z-index:30;
 }
-#controlPanel, .label3Ddetails, #toolbox{
+#controlPanel, .label3Ddetails, #toolbox, #login-buttons{
     margin:10px;
     padding: 4px;
     /*this is to make the lines under h3 go all the way to edge*/
-    padding-right:0px;
     border-radius: 10px;    
-    width:200px;
     background:rgba(255,255,255,0.8); 
 }
 .label3Ddetails{
@@ -73,6 +69,10 @@ body{
     background: none;
 }
 
+#controlPanel {
+    width:200px;
+    padding-right:0px;
+}
 #controlPanel > :not(h3){
     margin-right:4px;
 }
@@ -110,4 +110,14 @@ body{
     position: absolute;
     bottom:10px;
     left:10px;
+}
+.mouseTool > input[type=radio]{
+  display:none;
+}
+input[type=radio] + img{
+  cursor:pointer;
+  border:2px solid transparent;
+}
+input[type=radio]:checked + img{
+  border:2px solid #f00;
 }

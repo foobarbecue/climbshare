@@ -28,43 +28,8 @@ Climbsim.init = function() {
         window.threeScene.add(mouse3D);
         container.on('mousemove',onmousemove)
         container.on('dblclick', function(evt){
-            switch (Session.get('mouseTool')){
-                case 'addNewClimb':
-                    Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
-                    Climbsim.addLabelForClimb(Climbsim.latestClimb);
-                    Session.set('mouseTool','addVertexToClimb');
-                    break;
-                case 'addVertexToClimb':
-                    Climbsim.addVertexToClimb(Climbsim.latestClimb);
-                    Climbsim.loadClimb(Climbsim.latestClimb);
-                    break;
-                case 'addLabel':
-                    if (Meteor.user() != null){
-                    labelID=Labels.insert({
-                        content:'type here',
-                        position:{
-                            x:mouse3D.position.x,
-                            y:mouse3D.position.y,
-                            z:mouse3D.position.z
-                        },
-                        createdBy:Meteor.userId(),
-                        //TODO Well that's obviously wrong. Same value in two fields.
-                        createdByName:Meteor.userId(),
-                        createdOn:TimeSync.serverTime(),
-                        refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
-                        refers_to_type:null
-                    });
-                    $("#" + labelID + " .label3Dcontent").focus();
-                    $("#" + labelID + " .label3Dcontent").selectText();
-                    }
-                    else{
-                        alert('Sign up / log in to add data.')
-                    }
-                    break;
-            }
+            Session.get('mouseTool').run();
         })
-        
-
         
         // lights
         window.threeScene.add( new THREE.AmbientLight( 0x777777 ) );

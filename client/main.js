@@ -190,16 +190,56 @@ Template.labels3D.events({
     }
 })
 
-Template.toolbox.events({
-    'click #addNewClimb': function(){
-        if (Session.get('mouseTool') === 'addVertexToClimb'){
-            Session.set('mouseTool','addLabel');
-        }
-        else{
-            Session.set('mouseTool','addNewClimb');
-        }
+tools = []
+function Tool(name, icon, effect) {
+    this.name = name;
+    this.icon = icon;
+    this.run = effect;
+    tools.push(this);
+}
+
+new Tool('addNewClimb','/img/climb.png', function(){
+    Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
+    Climbsim.addLabelForClimb(Climbsim.latestClimb);
+    Session.set('mouseTool','addVertexToClimb');
+    })
+
+new Tool('addVertexToClimb','/img/climb.png', function(){
+    Climbsim.addVertexToClimb(Climbsim.latestClimb);
+    Climbsim.loadClimb(Climbsim.latestClimb);
+    })
+
+new Tool('addLabel','/img/other.png', function(){
+    if (Meteor.user() != null){
+    labelID=Labels.insert({
+        content:'type here',
+        position:{
+            x:mouse3D.position.x,
+            y:mouse3D.position.y,
+            z:mouse3D.position.z
+        },
+        createdBy:Meteor.userId(),
+        //TODO Well that's obviously wrong. Same value in two fields.
+        createdByName:Meteor.userId(),
+        createdOn:TimeSync.serverTime(),
+        refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
+        refers_to_type:null
+    });
+    $("#" + labelID + " .label3Dcontent").focus();
+    $("#" + labelID + " .label3Dcontent").selectText();
     }
-})
+    else{
+        alert('Sign up / log in to add data.')
+    }
+    })
+
+Template.toolbox.tools = tools;
+
+Template.toolbox.events({
+    'change input[name=mouseTool]': function(){
+        Session.set('mouseTool',this);
+    }
+});
 
 Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'

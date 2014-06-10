@@ -110,8 +110,12 @@
 
 <template name="toolbox">
     <div id="toolbox">
-    <!--TODO display which tool is active-->
-        <img id="addNewClimb" src="/img/climb.png">
-        Click to add a new climb, click again to finish.
+    +
+    {{#each tools}}
+        <label class="mouseTool" for="{{name}}">
+            <input type="radio" id="{{name}}" name="mouseTool"/>
+            <img src="{{icon}}">
+        </label>        
+    {{/each}}
     </div>
 </template>
