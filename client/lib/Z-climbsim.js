@@ -27,8 +27,9 @@ Climbsim.init = function() {
                 new THREE.MeshBasicMaterial({color:'red',transparent:true}));
         window.threeScene.add(mouse3D);
         container.on('mousemove',onmousemove)
+        // TODO maybe this in template event handlers
         container.on('dblclick', function(evt){
-            Session.get('mouseTool').run();
+            tools.current.run()
         })
         
         // lights

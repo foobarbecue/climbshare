@@ -191,25 +191,30 @@ Template.labels3D.events({
 })
 
 tools = []
-function Tool(name, icon, effect) {
+function Tool(name, icon, effect, tooltip) {
     this.name = name;
     this.icon = icon;
     this.run = effect;
-    tools.push(this);
+    this.tooltip = tooltip;
 }
 
-new Tool('addNewClimb','/img/climb.png', function(){
+tools = {
+addNewClimb : new Tool('addNewClimb','/img/climb.png', function(){
     Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
     Climbsim.addLabelForClimb(Climbsim.latestClimb);
-    Session.set('mouseTool','addVertexToClimb');
-    })
+    tools.current=Session.set('mouseTool','addVertexToClimb');
+    },
+    'Double click to add a new climb.'
+        ),
 
-new Tool('addVertexToClimb','/img/climb.png', function(){
+addVertexToClimb : new Tool('addVertexToClimb','/img/climb.png', function(){
     Climbsim.addVertexToClimb(Climbsim.latestClimb);
     Climbsim.loadClimb(Climbsim.latestClimb);
-    })
+    },
+    'Double click to add a new vertex to' + Session.get('selecteLabel')
+),
 
-new Tool('addLabel','/img/other.png', function(){
+addLabel : new Tool('addLabel','/img/other.png', function(){
     if (Meteor.user() != null){
     labelID=Labels.insert({
         content:'type here',
@@ -230,14 +235,25 @@ new Tool('addLabel','/img/other.png', function(){
     }
     else{
         alert('Sign up / log in to add data.')
-    }
-    })
-
+    }},
+    'Double click to add a label to ' + Session.get('loadedBoulder')
+)
+}
+Template.toolbox.helpers({
+    toolboxTip: function(){
+        if (!!tools.current){
+            return tools.current.tooltip
+        }
+        else{
+            return 'Choose a tool, then double-click on the rock.'
+        }
+    }}
+);
 Template.toolbox.tools = tools;
 
 Template.toolbox.events({
     'change input[name=mouseTool]': function(){
-        Session.set('mouseTool',this);
+        tools.current=this
     }
 });
 
