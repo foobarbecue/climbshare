@@ -111,12 +111,13 @@
 <template name="toolbox">
     <div id="toolbox">
     <h3 id="toolboxTip">{{toolboxTip}}</h3>
-    {{#each tools}}
-        <label class="mouseTool" for="{{name}}">
-            <input type="radio" id="{{name}}" name="mouseTool"/>
-            +
-            <img src="{{icon}}">
+    {{#each key_value tools}}
+        {{#if value.showToUser}}
+        <label class="mouseTool" for="{{key}}">
+            <input type="radio" id="{{key}}" name="mouseTool"/>
+            <img src="{{value.icon}}">
         </label>        
+        {{/if}}
     {{/each}}
     </div>
 </template>

@@ -190,70 +190,92 @@ Template.labels3D.events({
     }
 })
 
+function genLabelAdder(labelType){
+    return function(){
+        if (Meteor.user() != null){
+        labelID=Labels.insert({
+            content:'type here',
+            position:{
+                x:mouse3D.position.x,
+                y:mouse3D.position.y,
+                z:mouse3D.position.z
+            },
+            createdBy:Meteor.userId(),
+            //TODO Well that's obviously wrong. Same value in two fields.
+            createdByName:Meteor.userId(),
+            createdOn:TimeSync.serverTime(),
+            refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
+            refers_to_type:labelType
+        });
+        $("#" + labelID + " .label3Dcontent").focus();
+        $("#" + labelID + " .label3Dcontent").selectText();
+        }
+        else{
+            alert('Sign up / log in to add data.')
+        }
+    
+    }}
+    
+
 tools = []
-function Tool(name, icon, effect, tooltip) {
+function Tool(name, icon, effect, tooltip, showToUser) {
     this.name = name;
     this.icon = icon;
     this.run = effect;
     this.tooltip = tooltip;
+    this.showToUser = showToUser;
+    if (typeof(showToUser) === 'undefined'){
+        this.showToUser=true;
+    }
 }
 
 tools = {
-addNewClimb : new Tool('addNewClimb','/img/climb.png', function(){
+addNewClimb : new Tool('addNewClimb','/img/addClimb.png', function(){
     Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
     Climbsim.addLabelForClimb(Climbsim.latestClimb);
-    tools.current=Session.set('mouseTool','addVertexToClimb');
+    tools.current=tools.addVertexToClimb;
     },
-    'Double click to add a new climb.'
+    'Double click on the rock to add a new climb.'
         ),
 
-addVertexToClimb : new Tool('addVertexToClimb','/img/climb.png', function(){
+addVertexToClimb : new Tool('addVertexToClimb','/img/addVertex.png', function(){
     Climbsim.addVertexToClimb(Climbsim.latestClimb);
     Climbsim.loadClimb(Climbsim.latestClimb);
     },
-    'Double click to add a new vertex to' + Session.get('selecteLabel')
+    'Double click on the rock to add a new vertex' + Session.get('selectedLabel'),
+    false
 ),
-
-addLabel : new Tool('addLabel','/img/other.png', function(){
-    if (Meteor.user() != null){
-    labelID=Labels.insert({
-        content:'type here',
-        position:{
-            x:mouse3D.position.x,
-            y:mouse3D.position.y,
-            z:mouse3D.position.z
-        },
-        createdBy:Meteor.userId(),
-        //TODO Well that's obviously wrong. Same value in two fields.
-        createdByName:Meteor.userId(),
-        createdOn:TimeSync.serverTime(),
-        refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
-        refers_to_type:null
-    });
-    $("#" + labelID + " .label3Dcontent").focus();
-    $("#" + labelID + " .label3Dcontent").selectText();
-    }
-    else{
-        alert('Sign up / log in to add data.')
-    }},
-    'Double click to add a label to ' + Session.get('loadedBoulder')
-)
+addWarning : new Tool('addLabel','/img/addWarning.png', genLabelAdder('warning'),
+    'Double click on the rock to add a warning.'
+),
+addBeta : new Tool('addLabel','/img/addBeta.png', genLabelAdder('beta'),
+    'Double click on the rock to add beta.'
+),
+addOther : new Tool('addLabel','/img/addOther.png', genLabelAdder('other'),
+    'Double click on the rock to add a miscelleneous label.'
+),
 }
 Template.toolbox.helpers({
+
+    tools: tools,
+        // maybe rename things to avoid scope confusion
     toolboxTip: function(){
-        if (!!tools.current){
-            return tools.current.tooltip
-        }
-        else{
-            return 'Choose a tool, then double-click on the rock.'
-        }
+            return Session.get('toolboxTip');
     }}
 );
-Template.toolbox.tools = tools;
+
+Handlebars.registerHelper('key_value', function(context, options) {
+  var result = [];
+  _.each(context, function(value, key, list){
+    result.push({key:key, value:value});
+  })
+  return result;
+});
 
 Template.toolbox.events({
     'change input[name=mouseTool]': function(){
-        tools.current=this
+        tools.current=this.value,
+        Session.set('toolboxTip', this.value.tooltip)
     }
 });
 
