@@ -3,7 +3,7 @@ Meteor.startup(function () {
     Climbsim.init();
 
     function colorAllClimbsWhite() {
-        $(threeScene.children).each(function () {
+        $(Climbsim.scene.children).each(function () {
             if (this instanceof THREE.Line) {
                 this.material.color.set('white');
             }
@@ -36,7 +36,7 @@ Meteor.startup(function () {
             var label = Labels.findOne(labelId);
             if (label && (label.refers_to_type == "climb")) {
                 climbId = label.refers_to_id
-                selectedThreeObj = threeScene.getObjectByName(climbId);
+                selectedThreeObj = Climbsim.scene.getObjectByName(climbId);
                 colorAllClimbsWhite();
                 // turn the selected one red
                 selectedThreeObj.material.color.set('red');
@@ -44,6 +44,12 @@ Meteor.startup(function () {
         }
         positionLabelIcons();
     })
+    
+//     // Draw climb if it changes
+//     Deps.autorun(function(){
+//         Climbsim.loadClimb
+//     }
+//     )
 
     Session.set('loadedBoulder', 'Streambed');
     Session.set('mouseTool', 'addLabel');

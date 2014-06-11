@@ -9,7 +9,7 @@ Meteor.subscribe("users");
 
 // scene manipulation functions (probably should be in climbsim.js)
 function colorAllClimbsWhite() {
-    $(threeScene.children).each(function () {
+    $(Climbsim.scene.children).each(function () {
         if (this instanceof THREE.Line) {
             this.material.color.set('white');
         }
@@ -41,34 +41,34 @@ Template.controlPanel.helpers({
     },
 })
 
-Template.controlPanel.events({
-    "change #boulderList": function (e, tmpl) {
-        Session.set("loadedBoulder", e.target.value)
-    },
-    "mouseenter .ctrlPnlClimb": function (e, tmpl) {
-        label = Labels.findOne(e.currentTarget.id)
-        Session.set("selectedLabel", label._id)
-    },
-    "change #filterDisplay": function (e){
-        var filterInputData = $(e.currentTarget).serializeArray() 
-        Session.set("filter", filterInputData);
-        Deps.flush();
-        Climbsim.positionLabelIcons();
-    },
-    "mousedown #submitClimbshareFeedback": function(){    
-        if (Meteor.userId()){
-            Feedback.insert({
-                content:$('#climbshareFeedback textarea').val(),
-                createdBy:Meteor.userId(),
-                createdOn:TimeSync.serverTime()
-            })
-            alert("Feedback submitted.")
-        }
-        else{
-            alert("Please log in to submit feedback.")
-        }
-    }
-})
+// Template.controlPanel.events({
+//     "change #boulderList": function (e, tmpl) {
+//         Session.set("loadedBoulder", e.target.value)
+//     },
+//     "mouseenter .ctrlPnlClimb": function (e, tmpl) {
+//         label = Labels.findOne(e.currentTarget.id);
+//         Session.set("selectedLabel", label._id);
+//     },
+//     "change #filterDisplay": function (e){
+//         var filterInputData = $(e.currentTarget).serializeArray();
+//         Session.set("filter", filterInputData);
+//         Deps.flush();
+//         Climbsim.positionLabelIcons();
+//     },
+//     "mousedown #submitClimbshareFeedback": function(){    
+//         if (Meteor.userId()){
+//             Feedback.insert({
+//                 content:$('#climbshareFeedback textarea').val(),
+//                 createdBy:Meteor.userId(),
+//                 createdOn:TimeSync.serverTime()
+//             })
+//             alert("Feedback submitted.")
+//         }
+//         else{
+//             alert("Please log in to submit feedback.")
+//         }
+//     }
+// })
 Template.labels3D.labels = function () {
     loadedBoulder = Boulders.findOne({
         name: Session.get('loadedBoulder')
@@ -234,6 +234,7 @@ addNewClimb : new Tool('addNewClimb','/img/addClimb.png', function(){
     Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
     Climbsim.addLabelForClimb(Climbsim.latestClimb);
     tools.current=tools.addVertexToClimb;
+    
     },
     'Double click on the rock to add a new climb.'
         ),

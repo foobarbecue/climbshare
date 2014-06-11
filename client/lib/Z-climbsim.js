@@ -9,11 +9,12 @@ var camera, cameraTarget, renderer, boulderMesh, mouse2D, raycaster, intersects,
 var clock = new THREE.Clock();
 var projector = new THREE.Projector();
 var paused = false;
+Climbsim.scene = {};
 
 Climbsim.init = function() {
         $("#progressBar").progressbar();
         container = $('#threejs-container')
-        window.threeScene = new THREE.Scene();
+        Climbsim.scene = new THREE.Scene();
         projector = new THREE.Projector();
         mouse2D = v(0,0,0)
         camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
@@ -25,7 +26,7 @@ Climbsim.init = function() {
         mouse3D = new THREE.Mesh(
                 new THREE.SphereGeometry(0.1,6,6),
                 new THREE.MeshBasicMaterial({color:'red',transparent:true}));
-        window.threeScene.add(mouse3D);
+        Climbsim.scene.add(mouse3D);
         container.on('mousemove',onmousemove)
         // TODO maybe this in template event handlers
         container.on('dblclick', function(evt){
@@ -33,12 +34,12 @@ Climbsim.init = function() {
         })
         
         // lights
-        window.threeScene.add( new THREE.AmbientLight( 0x777777 ) );
+        Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
 
         // grid
         grid = new THREE.GridHelper(100,1)
         grid.rotateX(Math.PI/2)
-        window.threeScene.add(grid);
+        Climbsim.scene.add(grid);
         
         // renderer
         renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -62,9 +63,9 @@ Climbsim.init = function() {
 }
 
 Climbsim.removeAllClimbs = function(){
-    $(threeScene.children).each(function(){
+    $(Climbsim.scene.children).each(function(){
         if (this instanceof THREE.Line && !(this instanceof THREE.GridHelper)){
-            threeScene.remove(this);
+            Climbsim.scene.remove(this);
         }
     });
 }
@@ -74,7 +75,11 @@ Climbsim.loadClimb = function(climb){
         vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
         climbCurvified = curvify(vertices)
         climbCurvified.name=climb._id
-        window.threeScene.add(climbCurvified);
+        var existing = Climbsim.scene.getObjectByName(climb._id)
+        if (!!existing){
+            Climbsim.scene.remove(existing);
+        }
+        Climbsim.scene.add(climbCurvified);
         return climbCurvified
     }
     else{
@@ -89,7 +94,7 @@ Climbsim.loadBoulder = function(boulderName){
     }
     boulder = Boulders.findOne({name:boulderName})
     // clear previous 3d model
-    window.threeScene.remove(boulderMesh)
+    Climbsim.scene.remove(boulderMesh)
     // clear all climbs
     this.removeAllClimbs();
     // load CTM model
@@ -99,7 +104,7 @@ Climbsim.loadBoulder = function(boulderName){
                     var boulderMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
                     boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
                     boulderMesh.name = boulderName;
-                    threeScene.add(boulderMesh);
+                    Climbsim.scene.add(boulderMesh);
                     $("#progressBar,#progressText").fadeOut();                    
                     Climbs.find({boulder_id:boulder._id}).map(Climbsim.loadClimb);
                     })
@@ -157,7 +162,14 @@ Climbsim.addVertexToClimb = function(climb){
 Climbsim.moveLatestVertexToMousePos= function(climb){
     //TODO doesn't work yet
     climb = climb || Climbsim.latestClimb;
-    
+    Climbs.update({_id:climb._id}, {$pop: {vertices:1}});
+    Climbs.update({_id:climb._id}, {$push:{vertices:
+        [
+        mouse3D.position.x,
+        mouse3D.position.y,
+        mouse3D.position.z        
+    ]    
+    }});
     Climbsim.loadClimb(climb);
 }
 
@@ -178,14 +190,14 @@ function onmousemove( e ){
         }
         // live drawing for addClimb mouseTool
         if (tools.current.name == 'addVertexToClimb'){
-            Climbsim.moveLatestVertexTo(mouse3D.position);
+            Climbsim.moveLatestVertexToMousePos();
         }
 }
 
 function addDirLight( x, y, z, color, intensity ) {
         var directionalLight = new THREE.DirectionalLight( color, intensity );
         directionalLight.position.set( x, y, z )
-        window.threeScene.add( directionalLight );
+        Climbsim.scene.add( directionalLight );
 }
 
 function onWindowResize() {
@@ -205,7 +217,7 @@ function render() {
         oscillator=((Math.sin(clock.getElapsedTime()*3))+Math.PI/2);
         mouse3D.material.color.setRGB(1,0,0);
         mouse3D.material.opacity=oscillator/Math.PI;
-        renderer.render( window.threeScene, camera );
+        renderer.render( Climbsim.scene, camera );
 }
 
 // moves div of a label to the correct 2D coordinates
