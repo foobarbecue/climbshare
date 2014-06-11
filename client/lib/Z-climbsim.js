@@ -143,12 +143,22 @@ Climbsim.addLabelForClimb = function(climb){
 Climbsim.addVertexToClimb = function(climb){
     // if climb not passed in as argument, work on the one that's selected.
     // TODO should factor this out or otherwise simplify.
-    climb = climb || Climbs.findOne(Labels.findOne(Session.get('selectedLabel')).refers_to_id)
-    climb.vertices.push([
+    climb = climb || Climbs.findOne(Labels.findOne(Session.get('selectedLabel')).refers_to_id);
+    Climbs.update({_id:climb._id}, {$push:{vertices:
+        [
         mouse3D.position.x,
         mouse3D.position.y,
         mouse3D.position.z        
-    ])
+    ]    
+    }});
+    
+}
+
+Climbsim.moveLatestVertexToMousePos= function(climb){
+    //TODO doesn't work yet
+    climb = climb || Climbsim.latestClimb;
+    
+    Climbsim.loadClimb(climb);
 }
 
 function onmousemove( e ){
@@ -165,6 +175,10 @@ function onmousemove( e ){
             if (typeof pos != null) {
             mouse3D.position = pos;
             }
+        }
+        // live drawing for addClimb mouseTool
+        if (tools.current.name == 'addVertexToClimb'){
+            Climbsim.moveLatestVertexTo(mouse3D.position);
         }
 }
 
