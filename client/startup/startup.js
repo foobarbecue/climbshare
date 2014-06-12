@@ -45,11 +45,11 @@ Meteor.startup(function () {
         positionLabelIcons();
     })
     
-//     // Draw climb if it changes
-//     Deps.autorun(function(){
-//         Climbsim.loadClimb
-//     }
-//     )
+    // Draw climb if it changes
+    Deps.autorun(function(){
+        Climbsim.loadClimbs();
+    }
+    )
 
     Session.set('loadedBoulder', 'Streambed');
     Session.set('mouseTool', 'addLabel');

@@ -106,8 +106,16 @@ Climbsim.loadBoulder = function(boulderName){
                     boulderMesh.name = boulderName;
                     Climbsim.scene.add(boulderMesh);
                     $("#progressBar,#progressText").fadeOut();                    
-                    Climbs.find({boulder_id:boulder._id}).map(Climbsim.loadClimb);
+                    Climbsim.loadClimbs();
                     })
+}
+
+Climbsim.loadClimbs = function(){
+    boulder = Boulders.findOne({name:Session.get('loadedBoulder')});
+    if (!!boulder){
+        Climbsim.removeAllClimbs();
+        Climbs.find({boulder_id:boulder._id}).map(Climbsim.loadClimb);
+    }
 }
 
 Climbsim.addNewClimb = function (){
@@ -167,7 +175,7 @@ Climbsim.moveLatestVertexToMousePos= function(climb){
         [
         mouse3D.position.x,
         mouse3D.position.y,
-        mouse3D.position.z        
+        mouse3D.position.z
     ]    
     }});
     Climbsim.loadClimb(climb);
