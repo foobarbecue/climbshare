@@ -167,9 +167,9 @@ Climbsim.addVertexToClimb = function(climb){
     
 }
 
-Climbsim.moveLatestVertexToMousePos= function(climb){
-    //TODO doesn't work yet
-    climb = climb || Climbsim.latestClimb;
+Climbsim.moveLatestVertexToMousePos= function(){
+    climb = Climbs.findOne(Climbsim.latestClimbId);
+    if (climb.vertices.length > 1){
     Climbs.update({_id:climb._id}, {$pop: {vertices:1}});
     Climbs.update({_id:climb._id}, {$push:{vertices:
         [
@@ -178,6 +178,7 @@ Climbsim.moveLatestVertexToMousePos= function(climb){
         mouse3D.position.z
     ]    
     }});
+    }
     Climbsim.loadClimb(climb);
 }
 
