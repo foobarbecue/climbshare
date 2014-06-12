@@ -146,7 +146,7 @@ Climbsim.addLabelForClimb = function(climb){
             z:climb.vertices[0][2]
         },
         refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
-        refers_to_id:climb.id,
+        refers_to_id:climb._id,
         refers_to_type:'climb',
         createdBy: climb.createdBy || 'automatic',
         createdOn:new Date()}
