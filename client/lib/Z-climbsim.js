@@ -5,7 +5,7 @@ Climbsim = {};
 
 var container;
 
-var camera, cameraTarget, renderer, boulderMesh, mouse2D, raycaster, intersects, projector, oscillator, climbData, climbsimInit, climbsimAnimate;
+var camera, cameraTarget, boulderMesh, mouse2D, raycaster, intersects, projector, oscillator, climbData, climbsimInit, climbsimAnimate;
 var clock = new THREE.Clock();
 var projector = new THREE.Projector();
 var paused = false;
@@ -42,11 +42,12 @@ Climbsim.init = function() {
         Climbsim.scene.add(grid);
         
         // renderer
-        renderer = new THREE.WebGLRenderer( { antialias: true } );
-        renderer.setSize( container.width(), container.height());
-        renderer.gammaInput = true;
-        renderer.gammaOutput = true;
-        container.append( renderer.domElement );
+        Climbsim.renderer = new THREE.WebGLRenderer( { antialias: true } );
+        Climbsim.renderer.setSize( container.width(), container.height());
+        Climbsim.renderer.gammaInput = true;
+        Climbsim.renderer.gammaOutput = true;
+        Climbsim.renderer.setClearColor(Session.get('sceneBkgrndClr'));
+        container.append( Climbsim.renderer.domElement );
 
         // controls
         controls = new THREE.OrbitControls( camera );
@@ -212,7 +213,7 @@ function addDirLight( x, y, z, color, intensity ) {
 function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        Climbsim.renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
 Climbsim.animate = function() {
@@ -226,7 +227,7 @@ function render() {
         oscillator=((Math.sin(clock.getElapsedTime()*3))+Math.PI/2);
         mouse3D.material.color.setRGB(1,0,0);
         mouse3D.material.opacity=oscillator/Math.PI;
-        renderer.render( Climbsim.scene, camera );
+        Climbsim.renderer.render( Climbsim.scene, camera );
 }
 
 // moves div of a label to the correct 2D coordinates

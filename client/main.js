@@ -234,7 +234,7 @@ addNewClimb : new Tool('addNewClimb','/img/addClimb.png', function(){
     // Need to deprecate Climbsim.latestClimb and just store the ID
     // because it's an unnecessary non-reactive manual cache
     Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
-    Climbsim.latestClimbId = Climbsim.latestClimb._id
+    Climbsim.latestClimbId = Climbsim.latestClimb._id;
     Climbsim.addLabelForClimb(Climbsim.latestClimb);
     tools.current=tools.addVertexToClimb;
     },
