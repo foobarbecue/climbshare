@@ -161,8 +161,11 @@ Template.labels3D.events({
             Session.set("selectedLabel", undefined);
         }
     },
-    'click .deleteButton': function (event) {
-        Labels.remove($(event.currentTarget).parents('.label3D').attr('id'));
+    'click .deleteButton': function () {
+        var labelId = this._id;
+        var climbId = this.refers_to_id;
+        Labels.remove(labelId);
+        Climbs.remove(climbId);
     },
     'input .label3Dcontent': function(event) {
         event.preventDefault();
