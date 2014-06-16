@@ -85,7 +85,7 @@
         <select name="createdBy">
             <option value="everyone" selected="selected">everyone</option>
             {{#each users}}
-                <option value="{{_id}}">{{username}}</option>
+                <option value="{{_id}}"> {{profile.name}}{{username}}</option>
             {{/each}}
         </select>
             </form>
@@ -101,8 +101,7 @@
                     {{else}}
                         &#9679;
                     {{/if}}
-
-                    {{profile.name}} {{username}}
+                    {{profile.name}}{{username}}
                 </div>
             {{/each}}
         </div>
