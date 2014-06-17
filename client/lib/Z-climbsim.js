@@ -60,6 +60,8 @@ Climbsim.init = function() {
         // resize
         window.addEventListener( 'resize', onWindowResize, false );
         
+        // skybox
+        Climbsim.addSkybox();
         
 }
 
@@ -136,6 +138,36 @@ Climbsim.addNewClimb = function (){
         return newClimb
     }
 }
+
+// Skybox
+Climbsim.addSkybox = function (){
+    var path = "/skybox/";
+    var format = '.jpg';
+    var urls = [
+            path + 'px' + format, path + 'nx' + format,
+            path + 'py' + format, path + 'ny' + format,
+            path + 'pz' + format, path + 'nz' + format
+    ];
+
+    var textureCube = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping() );
+    var material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: textureCube, refractionRatio: 0.95 } );
+    var shader = THREE.ShaderLib[ "cube" ];
+    shader.uniforms[ "tCube" ].value = textureCube;
+
+    var material = new THREE.ShaderMaterial( {
+
+            fragmentShader: shader.fragmentShader,
+            vertexShader: shader.vertexShader,
+            uniforms: shader.uniforms,
+            depthWrite: false,
+            side: THREE.BackSide
+
+    } ),
+
+    mesh = new THREE.Mesh( new THREE.BoxGeometry( 100, 100, 100 ), material );
+    mesh.name = 'skybox'
+    Climbsim.scene.add( mesh );
+};
 
 Climbsim.addLabelForClimb = function(climb){
     climb = climb || Climbsim.latestClimb
