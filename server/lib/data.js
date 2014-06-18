@@ -188,6 +188,14 @@ data = {
     "majorWall": {
     "name": "Major wall",
     "model3D": "majorWall.ctm"
-    }
+    },
+    "waterfall": {
+    "name": "Waterfall Wall",
+    "model3D": "waterfall.ctm",
+    "initialTransform":[0.335925,-0.0284944,-0.0654769,-0.94192,
+                        -0.070196,-0.0739883,-0.327938,-5.21403,
+                        0.0131025,0.334153,-0.0781962,5.00871,
+                        0,0,0,1]
+    }    
     }
 }

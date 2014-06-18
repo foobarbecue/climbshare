@@ -51,7 +51,7 @@ Meteor.startup(function () {
     }
     )
 
-    Session.set('loadedBoulder', 'Streambed');
+    Session.set('loadedBoulder', 'Waterfall Wall');
     Session.set('mouseTool', 'addLabel');
     Session.set('toolboxTip','Choose your weapon.')
 })
