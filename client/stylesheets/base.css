@@ -1,18 +1,10 @@
 body{
     display: flex;
 }
-#progressBar, #progressText{
-    width:20%;
-    height:20px;
-    margin-left: 40%;
-    margin-right: 40%;
-    top:5px;
-    text-align: center;
-    position: fixed;
-}
+
 #progressText{
     z-index:10;
-    color: lightgrey;
+/*     color: lightgrey; */
 }
 #introMessage{
     z-index:10;
@@ -51,12 +43,21 @@ body{
     flex-direction: column;
     z-index:30;
 }
-#controlPanel, .label3Ddetails, #toolbox, #login-buttons{
+#controlPanel, .label3Ddetails, #toolbox, #login-buttons, #progressText{
     margin:10px;
     padding: 4px;
     /*this is to make the lines under h3 go all the way to edge*/
     border-radius: 10px;    
     background:rgba(255,255,255,0.8); 
+}
+#progressBar, #progressText{
+    width:10%;
+    height:20px;
+    margin-left: 45%;
+    margin-right: 45%;
+    top:5px;
+    text-align: center;
+    position: fixed;
 }
 .label3Ddetails{
     display: none;

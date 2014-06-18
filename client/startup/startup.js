@@ -15,8 +15,9 @@ Meteor.startup(function () {
         try {
             boulderName = Session.get('loadedBoulder');
             Climbsim.loadBoulder(boulderName);
+            $('#boulderList').val(boulderName);
         } catch (TypeError) {
-            console.log('failed to load ' + boulderName)
+            console.log('failed to load ' + boulderName);
         }
     })
     

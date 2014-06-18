@@ -228,7 +228,7 @@ function onmousemove( e ){
         mouse2D.z = 0.5;
         projector.unprojectVector(mouse2D.clone(), camera);
         raycaster = projector.pickingRay( mouse2D.clone(), camera );
-        intersects = raycaster.intersectObject(boulderMesh, true);
+        intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);
         if (intersects.length > 0){
             pos = intersects[0].point
             if (typeof pos != null) {
