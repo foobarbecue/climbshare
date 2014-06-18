@@ -92,6 +92,7 @@ Climbsim.loadClimb = function(climb){
 }
 
 Climbsim.loadBoulder = function(boulderName){
+    $("#progressBar,#progressText").show();                    
     if (typeof(boulderName) === "undefined"){
         boulderName = Session.get('loadedBoulder')
     }
