@@ -3,6 +3,7 @@
     "jquery-ui": {},
     "timesync": {},
     "user-status": {},
-    "ogv-threejs": {}
+    "ogv-threejs": {},
+    "analytics": {}
   }
 }

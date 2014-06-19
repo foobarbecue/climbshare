@@ -52,7 +52,7 @@ Meteor.startup(function () {
     }
     )
 
-    Session.set('loadedBoulder', 'Waterfall Wall');
+    Session.set('loadedBoulder', 'Streambed');
     Session.set('mouseTool', 'addLabel');
-    Session.set('toolboxTip','Choose your weapon.')
+    Session.set('toolboxTip','Click a tool, then double click on the rock.')
 })

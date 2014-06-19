@@ -5,7 +5,8 @@
       "jquery-ui": {},
       "timesync": {},
       "user-status": {},
-      "ogv-threejs": {}
+      "ogv-threejs": {},
+      "analytics": {}
     },
     "packages": {
       "jquery-ui": {
@@ -27,6 +28,11 @@
         "git": "https://github.com/inderpreetsingh/meteor-threejs-ogv",
         "tag": "v1.0.0",
         "commit": "076295aee895e03c06a931eb56c8493924e10333"
+      },
+      "analytics": {
+        "git": "https://github.com/Tarang/Meteor-Analytics.git",
+        "tag": "v0.4.1",
+        "commit": "5d646c3422da42671f4a7f040d9e8fad789af1da"
       }
     }
   }
