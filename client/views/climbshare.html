@@ -66,6 +66,8 @@
             <select id='boulderList'>
             {{#each models3D}}
             <option value="{{name}}">{{name}}</option>
+            {{else}}
+            No boulder or wall 3D models in the database.
             {{/each}}
             </select>
             </div>
@@ -73,7 +75,10 @@
         <div class='hidden'>
             {{#each climbs}}
                 <div id="{{_id}}" class="ctrlPnlClimb {{_id}}">{{content}}</div>
+            {{else}}
+                No routes or problems found for {{loadedBoulder}}.
             {{/each}}
+            
         </div>
         <h3>Show / hide</h3>
         <div class='hidden'>
@@ -103,6 +108,8 @@
                     {{/if}}
                     {{profile.name}}{{username}}
                 </div>
+            {{else}}
+            No registered users.
             {{/each}}
         </div>
         <h3>About</h3>

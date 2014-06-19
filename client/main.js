@@ -16,6 +16,10 @@ function colorAllClimbsWhite() {
     })
 }
 
+Handlebars.registerHelper('loadedBoulder',function(input){
+  return Session.get("loadedBoulder");
+});
+
 // template definitions
 Template.controlPanel.helpers({
     labels: function () {
