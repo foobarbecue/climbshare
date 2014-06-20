@@ -237,7 +237,7 @@ function onmousemove( e ){
             }
         }
         // live drawing for addClimb mouseTool
-        if (tools.current.name == 'addVertexToClimb'){
+        if (!!tools.current && tools.current.name == 'addVertexToClimb'){
             Climbsim.moveLatestVertexToMousePos();
         }
 }
