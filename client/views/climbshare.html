@@ -125,7 +125,8 @@
 
 <template name="toolbox">
     <div id="toolbox">
-    <h3 id="toolboxTip">{{toolboxTip}}</h3>
+    <h3>{{toolboxTip}}</h3>
+    <div id="instructions">{{instructions}}</div>
     {{#each key_value tools}}
         {{#if value.showToUser}}
         <label class="mouseTool" for="{{key}}">

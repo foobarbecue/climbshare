@@ -225,15 +225,16 @@ function genLabelAdder(labelType){
     
 
 tools = []
-function Tool(name, icon, effect, tooltip, showToUser) {
+function Tool(name, icon, effect, tooltip, instructions, showToUser) {
     this.name = name;
     this.icon = icon;
     this.run = effect;
     this.tooltip = tooltip;
+    this.instructions=instructions;    
     this.showToUser = showToUser;
     if (typeof(showToUser) === 'undefined'){
         this.showToUser=true;
-    }
+    };
 }
 
 tools = {
@@ -245,7 +246,8 @@ addNewClimb : new Tool('addNewClimb','/img/addClimb.png', function(){
     Climbsim.addLabelForClimb(Climbsim.latestClimb);
     tools.current=tools.addVertexToClimb;
     },
-    'Double click on the rock to add a new climb.'
+    'Tool: Add climb',
+    'Double click to begin, and keep double clicking to draw the climb. Press enter when finished.'
         ),
 
 addVertexToClimb : new Tool('addVertexToClimb','/img/addVertex.png', function(){
@@ -258,15 +260,19 @@ addVertexToClimb : new Tool('addVertexToClimb','/img/addVertex.png', function(){
         $(this).off('keydown.finishClimb')
     })},
     'Double click on the rock to add a new vertex' + Session.get('selectedLabel'),
+    '',
     false
 ),
 addWarning : new Tool('addLabel','/img/addWarning.png', genLabelAdder('warning'),
+    'Tool: Add warning',
     'Double click on the rock to add a warning.'
 ),
 addBeta : new Tool('addLabel','/img/addBeta.png', genLabelAdder('beta'),
+    'Tool: Add beta',
     'Double click on the rock to add beta.'
 ),
 addOther : new Tool('addLabel','/img/addOther.png', genLabelAdder('other'),
+    'Tool: Add miscelleneous info',
     'Double click on the rock to add a miscelleneous label.'
 ),
 }
@@ -276,7 +282,10 @@ Template.toolbox.helpers({
         // maybe rename things to avoid scope confusion
     toolboxTip: function(){
             return Session.get('toolboxTip');
-    }}
+    },
+    instructions: function(){
+            return Session.get('toolboxInstructions');
+    }}    
 );
 
 Handlebars.registerHelper('key_value', function(context, options) {
@@ -289,8 +298,9 @@ Handlebars.registerHelper('key_value', function(context, options) {
 
 Template.toolbox.events({
     'change input[name=mouseTool]': function(){
-        tools.current=this.value,
-        Session.set('toolboxTip', this.value.tooltip)
+        tools.current=this.value;
+        Session.set('toolboxTip', this.value.tooltip);
+        Session.set('toolboxInstructions', this.value.instructions);
     }
 });
 

@@ -112,6 +112,10 @@ body{
     bottom:10px;
     left:10px;
 }
+#toolbox > #instructions{
+    max-width: 240px;
+}
+
 .mouseTool > input[type=radio]{
   display:none;
 }
