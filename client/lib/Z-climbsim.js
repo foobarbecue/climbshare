@@ -40,7 +40,7 @@ Climbsim.init = function() {
         grid = new THREE.GridHelper(100,1)
         grid.rotateX(Math.PI/2)
         Climbsim.scene.add(grid);
-        
+        Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
         // renderer
         Climbsim.renderer = new THREE.WebGLRenderer( { antialias: true } );
         Climbsim.renderer.setSize( container.width(), container.height());
@@ -105,7 +105,7 @@ Climbsim.loadBoulder = function(boulderName){
     var loader = new THREE.CTMLoader();
     loader.load('data/models/' + boulder.model3D, 
                 function(geometry){
-                    var boulderMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors});
+                    var boulderMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors, side: THREE.DoubleSide});
                     Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
                     Climbsim.boulderMesh.name = boulderName;
                     if (!!boulder.initialTransform){
@@ -116,7 +116,14 @@ Climbsim.loadBoulder = function(boulderName){
                     Climbsim.scene.add(Climbsim.boulderMesh);
                     $("#progressBar,#progressText").fadeOut();                    
                     Climbsim.loadClimbs();
-                    })
+                    });
+    if (!!boulder.pointcloud){
+        var material = new THREE.ParticleSystemMaterial( { size: 0.05, vertexColors: true } );
+        var pco=POCLoader.load("data/models/" + boulder.pointcloud);
+        var pointcloud = new Potree.PointCloudOctree(pco, material);
+        pointCloud.name = 'pointcloud'
+        Climbsim.scene.add(pointcloud);
+    }
 }
 
 Climbsim.loadClimbs = function(){

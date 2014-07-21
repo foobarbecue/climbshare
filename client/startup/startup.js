@@ -1,5 +1,6 @@
  
 Meteor.startup(function () {
+    if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
     Climbsim.init();
 
     function colorAllClimbsWhite() {

@@ -129,3 +129,7 @@ input[type=radio]:checked + img{
 .green{
     color: green;
 }
+/*This is the message from the webgl detector*/
+#oldie{
+  z-index: 20;  
+}
