@@ -5,6 +5,7 @@
     "user-status": {},
     "ogv-threejs": {},
     "analytics": {},
-    "comments": {}
+    "comments": {},
+    "iron-router": {}
   }
 }
