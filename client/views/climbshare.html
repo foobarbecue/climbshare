@@ -3,6 +3,10 @@
 </head>
 
 <body>
+    {{> main}}
+</body>
+
+<template name="main">
   {{> loginButtons align="right"}}
     <div id="threejs-container"></div>
 <!--    <div id="progressBar"></div>-->
@@ -12,7 +16,7 @@
   {{> controlPanel}}
   </div>
   {{> toolbox}}
-</body>
+</template>
 
 <template name="labels3D">
 {{#each labels}}

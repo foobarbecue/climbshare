@@ -4,8 +4,8 @@
     "timesync": {},
     "user-status": {},
     "ogv-threejs": {},
-    "analytics": {},
     "comments": {},
-    "iron-router": {}
+    "iron-router": {},
+    "analytics": {}
   }
 }

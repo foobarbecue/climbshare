@@ -53,7 +53,12 @@ Meteor.startup(function () {
     }
     )
 
-    Session.set('loadedBoulder', 'Streambed');
+    if (window.location.pathname === '/'){
+        Session.set('loadedBoulder', 'Streambed');
+    }else{
+        Session.set('loadedBoulder', window.location.pathname.replace('/','').replace('_',' '));
+    };
+    
     Session.set('mouseTool', 'addLabel');
     Session.set('toolboxTip','Click a tool, then double click on the rock.')
 })
