@@ -255,10 +255,18 @@ addVertexToClimb : new Tool('addVertexToClimb','/img/addVertex.png', function(){
     Climbsim.loadClimb(Climbsim.latestClimb);
     $(document).on('keydown.finishClimb', function(e){
         if (e.keyCode == 13){
+            // delete latest vertex b/c people are "already" finished when the press enter. If statement to deal with bubbling which was causing all vertices to be removed.
+            if (tools.current==tools.addVertexToClimb){
+                Climbs.update({_id:climb._id}, {$pop: {vertices:1}});
+            };
             tools.current=tools.addNewClimb;
+            
+            $(this).off('keydown.finishClimb')
         }
-        $(this).off('keydown.finishClimb')
-    })},
+        
+        
+    })
+    },
     'Double click on the rock to add a new vertex' + Session.get('selectedLabel'),
     '',
     false
