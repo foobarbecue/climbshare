@@ -145,7 +145,11 @@ Climbsim.addNewClimb = function (){
             mouse3D.position.y,
             mouse3D.position.z
         ]]
-    });
+    },
+        function(error){
+             alert(error);
+        }
+    );
     if (!!newClimb){
         Session.set('addClimbVertices')
         return newClimb

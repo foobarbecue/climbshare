@@ -6,6 +6,7 @@ Meteor.subscribe("labels");
 Meteor.subscribe("climbs");
 Meteor.subscribe("boulders");
 Meteor.subscribe("users");
+Meteor.subscribe("messages");
 
 // scene manipulation functions (probably should be in climbsim.js)
 function colorAllClimbsWhite() {
@@ -169,7 +170,11 @@ Template.labels3D.events({
         var labelId = this._id;
         var climbId = this.refers_to_id;
         Labels.remove(labelId);
-        Climbs.remove(climbId);
+        Climbs.remove(climbId,
+            function(error, numRemoved){
+                alert(error);
+            }
+        );
     },
     'input .label3Dcontent': function(event) {
         event.preventDefault();
@@ -239,12 +244,16 @@ function Tool(name, icon, effect, tooltip, instructions, showToUser) {
 
 tools = {
 addNewClimb : new Tool('addNewClimb','/img/addClimb.png', function(){
-    // Need to deprecate Climbsim.latestClimb and just store the ID
-    // because it's an unnecessary non-reactive manual cache
-    Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
-    Climbsim.latestClimbId = Climbsim.latestClimb._id;
-    Climbsim.addLabelForClimb(Climbsim.latestClimb);
-    tools.current=tools.addVertexToClimb;
+    if (Meteor.user() != null){
+        // Need to deprecate Climbsim.latestClimb and just store the ID
+        // because it's an unnecessary non-reactive manual cache
+        Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
+        Climbsim.latestClimbId = Climbsim.latestClimb._id;
+        Climbsim.addLabelForClimb(Climbsim.latestClimb);
+        tools.current=tools.addVertexToClimb;
+    }else{
+        alert('Sign up / log in to add a climb.')
+    }
     },
     'Tool: Add climb',
     'Double click to begin, and keep double clicking to draw the climb. Press enter when finished.'

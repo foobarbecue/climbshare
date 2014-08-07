@@ -6,6 +6,7 @@
     "ogv-threejs": {},
     "comments": {},
     "iron-router": {},
-    "analytics": {}
+    "analytics": {},
+    "streams": {}
   }
 }

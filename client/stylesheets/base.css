@@ -43,7 +43,7 @@ body{
     flex-direction: column;
     z-index:30;
 }
-#controlPanel, .label3Ddetails, #toolbox, #login-buttons, #progressText{
+#controlPanel, .label3Ddetails, #toolbox, #login-buttons, #progressText, #messagesBox{
     margin:10px;
     padding: 4px;
     /*this is to make the lines under h3 go all the way to edge*/
@@ -112,10 +112,14 @@ body{
     bottom:10px;
     left:10px;
 }
-#toolbox > #instructions{
+#toolbox > #instructions, #messagesBox{
     max-width: 240px;
 }
-
+#messagesBox{
+    position: absolute;
+    bottom:10px;
+    right:10px
+}
 .mouseTool > input[type=radio]{
   display:none;
 }

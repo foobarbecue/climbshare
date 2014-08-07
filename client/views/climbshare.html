@@ -16,6 +16,7 @@
   {{> controlPanel}}
   </div>
   {{> toolbox}}
+  {{> messages}}
 </template>
 
 <template name="labels3D">
@@ -140,4 +141,19 @@
         {{/if}}
     {{/each}}
     </div>
+</template>
+
+<template name="messages">
+{{#if messages.count}}
+    <div id="messagesBox">
+    <h3>Messages</h3>
+    <div id="messages">
+    {{#each messages}}
+        <div>
+          {{message}}
+        </div>
+    {{/each}}
+    </div>
+    </div>
+{{/if}}
 </template>
