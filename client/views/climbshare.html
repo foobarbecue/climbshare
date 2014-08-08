@@ -144,7 +144,6 @@
 </template>
 
 <template name="messages">
-{{#if messages.count}}
     <div id="messagesBox">
     <h3>Messages</h3>
     <div id="messages">
@@ -154,6 +153,7 @@
         </div>
     {{/each}}
     </div>
+    <input id="chatInput" type="textarea" />
+    <button id="sendChat">send</button>
     </div>
-{{/if}}
 </template>

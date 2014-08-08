@@ -247,10 +247,35 @@ function onmousemove( e ){
             mouse3D.position = pos;
             }
         }
+        // stream mouse position to db
+        Meteor.call('updateMouse3D',mouse3D.position);
+
         // live drawing for addClimb mouseTool
         if (!!tools.current && tools.current.name == 'addVertexToClimb'){
             Climbsim.moveLatestVertexToMousePos();
         }
+}
+
+Climbsim.drawOtherUsers3Dmice = function(){
+    //TODO use a builtin color map?
+    var colors=['blue','green','orange','teal']
+    Mice.find().forEach(
+        //TODO if user is logged in
+        function(mouse3Ddoc, ind){
+            color=colors[ind]
+            var otherUsrMouse3D = new THREE.Mesh(
+            new THREE.SphereGeometry(0.1,6,6),
+            new THREE.MeshBasicMaterial({color:color,transparent:true}));
+            otherUsrMouse3D.name=mouse3Ddoc._id;
+            var existing = Climbsim.scene.getObjectByName(mouse3Ddoc._id)
+            Climbsim.scene.remove(existing);
+            Climbsim.scene.add(otherUsrMouse3D);
+            otherUsrMouse3D.position.set(
+                mouse3Ddoc.position.x,
+                mouse3Ddoc.position.y,
+                mouse3Ddoc.position.z);
+        }
+    )
 }
 
 function addDirLight( x, y, z, color, intensity ) {

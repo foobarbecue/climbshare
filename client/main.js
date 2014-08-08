@@ -7,6 +7,7 @@ Meteor.subscribe("climbs");
 Meteor.subscribe("boulders");
 Meteor.subscribe("users");
 Meteor.subscribe("messages");
+Meteor.subscribe("mice");
 
 // scene manipulation functions (probably should be in climbsim.js)
 function colorAllClimbsWhite() {

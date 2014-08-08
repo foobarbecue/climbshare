@@ -50,9 +50,12 @@ Meteor.startup(function () {
     // Draw climb if it changes
     Deps.autorun(function(){
         Climbsim.loadClimbs();
-    }
-    )
+    });
 
+    Deps.autorun(function(){
+        Climbsim.drawOtherUsers3Dmice();
+    });
+    
     if (window.location.pathname === '/'){
         Session.set('loadedBoulder', 'Streambed');
     }else{
