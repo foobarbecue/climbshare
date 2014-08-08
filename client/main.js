@@ -173,6 +173,11 @@ Template.labels3D.events({
         Climbs.remove(climbId,
             function(error, numRemoved){
                 alert(error);
+                notifications.emit('message','stuff');
+                notificationCollection.insert({
+                    message: error,
+                    
+                })
             }
         );
     },
