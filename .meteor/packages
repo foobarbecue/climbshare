@@ -7,11 +7,6 @@ standard-app-packages
 accounts-ui
 accounts-facebook
 jquery
-jquery-ui
-timesync
 accounts-password
-user-status
-ogv-threejs
-comments
-iron-router
-analytics
+ishwerdas:ogv-threejs
+linto:jquery-ui
