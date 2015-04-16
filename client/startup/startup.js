@@ -8,6 +8,7 @@ Meteor.startup(function () {
     });
 
     Router.route('/:area/:boulder', function () {
+        Session.set('area', this.params.area);
         Session.set('loadedBoulder', this.params.boulder);
         this.render('boulderPage');
     });

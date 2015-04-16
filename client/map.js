@@ -13,7 +13,41 @@ Template.areaMap.onRendered(function() {
     });
     var vectorSource = new ol.source.Vector({
     });
-    this.map.addLayer(new ol.layer.Vector({source: vectorSource}));
+        //{
+        //    text: new ol.style.Text({
+        //        text:'test',
+        //        font: '12px Calibri,sans-serif'
+        //    }),
+        //    stroke: new ol.style.Stroke({color: 'red', width: 2})
+        //}
+    var fill = new ol.style.Fill({
+        color: 'rgba(255,255,255,0.4)'
+    });
+    var stroke = new ol.style.Stroke({
+        color: '#3399CC',
+        width: 1.25
+    });
+
+    var markerStyle = function(feature) {
+        return [new ol.style.Style({
+            image: new ol.style.Circle({
+                fill: fill,
+                stroke: stroke,
+                radius: 5
+            }),
+            fill: fill,
+            stroke: stroke,
+            text: new ol.style.Text({
+                text: feature.get('name'),
+                fill: fill,
+                stroke: stroke
+            })
+        })];
+    };
+
+    var vectorLayer = new ol.layer.Vector({source: vectorSource});
+    vectorLayer.setStyle(markerStyle);
+    this.map.addLayer(vectorLayer);
 
     this.autorun(function() {
         var area = Session.get('area');
@@ -22,8 +56,10 @@ Template.areaMap.onRendered(function() {
             var boulderCoords = areaBoulders[boulder].coords;
             if (!!boulderCoords) {
                 var boulderFeature = new ol.Feature({
-                    geometry: new ol.geom.Point(boulderCoords).transform('EPSG:4326', 'EPSG:3857')
+                    geometry: new ol.geom.Point(boulderCoords).transform('EPSG:4326', 'EPSG:3857'),
+                    name: areaBoulders[boulder].name
                 });
+                //
                 //TODO need to check if it's already there, or come up with better data binding
                 vectorSource.addFeature(boulderFeature);
             }

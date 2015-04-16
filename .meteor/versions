@@ -4,7 +4,6 @@ accounts-oauth@1.1.5
 accounts-password@1.1.1
 accounts-ui@1.1.5
 accounts-ui-unstyled@1.1.7
-alon:ol3@3.4.0
 autoupdate@1.2.1
 base64@1.0.3
 binary-heap@1.0.3
@@ -19,6 +18,7 @@ ejson@1.0.6
 email@1.0.6
 facebook@1.2.0
 fastclick@1.0.3
+foobarbecue:ol3@3.4.0
 geojson-utils@1.0.3
 html-tools@1.0.4
 htmljs@1.0.4
