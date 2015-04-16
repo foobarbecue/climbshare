@@ -12,7 +12,7 @@ Template.areaMap.onRendered(function() {
         })
     });
     var vectorSource = new ol.source.Vector({
-    })
+    });
     this.map.addLayer(new ol.layer.Vector({source: vectorSource}));
 
     this.autorun(function() {
@@ -23,12 +23,15 @@ Template.areaMap.onRendered(function() {
             if (!!boulderCoords) {
                 var boulderFeature = new ol.Feature({
                     geometry: new ol.geom.Point(boulderCoords).transform('EPSG:4326', 'EPSG:3857')
-                })
+                });
                 //TODO need to check if it's already there, or come up with better data binding
                 vectorSource.addFeature(boulderFeature);
             }
         }
-    })
+        // Zoom to the points
+        var map = Template.instance().map;
+        map.getView().fitExtent(vectorSource.getExtent(), map.getSize());
+    });
     window.olmap = this.map;
     this.map.render();
 });
