@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ea5e028-af6b-4e5a-b776-d4a48b6a4a61" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/areapage.html" afterPath="$PROJECT_DIR$/client/views/areapage.html" />
+    <list default="true" id="0ea5e028-af6b-4e5a-b776-d4a48b6a4a61" name="Default" comment="Clicking on markers now takes you to 3d page.">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/map.js" afterPath="$PROJECT_DIR$/client/map.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/packages" afterPath="$PROJECT_DIR$/.meteor/packages" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/startup/startup.js" afterPath="$PROJECT_DIR$/client/startup/startup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/versions" afterPath="$PROJECT_DIR$/.meteor/versions" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="climbshare.iws" />
@@ -140,8 +136,8 @@
           <file leaf-file-name="map.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/client/map.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.31428573">
-                  <caret line="40" column="39" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
+                <state vertical-scroll-proportion="0.33333334">
+                  <caret line="65" column="64" selection-start-line="65" selection-start-column="64" selection-end-line="65" selection-end-column="64" />
                   <folding />
                 </state>
               </provider>
@@ -463,14 +459,20 @@
       <option name="project" value="LOCAL" />
       <updated>1429199067552</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Boulders now labelled on map.">
+      <created>1429211406201</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1429211406201</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="1918" y="-3" width="1370" height="775" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32876712" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -506,7 +508,9 @@
     <MESSAGE value="Implement router, start adding area maps." />
     <MESSAGE value="Boulder locations from database are now drawn on map." />
     <MESSAGE value="Map automatically zooms to area." />
-    <option name="LAST_COMMIT_MESSAGE" value="Map automatically zooms to area." />
+    <MESSAGE value="Boulders now labelled on map." />
+    <MESSAGE value="Clicking on markers now takes you to 3d page." />
+    <option name="LAST_COMMIT_MESSAGE" value="Clicking on markers now takes you to 3d page." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -640,8 +644,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/map.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31428573">
-          <caret line="40" column="39" selection-start-line="40" selection-start-column="39" selection-end-line="40" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="65" column="64" selection-start-line="65" selection-start-column="64" selection-end-line="65" selection-end-column="64" />
           <folding />
         </state>
       </provider>

@@ -48,16 +48,22 @@ Template.areaMap.onRendered(function() {
     var vectorLayer = new ol.layer.Vector({source: vectorSource});
     vectorLayer.setStyle(markerStyle);
     this.map.addLayer(vectorLayer);
-
+    var clickLinks = new ol.interaction.Select({condition: ol.events.condition.click});
+    this.map.addInteraction(clickLinks);
+    clickLinks.on('select', function(evt){
+        window.open(evt.target.getFeatures().getArray()[0].get('url'));
+    });
     this.autorun(function() {
         var area = Session.get('area');
         var areaBoulders = Boulders.find({area:area}).fetch();
         for (boulder in areaBoulders) {
-            var boulderCoords = areaBoulders[boulder].coords;
-            if (!!boulderCoords) {
+            var boulder = areaBoulders[boulder];
+            if (!!boulder.coords) {
                 var boulderFeature = new ol.Feature({
-                    geometry: new ol.geom.Point(boulderCoords).transform('EPSG:4326', 'EPSG:3857'),
-                    name: areaBoulders[boulder].name
+                    geometry: new ol.geom.Point(boulder.coords).transform('EPSG:4326', 'EPSG:3857'),
+                    name: boulder.name,
+                    //TODO improve -- something like Django's reverse()?
+                    url: '/' + boulder.area + '/' + boulder.name
                 });
                 //
                 //TODO need to check if it's already there, or come up with better data binding
@@ -68,6 +74,7 @@ Template.areaMap.onRendered(function() {
         var map = Template.instance().map;
         map.getView().fitExtent(vectorSource.getExtent(), map.getSize());
     });
+
     window.olmap = this.map;
     this.map.render();
 });
