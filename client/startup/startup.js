@@ -1,6 +1,22 @@
- 
 Meteor.startup(function () {
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+    // TODO most of this stuff should not happen if we're on a map page
+
+    Router.route('/', function () {
+        Session.set('area','socorro');
+        this.render('areaMap');
+    });
+
+    Router.route('/:area/:boulder', function () {
+        Session.set('loadedBoulder', this.params.boulder);
+        this.render('boulderPage');
+    });
+
+    Router.route('/:area', function () {
+        Session.set('area', this.params.area);
+        this.render('areaMap');
+    });
+
     Climbsim.init();
 
     function colorAllClimbsWhite() {
@@ -53,12 +69,6 @@ Meteor.startup(function () {
     }
     )
 
-    if (window.location.pathname === '/'){
-        Session.set('loadedBoulder', 'Streambed');
-    }else{
-        Session.set('loadedBoulder', window.location.pathname.replace('/','').replace('_',' '));
-    };
-    
     Session.set('mouseTool', 'addLabel');
     Session.set('toolboxTip','Click a tool, then double click on the rock.')
 })

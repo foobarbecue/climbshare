@@ -133,3 +133,9 @@ input[type=radio]:checked + img{
 #oldie{
   z-index: 20;  
 }
+
+/*TODO probably move this Map page stuff to own file*/
+#map{
+    width: 100%;
+    height: 100%;
+}
