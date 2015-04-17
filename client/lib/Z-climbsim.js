@@ -97,6 +97,7 @@ Climbsim.loadBoulder = function(boulderName){
         boulderName = Session.get('loadedBoulder')
     }
     boulder = Boulders.findOne({name:boulderName})
+
     // clear previous 3d model
     Climbsim.scene.remove(Climbsim.boulderMesh)
     // clear all climbs
@@ -105,7 +106,16 @@ Climbsim.loadBoulder = function(boulderName){
     var loader = new THREE.CTMLoader();
     loader.load('/models3d/' + boulder.model3D,
                 function(geometry){
-                    var boulderMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors, side: THREE.DoubleSide});
+                    if (!!boulder.texture){
+                        var boulderMaterial = new THREE.MeshBasicMaterial({
+                                map: THREE.ImageUtils.loadTexture('/models3d/' + boulder.texture),
+                                side: THREE.DoubleSide
+                            })
+                    } else {
+                        var boulderMaterial = new THREE.MeshBasicMaterial(
+                            {vertexColors: THREE.VertexColors, side: THREE.DoubleSide}
+                        );
+                    }
                     Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
                     Climbsim.boulderMesh.name = boulderName;
                     if (!!boulder.initialTransform){
