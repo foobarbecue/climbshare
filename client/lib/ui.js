@@ -16,7 +16,7 @@ jQuery.fn.selectText = function(){
     }
 };
 
-$(function() {
+Climbsim.menuinit = function(){
     $('#controlPanel').click(
         function(e){e.stopImmediatePropagation();}
                        );
@@ -26,4 +26,4 @@ $(function() {
             $(this).next('div').slideToggle();
             $(this).children('.expandArrow, .expandedArrow').toggle();
     });
-});
+};

@@ -5,7 +5,7 @@ Climbsim = {};
 
 var container;
 
-var camera, cameraTarget, boulderMesh, mouse2D, raycaster, intersects, projector, oscillator, climbData, climbsimInit, climbsimAnimate;
+var camera, mouse2D, raycaster, intersects, oscillator;
 var clock = new THREE.Clock();
 var projector = new THREE.Projector();
 var paused = false;
@@ -13,32 +13,32 @@ Climbsim.scene = {};
 
 Climbsim.init = function() {
         $("#progressBar").progressbar();
-        container = $('#threejs-container')
+        container = $('#threejs-container');
         Climbsim.scene = new THREE.Scene();
         projector = new THREE.Projector();
-        mouse2D = v(0,0,0)
+        mouse2D = v(0,0,0);
         camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
         // position and point the camera to the center of the scene
-        camera.position.set(1,-20,5)
+        camera.position.set(1,-20,5);
         // we use Z up for compatibility with UTM and lat lon
-        camera.up.set(0,0,1)
+        camera.up.set(0,0,1);
         // make a 3D mouse out of a sphere for manipulating stuff
         mouse3D = new THREE.Mesh(
                 new THREE.SphereGeometry(0.1,6,6),
                 new THREE.MeshBasicMaterial({color:'red',transparent:true}));
         Climbsim.scene.add(mouse3D);
-        container.on('mousemove',onmousemove)
+        container.on('mousemove',onmousemove);
         // TODO maybe this in template event handlers
         container.on('dblclick', function(evt){
             tools.current.run()
-        })
+        });
         
         // lights
         Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
 
         // grid
-        grid = new THREE.GridHelper(100,1)
-        grid.rotateX(Math.PI/2)
+        grid = new THREE.GridHelper(100,1);
+        grid.rotateX(Math.PI/2);
         Climbsim.scene.add(grid);
         Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
         // renderer
@@ -50,13 +50,13 @@ Climbsim.init = function() {
         container.append( Climbsim.renderer.domElement );
 
         // controls
-        controls = new THREE.OrbitControls( camera );
-        controls.domElement = container[0];
-        controls.dragToLook = true;
-        controls.rollSpeed = 0.5;
-        controls.movementSpeed = 25;
+        Climbsim.controls = new THREE.OrbitControls( camera );
+        Climbsim.controls.domElement = container[0];
+        Climbsim.controls.dragToLook = true;
+        Climbsim.controls.rollSpeed = 0.5;
+        Climbsim.controls.movementSpeed = 25;
         // listeners (which should probably go into a custom control at some point)
-        controls.addEventListener( 'change', render );
+        Climbsim.controls.addEventListener( 'change', render );
         // resize
         window.addEventListener( 'resize', onWindowResize, false );
         
@@ -103,7 +103,7 @@ Climbsim.loadBoulder = function(boulderName){
     this.removeAllClimbs();
     // load CTM model
     var loader = new THREE.CTMLoader();
-    loader.load('data/models/' + boulder.model3D, 
+    loader.load('/models3d/' + boulder.model3D,
                 function(geometry){
                     var boulderMaterial = new THREE.MeshBasicMaterial({vertexColors: THREE.VertexColors, side: THREE.DoubleSide});
                     Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
@@ -119,7 +119,7 @@ Climbsim.loadBoulder = function(boulderName){
                     });
     if (!!boulder.pointcloud){
         var material = new THREE.ParticleSystemMaterial( { size: 0.05, vertexColors: true } );
-        var pco=POCLoader.load("data/models/" + boulder.pointcloud);
+        var pco=POCLoader.load("/" + boulder.pointcloud);
         var pointcloud = new Potree.PointCloudOctree(pco, material);
         pointCloud.name = 'pointcloud'
         Climbsim.scene.add(pointcloud);
@@ -263,7 +263,7 @@ function onWindowResize() {
 
 Climbsim.animate = function() {
         requestAnimationFrame( Climbsim.animate );
-        controls.update();
+        Climbsim.controls.update();
         Labels.find().map(positionLabel);
         render();
 }
