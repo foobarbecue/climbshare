@@ -2,14 +2,17 @@ Meteor.startup(function () {
     if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
     // TODO most of this stuff should not happen if we're on a map page
 
-    Router.route('/', function () {
-        Session.set('area','socorro');
-        this.render('areaMap');
+    Router.route('/', {
+        name:'main_map',
+        action:function () {
+            Session.set('area', 'socorro');
+            this.render('areaMap');
+        }
     });
 
-    Router.route('/:area/:boulder', function () {
-        Session.set('area', this.params.area);
-        Session.set('loadedBoulder', this.params.boulder);
+    Router.route('/:area/:boulder', {
+        name:'boulder',
+        action:function () {
         this.render('boulderPage');
         function colorAllClimbsWhite() {
             $(Climbsim.scene.children).each(function () {
@@ -18,15 +21,16 @@ Meteor.startup(function () {
                 }
             })
         }
-
         // Load the currently selected 3D boulder model
         Deps.autorun(function () {
-            try {
+            //try {
+            if (!!Climbsim.ready) {
                 boulderName = Session.get('loadedBoulder');
                 Climbsim.loadBoulder(boulderName);
                 $('#boulderList').val(boulderName);
-            } catch (TypeError) {
-                console.log('failed to load ' + boulderName);
+                //} catch (TypeError) {
+                //    console.log('failed to load ' + boulderName);
+                //}
             }
         })
 
@@ -61,14 +65,19 @@ Meteor.startup(function () {
             }
         )
 
-        Session.set('mouseTool', 'addLabel');
-        Session.set('toolboxTip','Click a tool, then double click on the rock.')
-
+    },
+    waitOn: function () {
         Climbsim.init();
         Climbsim.animate();
         Climbsim.menuinit();
-
-    });
+        return Meteor.subscribe("boulders");
+    },
+    onAfterAction: function(){
+        Session.set('mouseTool', 'addLabel');
+        Session.set('toolboxTip','Click a tool, then double click on the rock.')
+        Session.set('area', this.params.area);
+        Session.set('loadedBoulder', this.params.boulder);
+    }});
 
     Router.route('/:area', function () {
         Session.set('area', this.params.area);

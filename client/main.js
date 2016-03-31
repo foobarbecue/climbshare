@@ -4,7 +4,6 @@ Session.set("selectedLabel", null)
 // subscriptions
 Meteor.subscribe("labels");
 Meteor.subscribe("climbs");
-Meteor.subscribe("boulders");
 Meteor.subscribe("users");
 
 // scene manipulation functions (probably should be in climbsim.js)

@@ -234,11 +234,21 @@ data = {
                 -0.0143308, -0.436025, -0.0189154, 1.31333,
                 0, 0, 0, 1]
         },
-        "walrus": {"name": "Walrus boulder",
+        "walrus": {"name": "Walrus Boulder",
             "area":"Socorro",
             "model3D": "walrus.ctm",
             "coords":[-106.986381, 33.982293],
             "texture": "walrus.jpg"
+        },
+        "gimmies": {
+            "name":"The Gimmies",
+            "model3D":"gimmies.ctm",
+            "texture":"gimmies.jpg",
+        },
+        "unbeatable": {
+            "name":"Unbeatable Boulder",
+            "model3D":"unbeatable.ctm",
+            "texture":"unbeatable.jpg",
         }
     }
 }

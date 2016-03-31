@@ -62,7 +62,8 @@ Climbsim.init = function() {
         
         // skybox
         Climbsim.addSkybox();
-        
+
+        Climbsim.ready = true;
 }
 
 Climbsim.removeAllClimbs = function(){

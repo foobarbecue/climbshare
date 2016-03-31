@@ -1,9 +1,12 @@
-<head>
-  <title>climbshare</title>   
-</head>
+<template name="mainLayout">
+    <head>
+      <title>climbshare</title>
+    </head>
 
-<body>
-</body>
+    <body>
+    {{> Template.dynamic template=content}}
+    </body>
+</template>
 
 <template name="boulderPage">
   {{> loginButtons align="right"}}
