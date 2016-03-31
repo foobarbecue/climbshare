@@ -1,3 +1,7 @@
+import { Session } from 'meteor/session';
+import "../imports/startup/client/routes.js";
+import { Climbsim } from '../imports/ui/Z-climbsim.js';
+
 // initial variables
 Session.set("selectedLabel", null)
 
@@ -5,6 +9,7 @@ Session.set("selectedLabel", null)
 Meteor.subscribe("labels");
 Meteor.subscribe("climbs");
 Meteor.subscribe("users");
+Meteor.subscribe("boulders");
 
 // scene manipulation functions (probably should be in climbsim.js)
 function colorAllClimbsWhite() {
@@ -20,6 +25,12 @@ Handlebars.registerHelper('loadedBoulder',function(input){
 });
 
 // template definitions
+Template.boulderPage.onRendered(function() {
+  Climbsim.init();
+  Climbsim.animate();
+  Climbsim.menuinit();
+});
+
 Template.controlPanel.helpers({
     labels: function () {
         return Labels.find();
