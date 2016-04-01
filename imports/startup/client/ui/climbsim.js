@@ -13,7 +13,7 @@ Climbsim.init = function() {
   //$("#progressBar").progressbar();
   Climbsim.container = $('#threejs-container');
   Climbsim.scene = new THREE.Scene();
-  projector = new THREE.Projector();
+  var projector = new THREE.Projector();
   mouse2D = v(0,0,0);
   camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
   // position and point the camera to the center of the scene
@@ -21,10 +21,10 @@ Climbsim.init = function() {
   // we use Z up for compatibility with UTM and lat lon
   camera.up.set(0,0,1);
   // make a 3D mouse out of a sphere for manipulating stuff
-  mouse3D = new THREE.Mesh(
+  Climbsim.mouse3D = new THREE.Mesh(
     new THREE.SphereGeometry(0.1,6,6),
     new THREE.MeshBasicMaterial({color:'red',transparent:true}));
-  Climbsim.scene.add(mouse3D);
+  Climbsim.scene.add(Climbsim.mouse3D);
   Climbsim.container.on('mousemove',onmousemove);
   // TODO maybe this in template event handlers
   Climbsim.container.on('dblclick', function(evt){
@@ -35,7 +35,7 @@ Climbsim.init = function() {
   Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
 
   // grid
-  grid = new THREE.GridHelper(100,1);
+  var grid = new THREE.GridHelper(100,1);
   grid.rotateX(Math.PI/2);
   Climbsim.scene.add(grid);
   Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
@@ -184,9 +184,9 @@ Climbsim.addNewClimb = function (){
     boulder_id: boulder._id,
     createdBy:Meteor.userId(),
     vertices:[[
-      mouse3D.position.x,
-      mouse3D.position.y,
-      mouse3D.position.z
+      Climbsim.mouse3D.position.x,
+      Climbsim.mouse3D.position.y,
+      Climbsim.mouse3D.position.z
     ]]
   });
   if (!!newClimb){
@@ -254,7 +254,7 @@ function onmousemove( e ){
   if (intersects.length > 0){
     var pos = intersects[0].point;
     if (typeof pos != null) {
-      mouse3D.position.set(pos.x, pos.y, pos.z);
+      Climbsim.mouse3D.position.set(pos.x, pos.y, pos.z);
     }
   }
 //  live drawing for addClimb mouseTool
@@ -274,8 +274,8 @@ Climbsim.animate = function() {
 
 function render() {
   oscillator=((Math.sin(clock.getElapsedTime()*3))+Math.PI/2);
-  mouse3D.material.color.setRGB(1,0,0);
-  mouse3D.material.opacity=oscillator/Math.PI;
+  Climbsim.mouse3D.material.color.setRGB(1,0,0);
+  Climbsim.mouse3D.material.opacity=oscillator/Math.PI;
   Climbsim.renderer.render( Climbsim.scene, camera );
 }
 
@@ -288,10 +288,10 @@ function onWindowResize() {
 // moves div of a label to the correct 2D coordinates
 // based on its 3D .position value
 function positionLabel(label){
-  labelElement=$('.label3D.'+label._id)[0]
+  var labelElement=$('.label3D.'+label._id)[0]
   if(labelElement){
     p3D=v(label.position.x, label.position.y, label.position.z);
-    p2D=projector.projectVector(p3D,camera)
+    p2D=p3D.project(camera);
     //scale from normalized device coordinates to window
     labelElement.style.left= (p2D.x + 1)/2 * window.innerWidth + 'px';
     labelElement.style.top= - (p2D.y - 1)/2 * window.innerHeight + 'px';

@@ -3,8 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="0ea5e028-af6b-4e5a-b776-d4a48b6a4a61" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/packages" afterPath="$PROJECT_DIR$/.meteor/packages" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.meteor/versions" afterPath="$PROJECT_DIR$/.meteor/versions" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/main.js" afterPath="$PROJECT_DIR$/client/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imports/startup/client/routes.js" afterPath="$PROJECT_DIR$/imports/startup/client/routes.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/boulderpage.html" afterPath="$PROJECT_DIR$/client/views/boulderpage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imports/startup/client/ui/climbsim.js" afterPath="$PROJECT_DIR$/imports/startup/client/ui/climbsim.js" />
     </list>
     <ignored path="climbshare.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,8 +35,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1067">
-              <caret line="330" column="12" selection-start-line="330" selection-start-column="12" selection-end-line="330" selection-end-column="12" />
+            <state relative-caret-position="168">
+              <caret line="190" column="33" selection-start-line="190" selection-start-column="33" selection-end-line="190" selection-end-column="33" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -44,8 +47,18 @@
       <file leaf-file-name="map.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/map.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1402">
+            <state relative-caret-position="1820">
               <caret line="65" column="64" selection-start-line="65" selection-start-column="64" selection-end-line="65" selection-end-column="64" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="math_etc.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/imports/math_etc.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-504">
+              <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -54,18 +67,18 @@
       <file leaf-file-name="climbsim.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/imports/startup/client/ui/climbsim.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="539">
-              <caret line="180" column="27" selection-start-line="180" selection-start-column="27" selection-end-line="180" selection-end-column="27" />
+            <state relative-caret-position="593">
+              <caret line="190" column="5" selection-start-line="190" selection-start-column="5" selection-end-line="190" selection-end-column="5" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#133#195#0" expanded="true" />
-                <element signature="e#2558#3543#0" expanded="false" />
-                <element signature="e#3583#3755#0" expanded="false" />
-                <element signature="e#3794#4269#0" expanded="false" />
-                <element signature="e#5926#6117#0" expanded="false" />
-                <element signature="e#6572#7007#0" expanded="false" />
-                <element signature="e#7053#7428#0" expanded="false" />
-                <element signature="e#7478#7804#0" expanded="false" />
+                <element signature="e#2584#3569#0" expanded="false" />
+                <element signature="e#3609#3781#0" expanded="false" />
+                <element signature="e#3820#4295#0" expanded="false" />
+                <element signature="e#5952#6143#0" expanded="false" />
+                <element signature="e#6625#7060#0" expanded="false" />
+                <element signature="e#7106#7481#0" expanded="false" />
+                <element signature="e#7531#7857#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -106,8 +119,8 @@
       <file leaf-file-name="boulderpage.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/boulderpage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <state relative-caret-position="847">
+              <caret line="32" column="16" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
               <folding>
                 <element signature="n#template#5;n#!!top" expanded="false" />
               </folding>
@@ -121,19 +134,6 @@
             <state relative-caret-position="168">
               <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="z-climbsim.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/imports/startup/client/ui/z-climbsim.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="255" column="12" selection-start-line="255" selection-start-column="12" selection-end-line="255" selection-end-column="54" />
-              <folding>
-                <element signature="e#458#2404#0" expanded="false" />
-                <element signature="e#6004#6958#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -196,11 +196,11 @@
         <option value="$PROJECT_DIR$/imports/ui/climbsim.js" />
         <option value="$PROJECT_DIR$/imports/startup/client/three-extras/ctm/CTMLoader.js" />
         <option value="$PROJECT_DIR$/imports/startup/client/ui/z-climbsim.js" />
-        <option value="$PROJECT_DIR$/client/views/boulderpage.html" />
-        <option value="$PROJECT_DIR$/imports/startup/client/ui/climbsim.js" />
         <option value="$PROJECT_DIR$/imports/startup/client/ui/ui.js" />
         <option value="$PROJECT_DIR$/imports/startup/client/routes.js" />
+        <option value="$PROJECT_DIR$/client/views/boulderpage.html" />
         <option value="$PROJECT_DIR$/client/main.js" />
+        <option value="$PROJECT_DIR$/imports/startup/client/ui/climbsim.js" />
       </list>
     </option>
   </component>
@@ -632,7 +632,7 @@
       <workItem from="1459121023373" duration="8385000" />
       <workItem from="1459380162320" duration="1239000" />
       <workItem from="1459443435204" duration="5231000" />
-      <workItem from="1459450266341" duration="41335000" />
+      <workItem from="1459450266341" duration="44576000" />
     </task>
     <task id="LOCAL-00001" summary="Boulder locations from database are now drawn on map.">
       <created>1429164430225</created>
@@ -687,7 +687,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="59122000" />
+    <option name="totallyTimeSpent" value="62363000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="3296" y="0" width="1920" height="2160" extended-state="0" />
@@ -1042,14 +1042,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/imports/math_etc.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/imports/startup/client/orbitcontrols.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1135,24 +1127,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/boulderpage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding>
-            <element signature="n#template#5;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/map.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1402">
-          <caret line="65" column="64" selection-start-line="65" selection-start-column="64" selection-end-line="65" selection-end-column="64" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/stylesheets/base.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
@@ -1177,24 +1151,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/imports/startup/client/ui/climbsim.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="539">
-          <caret line="180" column="27" selection-start-line="180" selection-start-column="27" selection-end-line="180" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#133#195#0" expanded="true" />
-            <element signature="e#2558#3543#0" expanded="false" />
-            <element signature="e#3583#3755#0" expanded="false" />
-            <element signature="e#3794#4269#0" expanded="false" />
-            <element signature="e#5926#6117#0" expanded="false" />
-            <element signature="e#6572#7007#0" expanded="false" />
-            <element signature="e#7053#7428#0" expanded="false" />
-            <element signature="e#7478#7804#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/imports/startup/client/routes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -1203,10 +1159,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1820">
+          <caret line="65" column="64" selection-start-line="65" selection-start-column="64" selection-end-line="65" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/boulderpage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="847">
+          <caret line="32" column="16" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
+          <folding>
+            <element signature="n#template#5;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/imports/math_etc.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-504">
+          <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/imports/startup/client/ui/climbsim.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="593">
+          <caret line="190" column="5" selection-start-line="190" selection-start-column="5" selection-end-line="190" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#133#195#0" expanded="true" />
+            <element signature="e#2584#3569#0" expanded="false" />
+            <element signature="e#3609#3781#0" expanded="false" />
+            <element signature="e#3820#4295#0" expanded="false" />
+            <element signature="e#5952#6143#0" expanded="false" />
+            <element signature="e#6625#7060#0" expanded="false" />
+            <element signature="e#7106#7481#0" expanded="false" />
+            <element signature="e#7531#7857#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1067">
-          <caret line="330" column="12" selection-start-line="330" selection-start-column="12" selection-end-line="330" selection-end-column="12" />
+        <state relative-caret-position="168">
+          <caret line="190" column="33" selection-start-line="190" selection-start-column="33" selection-end-line="190" selection-end-column="33" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
