@@ -9,7 +9,6 @@
  */
 import THREE from 'three';
 import { CTM } from '/imports/startup/client/three-extras/ctm/ctm.js';
-console.log(CTM);
 THREE.CTMLoader = function () {
 
 	THREE.Loader.call( this );

@@ -7,7 +7,8 @@ import '/imports/startup/client/three-extras/ctm/CTMLoader.js'
 export let Climbsim = {};
 
 var clock = new THREE.Clock();
-
+var raycaster = new THREE.Raycaster();
+var camera, mouse2D, intersects, oscillator;
 Climbsim.init = function() {
   //$("#progressBar").progressbar();
   container = $('#threejs-container');
@@ -242,23 +243,27 @@ Climbsim.moveLatestVertexToMousePos= function(){
 function onmousemove( e ){
   // mouse movement without any buttons pressed should move the 3d mouse
   // TODO URGENT: update projector to new version of three raycasting
-  // e.preventDefault();
-  // mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
-  // mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  // mouse2D.z = 0.5;
+  e.preventDefault();
+  mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  mouse2D.z = 0.5;
   // projector.unprojectVector(mouse2D.clone(), camera);
   // raycaster = projector.pickingRay( mouse2D.clone(), camera );
-  // intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);
-  // if (intersects.length > 0){
-  //   pos = intersects[0].point
-  //   if (typeof pos != null) {
-  //     mouse3D.position = pos;
-  //   }
-  // }
-  // // live drawing for addClimb mouseTool
-  // if (!!tools.current && tools.current.name == 'addVertexToClimb'){
-  //   Climbsim.moveLatestVertexToMousePos();
-  // }
+  raycaster.setFromCamera(mouse2D,camera);
+  intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);
+  if (intersects.length > 0){
+    var pos = intersects[0].point;
+    if (typeof pos != null) {
+      mouse3D.position.set(pos.x, pos.y, pos.z);
+      console.log(pos.x);
+    }
+  }
+//  live drawing for addClimb mouseTool
+  if (typeof tools!=="undefined" &&
+    !!tools.current
+    && tools.current.name == 'addVertexToClimb'){
+    Climbsim.moveLatestVertexToMousePos();
+  }
 }
 
 Climbsim.animate = function() {

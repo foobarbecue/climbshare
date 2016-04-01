@@ -253,7 +253,7 @@ function onmousemove( e ){
         if (intersects.length > 0){
             pos = intersects[0].point
             if (typeof pos != null) {
-            mouse3D.position = pos;
+            mouse3D.position.set(pos.x, pos.y, pos.z);
             }
         }
         // live drawing for addClimb mouseTool

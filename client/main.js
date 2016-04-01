@@ -1,8 +1,8 @@
 import THREE from 'three';
-import { Climbsim } from '/imports/ui/climbsim.js';
+import { Climbsim } from '/imports/startup/client/ui/climbsim.js';
 import { Session } from 'meteor/session';
-import "../imports/startup/client/routes.js";
-import "../imports/ui/ui.js"
+import "/imports/startup/client/routes.js";
+import "/imports/startup/client/ui/ui.js";
 
 // // initial variables
 // Session.set("selectedLabel", null)
