@@ -31,7 +31,6 @@ Template.boulderPage.onRendered(function() {
     Climbsim.init();
     Climbsim.animate();
     menuinit();
-    Climbsim.loadBoulder("Streambed");
   }});
 });
 

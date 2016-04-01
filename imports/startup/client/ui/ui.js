@@ -27,3 +27,4 @@ menuinit = function(){
             $(this).children('.expandArrow, .expandedArrow').toggle();
     });
 };
+
