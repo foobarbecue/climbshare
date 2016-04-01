@@ -1,12 +1,14 @@
 import THREE from 'three';
 import '/imports/math_etc.js';
+//TODO find a better solution for including the three.js "examples" addons
 import '/imports/startup/client/three-extras/OrbitControls.js'
+import '/imports/startup/client/three-extras/ctm/CTMLoader.js'
+// import '/imports/startup/client/three-extras/gltf'
 export let Climbsim = {};
 
 var clock = new THREE.Clock();
 
 Climbsim.init = function() {
-  console.log(THREE);
   //$("#progressBar").progressbar();
   container = $('#threejs-container');
   Climbsim.scene = new THREE.Scene();
@@ -59,7 +61,7 @@ Climbsim.init = function() {
   Climbsim.addSkybox();
 
   Climbsim.ready = true;
-}
+};
 
 Climbsim.addSkybox = function (){
   var path = "/skybox/";
@@ -69,7 +71,6 @@ Climbsim.addSkybox = function (){
     path + 'py' + format, path + 'ny' + format,
     path + 'pz' + format, path + 'nz' + format
   ];
-  console.log(THREE);
   var skyboxLoader = new THREE.CubeTextureLoader();
   skyboxLoader.setPath("/skybox/");
   var textureCube = skyboxLoader.load([
@@ -95,10 +96,176 @@ Climbsim.addSkybox = function (){
   Climbsim.scene.add( mesh );
 };
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  Climbsim.renderer.setSize( window.innerWidth, window.innerHeight );
+Climbsim.removeAllClimbs = function(){
+  $(Climbsim.scene.children).each(function(){
+    if (this instanceof THREE.Line && !(this instanceof THREE.GridHelper)){
+      Climbsim.scene.remove(this);
+    }
+  });
+};
+
+Climbsim.loadClimb = function(climb){
+  if (climb.vertices.length > 1){
+    vertices = $.map(climb.vertices, function(vert){return v(vert[0],vert[1],vert[2])});
+    climbCurvified = curvify(vertices)
+    climbCurvified.name=climb._id
+    var existing = Climbsim.scene.getObjectByName(climb._id)
+    if (!!existing){
+      Climbsim.scene.remove(existing);
+    }
+    Climbsim.scene.add(climbCurvified);
+    return climbCurvified
+  }
+  else{
+    // climb does not have enough vertices to draw
+    return null
+  }
+};
+
+Climbsim.loadBoulder = function(boulderName){
+  $("#progressBar,#progressText").show();
+  if (typeof(boulderName) === "undefined"){
+    boulderName = Session.get('loadedBoulder')
+  }
+  boulder = Boulders.findOne({name:boulderName})
+
+  // clear previous 3d model
+  Climbsim.scene.remove(Climbsim.boulderMesh);
+  // clear all climbs
+  this.removeAllClimbs();
+  // load CTM model
+  var loader = new THREE.CTMLoader();
+  loader.load('/models3d/' + boulder.model3D,
+    function(geometry){
+      if (!!boulder.texture){
+        var boulderMaterial = new THREE.MeshBasicMaterial({
+          map: THREE.ImageUtils.loadTexture('/models3d/' + boulder.texture),
+          side: THREE.DoubleSide
+        })
+      } else {
+        var boulderMaterial = new THREE.MeshBasicMaterial(
+          {vertexColors: THREE.VertexColors, side: THREE.DoubleSide}
+        );
+      }
+      Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
+      Climbsim.boulderMesh.name = boulderName;
+      if (!!boulder.initialTransform){
+        var xform = new THREE.Matrix4();
+        xform.set.apply(xform,boulder.initialTransform)
+        Climbsim.boulderMesh.applyMatrix(xform);
+      }
+      Climbsim.scene.add(Climbsim.boulderMesh);
+      $("#progressBar,#progressText").fadeOut();
+      Climbsim.loadClimbs();
+    });
+  if (!!boulder.pointcloud){
+    var material = new THREE.ParticleSystemMaterial( { size: 0.05, vertexColors: true } );
+    var pco=POCLoader.load("/" + boulder.pointcloud);
+    var pointcloud = new Potree.PointCloudOctree(pco, material);
+    pointCloud.name = 'pointcloud'
+    Climbsim.scene.add(pointcloud);
+  }
+};
+
+Climbsim.loadClimbs = function(){
+  boulder = Boulders.findOne({name:Session.get('loadedBoulder')});
+  if (!!boulder){
+    Climbsim.removeAllClimbs();
+    Climbs.find({boulder_id:boulder._id}).map(Climbsim.loadClimb);
+  }
+};
+
+Climbsim.addNewClimb = function (){
+  boulder = Boulders.findOne({name:Session.get('loadedBoulder')});
+  newClimb = Climbs.insert({
+    climbName: 'new climb',
+    boulder_id: boulder._id,
+    createdBy:Meteor.userId(),
+    vertices:[[
+      mouse3D.position.x,
+      mouse3D.position.y,
+      mouse3D.position.z
+    ]]
+  });
+  if (!!newClimb){
+    Session.set('addClimbVertices')
+    return newClimb
+  }
+};
+
+Climbsim.addLabelForClimb = function(climb){
+  climb = climb || Climbsim.latestClimb
+  Labels.insert(
+    {content:climb.climbName,
+      position:{
+        x:climb.vertices[0][0],
+        y:climb.vertices[0][1],
+        z:climb.vertices[0][2]
+      },
+      refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
+      refers_to_id:climb._id,
+      refers_to_type:'climb',
+      createdBy: climb.createdBy || 'automatic',
+      createdOn:new Date()}
+  )
+};
+
+Climbsim.addVertexToClimb = function(climb){
+  // if climb not passed in as argument, work on the one that's selected.
+  // TODO should factor this out or otherwise simplify.
+  climb = climb || Climbs.findOne(Labels.findOne(Session.get('selectedLabel')).refers_to_id);
+  Climbs.update({_id:climb._id}, {$push:{vertices:
+    [
+      mouse3D.position.x,
+      mouse3D.position.y,
+      mouse3D.position.z
+    ]
+  }});
+
+};
+
+Climbsim.moveLatestVertexToMousePos= function(){
+  climb = Climbs.findOne(Climbsim.latestClimbId);
+  if (climb.vertices.length > 1){
+    Climbs.update({_id:climb._id}, {$pop: {vertices:1}});
+  };
+  Climbs.update({_id:climb._id}, {$push:{vertices:
+    [
+      mouse3D.position.x,
+      mouse3D.position.y,
+      mouse3D.position.z
+    ]
+  }});
+  Climbsim.loadClimb(climb);
+};
+
+function onmousemove( e ){
+  // mouse movement without any buttons pressed should move the 3d mouse
+  // TODO URGENT: update projector to new version of three raycasting
+  // e.preventDefault();
+  // mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
+  // mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  // mouse2D.z = 0.5;
+  // projector.unprojectVector(mouse2D.clone(), camera);
+  // raycaster = projector.pickingRay( mouse2D.clone(), camera );
+  // intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);
+  // if (intersects.length > 0){
+  //   pos = intersects[0].point
+  //   if (typeof pos != null) {
+  //     mouse3D.position = pos;
+  //   }
+  // }
+  // // live drawing for addClimb mouseTool
+  // if (!!tools.current && tools.current.name == 'addVertexToClimb'){
+  //   Climbsim.moveLatestVertexToMousePos();
+  // }
+}
+
+Climbsim.animate = function() {
+  requestAnimationFrame( Climbsim.animate );
+  Climbsim.controls.update();
+  Labels.find().map(positionLabel);
+  render();
 }
 
 function render() {
@@ -106,4 +273,23 @@ function render() {
   mouse3D.material.color.setRGB(1,0,0);
   mouse3D.material.opacity=oscillator/Math.PI;
   Climbsim.renderer.render( Climbsim.scene, camera );
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  Climbsim.renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+// moves div of a label to the correct 2D coordinates
+// based on its 3D .position value
+function positionLabel(label){
+  labelElement=$('.label3D.'+label._id)[0]
+  if(labelElement){
+    p3D=v(label.position.x, label.position.y, label.position.z);
+    p2D=projector.projectVector(p3D,camera)
+    //scale from normalized device coordinates to window
+    labelElement.style.left= (p2D.x + 1)/2 * window.innerWidth + 'px';
+    labelElement.style.top= - (p2D.y - 1)/2 * window.innerHeight + 'px';
+  }
 }

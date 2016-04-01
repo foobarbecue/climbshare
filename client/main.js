@@ -6,11 +6,10 @@ import "../imports/startup/client/routes.js";
 // // initial variables
 // Session.set("selectedLabel", null)
 //
-// // subscriptions
-// Meteor.subscribe("labels");
-// Meteor.subscribe("climbs");
-// Meteor.subscribe("users");
-// Meteor.subscribe("boulders");
+// subscriptions
+Meteor.subscribe("labels");
+Meteor.subscribe("climbs");
+Meteor.subscribe("users");
 
 // scene manipulation functions (probably should be in climbsim.js)
 // function colorAllClimbsWhite() {
@@ -26,10 +25,14 @@ import "../imports/startup/client/routes.js";
 // });
 
 // template definitions
+Template.boulderPage.onCreated(function(){
+  this.subscribe("boulders",{onReady:function(){
+
+    Climbsim.loadBoulder("Streambed");
+  }});
+})
 Template.boulderPage.onRendered(function() {
   Climbsim.init();
-  console.log('initialized');
-
   // Climbsim.animate();
   // Climbsim.menuinit();
 });
