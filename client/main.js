@@ -325,6 +325,19 @@ Template.toolbox.events({
     }
 });
 
+// Load the currently selected 3D boulder model
+Deps.autorun(function () {
+    try {
+        var boulderName = Session.get('loadedBoulder');
+        Climbsim.loadBoulder(boulderName);
+        $('#boulderList').val(boulderName);
+    } catch (TypeError) {
+        console.log('failed to load ' + boulderName);
+    }
+})
+
 Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
     })
+
+
