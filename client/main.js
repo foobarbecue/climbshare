@@ -33,63 +33,60 @@ Template.boulderPage.onRendered(function() {
     menuinit();
     Climbsim.loadBoulder("Streambed");
   }});
-
-  // Climbsim.animate();
-  // Climbsim.menuinit();
 });
-//
-// Template.controlPanel.helpers({
-//     labels: function () {
-//         return Labels.find();
-//     },
-//     users: function () {
-//         return Meteor.users.find();
-//     },
-//     models3D: function () {
-//         $('select').val(Session.get('loadedBoulder'));
-//         return Boulders.find();
-//     },
-//     climbs: function () {
-//         boulder = Boulders.findOne({
-//             name: Session.get('loadedBoulder')
-//         });
-//         if (typeof boulder !== 'undefined') {
-//             return Labels.find({
-//                 refers_to_boulder: boulder._id,
-//                 refers_to_type: 'climb'
-//             });
-//         }
-//     },
-// })
-//
-// Template.controlPanel.events({
-//     "change #boulderList": function (e, tmpl) {
-//         Session.set("loadedBoulder", e.target.value)
-//     },
-//     "mouseenter .ctrlPnlClimb": function (e, tmpl) {
-//         label = Labels.findOne(e.currentTarget.id);
-//         Session.set("selectedLabel", label._id);
-//     },
-//     "change #filterDisplay": function (e){
-//         var filterInputData = $(e.currentTarget).serializeArray();
-//         Session.set("filter", filterInputData);
-//         Deps.flush();
-//         Climbsim.positionLabelIcons();
-//     },
-//     "mousedown #submitClimbshareFeedback": function(){
-//         if (Meteor.userId()){
-//             Feedback.insert({
-//                 content:$('#climbshareFeedback textarea').val(),
-//                 createdBy:Meteor.userId(),
-//                 createdOn:TimeSync.serverTime()
-//             })
-//             alert("Feedback submitted.")
-//         }
-//         else{
-//             alert("Please log in to submit feedback.")
-//         }
-//     }
-// })
+
+Template.controlPanel.helpers({
+    labels: function () {
+        return Labels.find();
+    },
+    users: function () {
+        return Meteor.users.find();
+    },
+    models3D: function () {
+        $('select').val(Session.get('loadedBoulder'));
+        return Boulders.find();
+    },
+    climbs: function () {
+        boulder = Boulders.findOne({
+            name: Session.get('loadedBoulder')
+        });
+        if (typeof boulder !== 'undefined') {
+            return Labels.find({
+                refers_to_boulder: boulder._id,
+                refers_to_type: 'climb'
+            });
+        }
+    },
+})
+
+Template.controlPanel.events({
+    "change #boulderList": function (e, tmpl) {
+        Session.set("loadedBoulder", e.target.value)
+    },
+    "mouseenter .ctrlPnlClimb": function (e, tmpl) {
+        label = Labels.findOne(e.currentTarget.id);
+        Session.set("selectedLabel", label._id);
+    },
+    "change #filterDisplay": function (e){
+        var filterInputData = $(e.currentTarget).serializeArray();
+        Session.set("filter", filterInputData);
+        Deps.flush();
+        Climbsim.positionLabelIcons();
+    },
+    "mousedown #submitClimbshareFeedback": function(){
+        if (Meteor.userId()){
+            Feedback.insert({
+                content:$('#climbshareFeedback textarea').val(),
+                createdBy:Meteor.userId(),
+                createdOn:TimeSync.serverTime()
+            })
+            alert("Feedback submitted.")
+        }
+        else{
+            alert("Please log in to submit feedback.")
+        }
+    }
+})
 // Template.labels3D.labels = function () {
 //     loadedBoulder = Boulders.findOne({
 //         name: Session.get('loadedBoulder')
@@ -214,120 +211,120 @@ Template.boulderPage.onRendered(function() {
 //     }
 // })
 //
-// function genLabelAdder(labelType){
-//     return function(){
-//         if (Meteor.user() != null){
-//         labelID=Labels.insert({
-//             content:'type here',
-//             position:{
-//                 x:mouse3D.position.x,
-//                 y:mouse3D.position.y,
-//                 z:mouse3D.position.z
-//             },
-//             createdBy:Meteor.userId(),
-//             //TODO Well that's obviously wrong. Same value in two fields.
-//             createdByName:Meteor.userId(),
-//             createdOn:TimeSync.serverTime(),
-//             refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
-//             refers_to_type:labelType
-//         });
-//         $("#" + labelID + " .label3Dcontent").focus();
-//         $("#" + labelID + " .label3Dcontent").selectText();
-//         }
-//         else{
-//             alert('Sign up / log in to add data.')
-//         }
-//
-//     }}
-//
-//
-// tools = []
-// function Tool(name, icon, effect, tooltip, instructions, showToUser) {
-//     this.name = name;
-//     this.icon = icon;
-//     this.run = effect;
-//     this.tooltip = tooltip;
-//     this.instructions=instructions;
-//     this.showToUser = showToUser;
-//     if (typeof(showToUser) === 'undefined'){
-//         this.showToUser=true;
-//     };
-// }
-//
-// tools = {
-// addNewClimb : new Tool('addNewClimb','/img/addClimb.png', function(){
-//     // Need to deprecate Climbsim.latestClimb and just store the ID
-//     // because it's an unnecessary non-reactive manual cache
-//     Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
-//     Climbsim.latestClimbId = Climbsim.latestClimb._id;
-//     Climbsim.addLabelForClimb(Climbsim.latestClimb);
-//     tools.current=tools.addVertexToClimb;
-//     },
-//     'Tool: Add climb',
-//     'Double click to begin, and keep double clicking to draw the climb. Press enter when finished.'
-//         ),
-//
-// addVertexToClimb : new Tool('addVertexToClimb','/img/addVertex.png', function(){
-//     Climbsim.addVertexToClimb(Climbsim.latestClimb);
-//     Climbsim.loadClimb(Climbsim.latestClimb);
-//     $(document).on('keydown.finishClimb', function(e){
-//         if (e.keyCode == 13){
-//             // delete latest vertex b/c people are "already" finished when the press enter. If statement to deal with bubbling which was causing all vertices to be removed.
-//             if (tools.current==tools.addVertexToClimb){
-//                 Climbs.update({_id:climb._id}, {$pop: {vertices:1}});
-//             };
-//             tools.current=tools.addNewClimb;
-//
-//             $(this).off('keydown.finishClimb')
-//         }
-//
-//
-//     })
-//     },
-//     'Double click on the rock to add a new vertex' + Session.get('selectedLabel'),
-//     '',
-//     false
-// ),
-// addWarning : new Tool('addLabel','/img/addWarning.png', genLabelAdder('warning'),
-//     'Tool: Add warning',
-//     'Double click on the rock to add a warning.'
-// ),
-// addBeta : new Tool('addLabel','/img/addBeta.png', genLabelAdder('beta'),
-//     'Tool: Add beta',
-//     'Double click on the rock to add beta.'
-// ),
-// addOther : new Tool('addLabel','/img/addOther.png', genLabelAdder('other'),
-//     'Tool: Add miscelleneous info',
-//     'Double click on the rock to add a miscelleneous label.'
-// ),
-// }
-// Template.toolbox.helpers({
-//
-//     tools: tools,
-//         // maybe rename things to avoid scope confusion
-//     toolboxTip: function(){
-//             return Session.get('toolboxTip');
-//     },
-//     instructions: function(){
-//             return Session.get('toolboxInstructions');
-//     }}
-// );
-//
-// Handlebars.registerHelper('key_value', function(context, options) {
-//   var result = [];
-//   _.each(context, function(value, key, list){
-//     result.push({key:key, value:value});
-//   })
-//   return result;
-// });
-//
-// Template.toolbox.events({
-//     'change input[name=mouseTool]': function(){
-//         tools.current=this.value;
-//         Session.set('toolboxTip', this.value.tooltip);
-//         Session.set('toolboxInstructions', this.value.instructions);
-//     }
-// });
+function genLabelAdder(labelType){
+    return function(){
+        if (Meteor.user() != null){
+        labelID=Labels.insert({
+            content:'type here',
+            position:{
+                x:mouse3D.position.x,
+                y:mouse3D.position.y,
+                z:mouse3D.position.z
+            },
+            createdBy:Meteor.userId(),
+            //TODO Well that's obviously wrong. Same value in two fields.
+            createdByName:Meteor.userId(),
+            createdOn:TimeSync.serverTime(),
+            refers_to_boulder:Boulders.findOne({name:Session.get('loadedBoulder')})._id,
+            refers_to_type:labelType
+        });
+        $("#" + labelID + " .label3Dcontent").focus();
+        $("#" + labelID + " .label3Dcontent").selectText();
+        }
+        else{
+            alert('Sign up / log in to add data.')
+        }
+
+    }}
+
+
+tools = []
+function Tool(name, icon, effect, tooltip, instructions, showToUser) {
+    this.name = name;
+    this.icon = icon;
+    this.run = effect;
+    this.tooltip = tooltip;
+    this.instructions=instructions;
+    this.showToUser = showToUser;
+    if (typeof(showToUser) === 'undefined'){
+        this.showToUser=true;
+    };
+}
+
+tools = {
+addNewClimb : new Tool('addNewClimb','/img/addClimb.png', function(){
+    // Need to deprecate Climbsim.latestClimb and just store the ID
+    // because it's an unnecessary non-reactive manual cache
+    Climbsim.latestClimb = Climbs.findOne(Climbsim.addNewClimb());
+    Climbsim.latestClimbId = Climbsim.latestClimb._id;
+    Climbsim.addLabelForClimb(Climbsim.latestClimb);
+    tools.current=tools.addVertexToClimb;
+    },
+    'Tool: Add climb',
+    'Double click to begin, and keep double clicking to draw the climb. Press enter when finished.'
+        ),
+
+addVertexToClimb : new Tool('addVertexToClimb','/img/addVertex.png', function(){
+    Climbsim.addVertexToClimb(Climbsim.latestClimb);
+    Climbsim.loadClimb(Climbsim.latestClimb);
+    $(document).on('keydown.finishClimb', function(e){
+        if (e.keyCode == 13){
+            // delete latest vertex b/c people are "already" finished when the press enter. If statement to deal with bubbling which was causing all vertices to be removed.
+            if (tools.current==tools.addVertexToClimb){
+                Climbs.update({_id:climb._id}, {$pop: {vertices:1}});
+            };
+            tools.current=tools.addNewClimb;
+
+            $(this).off('keydown.finishClimb')
+        }
+
+
+    })
+    },
+    'Double click on the rock to add a new vertex' + Session.get('selectedLabel'),
+    '',
+    false
+),
+addWarning : new Tool('addLabel','/img/addWarning.png', genLabelAdder('warning'),
+    'Tool: Add warning',
+    'Double click on the rock to add a warning.'
+),
+addBeta : new Tool('addLabel','/img/addBeta.png', genLabelAdder('beta'),
+    'Tool: Add beta',
+    'Double click on the rock to add beta.'
+),
+addOther : new Tool('addLabel','/img/addOther.png', genLabelAdder('other'),
+    'Tool: Add miscelleneous info',
+    'Double click on the rock to add a miscelleneous label.'
+),
+}
+Template.toolbox.helpers({
+
+    tools: tools,
+        // maybe rename things to avoid scope confusion
+    toolboxTip: function(){
+            return Session.get('toolboxTip');
+    },
+    instructions: function(){
+            return Session.get('toolboxInstructions');
+    }}
+);
+
+Template.registerHelper('key_value', function(context, options) {
+  var result = [];
+  _.each(context, function(value, key, list){
+    result.push({key:key, value:value});
+  })
+  return result;
+});
+
+Template.toolbox.events({
+    'change input[name=mouseTool]': function(){
+        tools.current=this.value;
+        Session.set('toolboxTip', this.value.tooltip);
+        Session.set('toolboxInstructions', this.value.instructions);
+    }
+});
 //
 // Accounts.ui.config({
 //         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'

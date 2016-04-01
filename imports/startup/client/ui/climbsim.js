@@ -242,7 +242,6 @@ Climbsim.moveLatestVertexToMousePos= function(){
 
 function onmousemove( e ){
   // mouse movement without any buttons pressed should move the 3d mouse
-  // TODO URGENT: update projector to new version of three raycasting
   e.preventDefault();
   mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;

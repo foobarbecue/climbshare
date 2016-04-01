@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ea5e028-af6b-4e5a-b776-d4a48b6a4a61" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/imports/ui/climbsim.js" afterPath="$PROJECT_DIR$/imports/startup/client/ui/climbsim.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/imports/ui/ui.js" afterPath="$PROJECT_DIR$/imports/startup/client/ui/ui.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/imports/ui/z-climbsim.js" afterPath="$PROJECT_DIR$/imports/startup/client/ui/z-climbsim.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/main.js" afterPath="$PROJECT_DIR$/client/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imports/startup/client/three-extras/ctm/CTMLoader.js" afterPath="$PROJECT_DIR$/imports/startup/client/three-extras/ctm/CTMLoader.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/views/boulderpage.html" afterPath="$PROJECT_DIR$/client/views/boulderpage.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/imports/startup/client/ui/climbsim.js" afterPath="$PROJECT_DIR$/imports/startup/client/ui/climbsim.js" />
     </list>
     <ignored path="climbshare.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,34 +29,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/main.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="636">
-              <caret line="230" column="38" selection-start-line="230" selection-start-column="38" selection-end-line="230" selection-end-column="38" />
+              <caret line="219" column="25" selection-start-line="219" selection-start-column="18" selection-end-line="219" selection-end-column="25" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ctm.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/imports/startup/client/three-extras/ctm/ctm.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="27" column="72" selection-start-line="27" selection-start-column="72" selection-end-line="27" selection-end-column="72" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="lzma.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/imports/startup/client/three-extras/ctm/lzma.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -74,11 +51,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="climbsim.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="climbsim.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/imports/startup/client/ui/climbsim.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="564">
-              <caret line="256" column="48" selection-start-line="256" selection-start-column="48" selection-end-line="256" selection-end-column="48" />
+            <state relative-caret-position="620">
+              <caret line="252" column="21" selection-start-line="252" selection-start-column="21" selection-end-line="252" selection-end-column="21" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#133#195#0" expanded="true" />
@@ -107,21 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/main.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="9" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="boulderpage.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/views/boulderpage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
+            <state relative-caret-position="835">
+              <caret line="138" column="23" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="23" />
               <folding>
                 <element signature="n#template#5;n#!!top" expanded="false" />
               </folding>
@@ -198,12 +165,12 @@
         <option value="$PROJECT_DIR$/imports/startup/client/three-extras/ctm/lzma.js" />
         <option value="$PROJECT_DIR$/imports/startup/client/three-extras/ctm/ctm.js" />
         <option value="$PROJECT_DIR$/imports/ui/ui.js" />
-        <option value="$PROJECT_DIR$/client/views/boulderpage.html" />
         <option value="$PROJECT_DIR$/imports/ui/climbsim.js" />
-        <option value="$PROJECT_DIR$/client/main.js" />
         <option value="$PROJECT_DIR$/imports/startup/client/three-extras/ctm/CTMLoader.js" />
         <option value="$PROJECT_DIR$/imports/startup/client/ui/z-climbsim.js" />
         <option value="$PROJECT_DIR$/imports/startup/client/ui/climbsim.js" />
+        <option value="$PROJECT_DIR$/client/views/boulderpage.html" />
+        <option value="$PROJECT_DIR$/client/main.js" />
       </list>
     </option>
   </component>
@@ -617,7 +584,7 @@
       <workItem from="1459121023373" duration="8385000" />
       <workItem from="1459380162320" duration="1239000" />
       <workItem from="1459443435204" duration="5231000" />
-      <workItem from="1459450266341" duration="33092000" />
+      <workItem from="1459450266341" duration="34505000" />
     </task>
     <task id="LOCAL-00001" summary="Boulder locations from database are now drawn on map.">
       <created>1429164430225</created>
@@ -672,7 +639,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50879000" />
+    <option name="totallyTimeSpent" value="52292000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="3296" y="0" width="1920" height="2160" extended-state="0" />
@@ -1126,49 +1093,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="9" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/views/boulderpage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
-          <folding>
-            <element signature="n#template#5;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/imports/startup/client/ui/ui.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/imports/startup/client/three-extras/ctm/CTMLoader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="84">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#241#267#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="636">
-          <caret line="230" column="38" selection-start-line="230" selection-start-column="38" selection-end-line="230" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1183,10 +1112,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/server/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="9" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/imports/startup/client/three-extras/ctm/CTMLoader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding>
+            <element signature="e#241#267#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/views/boulderpage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="835">
+          <caret line="138" column="23" selection-start-line="138" selection-start-column="16" selection-end-line="138" selection-end-column="23" />
+          <folding>
+            <element signature="n#template#5;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/imports/startup/client/ui/climbsim.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="256" column="48" selection-start-line="256" selection-start-column="48" selection-end-line="256" selection-end-column="48" />
+        <state relative-caret-position="620">
+          <caret line="252" column="21" selection-start-line="252" selection-start-column="21" selection-end-line="252" selection-end-column="21" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
             <element signature="e#133#195#0" expanded="true" />
@@ -1198,6 +1155,16 @@
             <element signature="e#6455#6890#0" expanded="false" />
             <element signature="e#6936#7311#0" expanded="false" />
             <element signature="e#7361#7687#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="636">
+          <caret line="219" column="25" selection-start-line="219" selection-start-column="18" selection-end-line="219" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
