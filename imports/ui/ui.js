@@ -1,5 +1,3 @@
-import { Climbsim } from 'Z-climbsim';
-
 // jquery helper for selecting text in contenteditable span
 jQuery.fn.selectText = function(){
     var doc = document;
@@ -18,7 +16,7 @@ jQuery.fn.selectText = function(){
     }
 };
 
-Climbsim.menuinit = function(){
+menuinit = function(){
     $('#controlPanel').click(
         function(e){e.stopImmediatePropagation();}
                        );

@@ -2,6 +2,7 @@ import THREE from 'three';
 import { Climbsim } from '/imports/ui/climbsim.js';
 import { Session } from 'meteor/session';
 import "../imports/startup/client/routes.js";
+import "../imports/ui/ui.js"
 
 // // initial variables
 // Session.set("selectedLabel", null)
@@ -25,14 +26,14 @@ Meteor.subscribe("users");
 // });
 
 // template definitions
-Template.boulderPage.onCreated(function(){
+Template.boulderPage.onRendered(function() {
   this.subscribe("boulders",{onReady:function(){
-
+    Climbsim.init();
+    Climbsim.animate();
+    menuinit();
     Climbsim.loadBoulder("Streambed");
   }});
-})
-Template.boulderPage.onRendered(function() {
-  Climbsim.init();
+
   // Climbsim.animate();
   // Climbsim.menuinit();
 });

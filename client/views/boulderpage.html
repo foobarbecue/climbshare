@@ -7,12 +7,14 @@
     {{> Template.dynamic template=content}}
     </body>
 </template>
-
 <template name="boulderPage">
     <div id="threejs-container"></div>
+    <div class='flexcontainer'>
+        {{> controlPanel}}
+    </div>
 </template>
 
-<template name="boulderPageOBST">
+<template name="boulderPageOLD">
   {{> loginButtons align="right"}}
     <div id="threejs-container"></div>
 <!--    <div id="progressBar"></div>-->
