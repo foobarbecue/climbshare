@@ -1,0 +1,23 @@
+{
+  "name": "climbshare",
+  "version": "1.0.2",
+  "description": "In-browser interactive 3D climbing and bouldering guides.",
+  "main": "index.js",
+  "dependencies": {
+    "three": "^0.75.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/foobarbecue/climbshare.git"
+  },
+  "author": "Aaron Curtis",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/foobarbecue/climbshare/issues"
+  },
+  "homepage": "https://github.com/foobarbecue/climbshare"
+}
