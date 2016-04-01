@@ -11,7 +11,7 @@ var raycaster = new THREE.Raycaster();
 var camera, mouse2D, intersects, oscillator;
 Climbsim.init = function() {
   //$("#progressBar").progressbar();
-  container = $('#threejs-container');
+  Climbsim.container = $('#threejs-container');
   Climbsim.scene = new THREE.Scene();
   projector = new THREE.Projector();
   mouse2D = v(0,0,0);
@@ -25,9 +25,9 @@ Climbsim.init = function() {
     new THREE.SphereGeometry(0.1,6,6),
     new THREE.MeshBasicMaterial({color:'red',transparent:true}));
   Climbsim.scene.add(mouse3D);
-  container.on('mousemove',onmousemove);
+  Climbsim.container.on('mousemove',onmousemove);
   // TODO maybe this in template event handlers
-  container.on('dblclick', function(evt){
+  Climbsim.container.on('dblclick', function(evt){
     tools.current.run()
   });
 
@@ -41,15 +41,16 @@ Climbsim.init = function() {
   Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
   // renderer
   Climbsim.renderer = new THREE.WebGLRenderer( { antialias: true } );
-  Climbsim.renderer.setSize( container.width(), container.height());
+  Climbsim.renderer.setSize( Climbsim.container.width(), Climbsim.container.height());
   Climbsim.renderer.gammaInput = true;
   Climbsim.renderer.gammaOutput = true;
   Climbsim.renderer.setClearColor(Session.get('sceneBkgrndClr'));
-  container.append( Climbsim.renderer.domElement );
+  Climbsim.container.append( Climbsim.renderer.domElement );
 
   // controls
-  Climbsim.controls = new THREE.OrbitControls( camera );
-  Climbsim.controls.domElement = container[0];
+  Climbsim.controls = new THREE.OrbitControls( camera, Climbsim.container[0] );
+  // TODO get rid of this line
+  Climbsim.controls.domElement = Climbsim.container[0];
   Climbsim.controls.dragToLook = true;
   Climbsim.controls.rollSpeed = 0.5;
   Climbsim.controls.movementSpeed = 25;
@@ -254,7 +255,6 @@ function onmousemove( e ){
     var pos = intersects[0].point;
     if (typeof pos != null) {
       mouse3D.position.set(pos.x, pos.y, pos.z);
-      console.log(pos.x);
     }
   }
 //  live drawing for addClimb mouseTool

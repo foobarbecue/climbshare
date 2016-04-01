@@ -325,7 +325,7 @@ Template.toolbox.events({
         Session.set('toolboxInstructions', this.value.instructions);
     }
 });
-//
-// Accounts.ui.config({
-//         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
-//     })
+
+Accounts.ui.config({
+        passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
+    })

@@ -22,3 +22,5 @@ session
 accounts-ui
 kadira:blaze-layout
 kadira:flow-router
+accounts-facebook
+accounts-password
