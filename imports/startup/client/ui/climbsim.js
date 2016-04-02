@@ -218,9 +218,9 @@ Climbsim.addVertexToClimb = function(climb){
   climb = climb || Climbs.findOne(Labels.findOne(Session.get('selectedLabel')).refers_to_id);
   Climbs.update({_id:climb._id}, {$push:{vertices:
     [
-      mouse3D.position.x,
-      mouse3D.position.y,
-      mouse3D.position.z
+      Climbsim.mouse3D.position.x,
+      Climbsim.mouse3D.position.y,
+      Climbsim.mouse3D.position.z
     ]
   }});
 

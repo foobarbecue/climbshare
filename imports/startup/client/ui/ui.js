@@ -28,3 +28,22 @@ menuinit = function(){
     });
 };
 
+positionLabelIcons = function (){
+  // position label images on top of right edge of labels
+  Labels.find().forEach(function(lbl){
+    var lbl_el=$('.label3D.'+lbl._id);
+    // only attempt if label is already drawn
+    if (lbl_el.length > 0){
+      var lbl_type_img=lbl_el.children('img');
+      lbl_type_img.position(
+        {my:'center',
+          at:'right top',
+          of:lbl_el,
+          offset:'0 10',
+//                  using: function(pos) {
+//                     $(this).animate(pos, 50, "linear");
+//                 }
+        });
+    }
+  })
+};

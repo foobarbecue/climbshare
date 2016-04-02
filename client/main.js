@@ -64,14 +64,14 @@ Template.controlPanel.events({
         Session.set("loadedBoulder", e.target.value)
     },
     "mouseenter .ctrlPnlClimb": function (e, tmpl) {
-        label = Labels.findOne(e.currentTarget.id);
+        var label = Labels.findOne(e.currentTarget.id);
         Session.set("selectedLabel", label._id);
     },
     "change #filterDisplay": function (e){
         var filterInputData = $(e.currentTarget).serializeArray();
         Session.set("filter", filterInputData);
         Deps.flush();
-        Climbsim.positionLabelIcons();
+        positionLabelIcons();
     },
     "mousedown #submitClimbshareFeedback": function(){
         if (Meteor.userId()){
@@ -168,10 +168,11 @@ Template.labels3D.helpers({
 
 Template.labels3D.events({
     'mouseenter .label3D': function (event) {
+        console.log('mouse entered');
         Session.set("selectedLabel", event.currentTarget.id);
-        //             moved to Deps.autorun
-        //             $(event.currentTarget).addClass('selected');
-        //             $(event.currentTarget).children('.hidden').fadeIn();
+        console.log(Session.get("selectedLabel"));
+                    // $(event.currentTarget).addClass('selected');
+                    // $(event.currentTarget).children('.hidden').fadeIn();
     },
     'mouseleave .label3D': function (event) {
         console.log($(':focus'))
@@ -217,9 +218,9 @@ function genLabelAdder(labelType){
         labelID=Labels.insert({
             content:'type here',
             position:{
-                x:mouse3D.position.x,
-                y:mouse3D.position.y,
-                z:mouse3D.position.z
+                x:Climbsim.mouse3D.position.x,
+                y:Climbsim.mouse3D.position.y,
+                z:Climbsim.mouse3D.position.z
             },
             createdBy:Meteor.userId(),
             //TODO Well that's obviously wrong. Same value in two fields.
@@ -327,7 +328,7 @@ Template.toolbox.events({
 });
 
 // Load the currently selected 3D boulder model
-Deps.autorun(function () {
+Tracker.autorun(function () {
     try {
         var boulderName = Session.get('loadedBoulder');
         Climbsim.loadBoulder(boulderName);
@@ -338,13 +339,13 @@ Deps.autorun(function () {
 })
 
 // Color the currently selected label and climb
-Deps.autorun(function () {
-    //
-    labelId = Session.get('selectedLabel');
+Tracker.autorun(function () {
+    var labelId = Session.get('selectedLabel');
+    console.log('tracker for' + labelId);
     if (typeof labelId === 'undefined') {
         $('.label3D,.ctrlPnlClimb').removeClass('selected');
         $('.label3D,.ctrlPnlClimb').children('.hidden').hide();
-        colorAllClimbsWhite();
+        // colorAllClimbsWhite();
     } else {
         $('.label3D,.ctrlPnlClimb').children('.hidden').hide();
         $('.label3D,.ctrlPnlClimb').removeClass('selected');
@@ -360,7 +361,7 @@ Deps.autorun(function () {
         }
     }
     positionLabelIcons();
-})
+});
 
 // Draw climb if it changes
 Deps.autorun(function(){
