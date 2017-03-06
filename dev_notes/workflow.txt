@@ -1,0 +1,6 @@
+Getting a model From Photoscan to Cesium
+========================================
+1. Export as obj using pseudo-mercator with shift. Shift sign is not as if subtracting; just pick a point in the actual place and put those values in.
+2. Rotate in cloudcompare to go from Z-up to Y-up
+3. Add shift values into "position"
+4. Altitude seems to add on to existing terrain data... so just using 0 for now... work on this.
