@@ -1,5 +1,5 @@
 import THREE from 'three';
-import { Climbsim } from '/imports/startup/client/ui/climbsim.js';
+import { Climbsim } from '/imports/startup/client/ui/climbsim-cesium.js';
 import { Session } from 'meteor/session';
 import "/imports/startup/client/routes.js";
 import "/imports/startup/client/ui/ui.js";
