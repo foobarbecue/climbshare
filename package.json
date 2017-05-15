@@ -4,7 +4,7 @@
   "description": "In-browser interactive 3D climbing and bouldering guides.",
   "main": "index.js",
   "dependencies": {
-    "three": "^0.75.0"
+    "three": "^0.85.0"
   },
   "devDependencies": {},
   "scripts": {

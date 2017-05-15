@@ -1,4 +1,4 @@
-import THREE from 'three';
+import * as THREE from 'three';
 /**
  * Convenience function for making Vector3s
  */
