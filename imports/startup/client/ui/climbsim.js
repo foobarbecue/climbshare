@@ -145,6 +145,7 @@ Climbsim.loadBoulder = function(boulderName){
   // load CTM model
   // var loader = new THREE.CTMLoader();
     Climbsim.boulderMesh = new NexusObject("/models3d/pecksm.nxs", Climbsim.renderer, render);
+    Climbsim.boulderMesh.side = THREE.DoubleSide;
 
   // loader.load('/models3d/' + boulder.model3D,
     // function(geometry){
