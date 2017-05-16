@@ -142,41 +142,42 @@ Climbsim.loadBoulder = function(boulderName){
   Climbsim.scene.remove(Climbsim.boulderMesh);
   // clear all climbs
   this.removeAllClimbs();
-  // load CTM model
-  // var loader = new THREE.CTMLoader();
-    Climbsim.boulderMesh = new NexusObject("/models3d/pecksm.nxs", Climbsim.renderer, render);
-    Climbsim.boulderMesh.side = THREE.DoubleSide;
+  // decide loading method based on file extension (bad?)
+  switch (boulder.model3D.slice(-3)){
+      case 'ctm':
+          // todo CTM loader is not available
+          var loader = new THREE.CTMLoader();
+          loader.load('/models3d/' + boulder.model3D,
+            function(geometry) {
+                if (!!boulder.texture) {
+                    var boulderMaterial = new THREE.MeshBasicMaterial({
+                        map: THREE.ImageUtils.loadTexture('/models3d/' + boulder.texture),
+                        side: THREE.DoubleSide
+                    })
+                } else {
+                    var boulderMaterial = new THREE.MeshBasicMaterial(
+                        {vertexColors: THREE.VertexColors, side: THREE.DoubleSide}
+                    );
+                }
+                Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
+          });
+          break;
+      case 'nxs':
+      case 'nxz':
+          Climbsim.boulderMesh = new NexusObject('/models3d/' + boulder.model3D, Climbsim.renderer, render);
+      // todo handle ply, potree
 
-  // loader.load('/models3d/' + boulder.model3D,
-    // function(geometry){
-    //   if (!!boulder.texture){
-    //     var boulderMaterial = new THREE.MeshBasicMaterial({
-    //       map: THREE.ImageUtils.loadTexture('/models3d/' + boulder.texture),
-    //       side: THREE.DoubleSide
-    //     })
-    //   } else {
-    //     var boulderMaterial = new THREE.MeshBasicMaterial(
-    //       {vertexColors: THREE.VertexColors, side: THREE.DoubleSide}
-    //     );
-    //   }
-    //   Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
-    //   Climbsim.boulderMesh.name = boulderName;
-    //   if (!!boulder.initialTransform){
-    //     var xform = new THREE.Matrix4();
-    //     xform.set.apply(xform,boulder.initialTransform)
-    //     Climbsim.boulderMesh.applyMatrix(xform);
-    //   }
-      Climbsim.scene.add(Climbsim.boulderMesh);
-      $("#progressBar,#progressText").fadeOut();
-      Climbsim.loadClimbs();
-    // });
-  // if (!!boulder.pointcloud){
-  //   var material = new THREE.ParticleSystemMaterial( { size: 0.05, vertexColors: true } );
-  //   var pco=POCLoader.load("/" + boulder.pointcloud);
-  //   var pointcloud = new Potree.PointCloudOctree(pco, material);
-  //   pointCloud.name = 'pointcloud'
-  //   Climbsim.scene.add(pointcloud);
-  // }
+  };
+    Climbsim.boulderMesh.side = THREE.DoubleSide;
+    Climbsim.boulderMesh.name = boulderName;
+    if (!!boulder.initialTransform){
+      var xform = new THREE.Matrix4();
+      xform.set.apply(xform,boulder.initialTransform)
+      Climbsim.boulderMesh.applyMatrix(xform);
+    }
+    Climbsim.scene.add(Climbsim.boulderMesh);
+    $("#progressBar,#progressText").fadeOut();
+    Climbsim.loadClimbs();
 };
 
 Climbsim.loadClimbs = function(){

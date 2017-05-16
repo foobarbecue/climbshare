@@ -1,5 +1,10 @@
 data = {
     "boulders": {
+        "pecksm":{
+            "name":"Peck's Mystery",
+            "model3D":"pecksm.nxs",
+            "area": "Socorro"
+        },
         "streambed": {
             "name": "Streambed",
             "model3D": "streambedTrimmed.ctm",
