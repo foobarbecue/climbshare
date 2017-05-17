@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import '/imports/math_etc.js';
 //TODO find a better solution for including the three.js "examples" addons
 import '/imports/startup/client/three-extras/OrbitControls.js'
-// import '/imports/startup/client/three-extras/ctm/CTMLoader.js'
+import '/imports/startup/client/three-extras/ctm/CTMLoader.js'
 import '/imports/startup/client/three-extras/TrackballControls.js'
 import '/imports/startup/client/three-extras/nexus.js'
 import '/imports/startup/client/three-extras/nexus_three.js'

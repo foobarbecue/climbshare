@@ -7,7 +7,7 @@
  *
  * @author alteredq / http://alteredqualia.com/
  */
-import THREE from 'three';
+import * as THREE from 'three';
 import { CTM } from '/imports/startup/client/three-extras/ctm/ctm.js';
 THREE.CTMLoader = function () {
 
