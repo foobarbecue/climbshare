@@ -1,14 +1,19 @@
 import * as THREE from 'three';
+window.THREE = THREE;
 import '/imports/math_etc.js';
+require('/imports/startup/client/three-extras/OrbitControls.js');
 //TODO find a better solution for including the three.js "examples" addons
-import '/imports/startup/client/three-extras/OrbitControls.js'
-import '/imports/startup/client/three-extras/ctm/CTMLoader.js'
-import '/imports/startup/client/three-extras/TrackballControls.js'
+// import OrbitControls from '/imports/startup/client/three-extras/OrbitControls.js';
+// THREE.OrbitControls = OrbitControls;
+require('/imports/startup/client/three-extras/ctm/CTMLoader.js');
+// THREE.CTMLoader = CTMLoader;
+
+require('/imports/startup/client/three-extras/TrackballControls.js');
 import '/imports/startup/client/three-extras/nexus.js'
 import '/imports/startup/client/three-extras/nexus_three.js'
 // import '/imports/startup/client/three-extras/gltf'
 export let Climbsim = {};
-window.three = THREE;
+
 window.Climbsim = Climbsim;
 var clock = new THREE.Clock();
 var raycaster = new THREE.Raycaster();

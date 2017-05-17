@@ -4,6 +4,7 @@
   "description": "In-browser interactive 3D climbing and bouldering guides.",
   "main": "index.js",
   "dependencies": {
+    "babel-runtime": "^6.23.0",
     "three": "^0.85.0"
   },
   "devDependencies": {},
