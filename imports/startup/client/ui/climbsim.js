@@ -1,14 +1,9 @@
 import * as THREE from 'three';
 window.THREE = THREE;
 import '/imports/math_etc.js';
-require('/imports/startup/client/three-extras/OrbitControls.js');
 //TODO find a better solution for including the three.js "examples" addons
-// import OrbitControls from '/imports/startup/client/three-extras/OrbitControls.js';
-// THREE.OrbitControls = OrbitControls;
+require('/imports/startup/client/three-extras/OrbitControls.js');
 require('/imports/startup/client/three-extras/ctm/CTMLoader.js');
-// THREE.CTMLoader = CTMLoader;
-
-require('/imports/startup/client/three-extras/TrackballControls.js');
 import '/imports/startup/client/three-extras/nexus.js'
 import '/imports/startup/client/three-extras/nexus_three.js'
 // import '/imports/startup/client/three-extras/gltf'
@@ -22,11 +17,9 @@ Climbsim.init = function() {
   //$("#progressBar").progressbar();
   Climbsim.container = $('#threejs-container');
   Climbsim.scene = new THREE.Scene();
-  var projector = new THREE.Projector();
+  Climbsim.projector = new THREE.Projector();
   mouse2D = v(0,0,0);
-  //Climbsim.camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
-   Climbsim.camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.1, 100 );
-   Climbsim.camera.position.z = 4;
+  Climbsim.camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 600 );
   // position and point the camera to the center of the scene
   Climbsim.camera.position.set(1,-20,5);
   // we use Z up for compatibility with UTM and lat lon
