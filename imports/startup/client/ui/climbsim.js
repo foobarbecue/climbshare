@@ -66,8 +66,11 @@ Climbsim.init = function() {
 
   // skybox
   Climbsim.addSkybox();
-
   Climbsim.ready = true;
+
+  // if there was a boulder specified in the URL, load it
+  Climbsim.loadBoulder(FlowRouter.getParam('boulder'));
+
 };
 
 Climbsim.addSkybox = function (){
@@ -129,15 +132,30 @@ Climbsim.loadClimb = function(climb){
   }
 };
 
+Climbsim.addBoulderToScene = function(){
+    // Adds boulder mesh at Climbsim.boulderMesh to the threejs scene
+    // clear previous 3d model
+    Climbsim.scene.remove(Climbsim.scene.getObjectByName('boulder'));
+    Climbsim.boulderMesh.side = THREE.DoubleSide;
+    Climbsim.boulderMesh.name = 'boulder';
+    if (!!boulder.initialTransform){
+        var xform = new THREE.Matrix4();
+        xform.set.apply(xform,boulder.initialTransform)
+        Climbsim.boulderMesh.applyMatrix(xform);
+    }
+    Climbsim.scene.add(Climbsim.boulderMesh);
+
+    $("#progressBar,#progressText").fadeOut();
+    Climbsim.loadClimbs();
+};
+
 Climbsim.loadBoulder = function(boulderName){
   $("#progressBar,#progressText").show();
   if (typeof(boulderName) === "undefined"){
     boulderName = Session.get('loadedBoulder')
   }
-  boulder = Boulders.findOne({name:boulderName})
+  boulder = Boulders.findOne({name:boulderName});
 
-  // clear previous 3d model
-  Climbsim.scene.remove(Climbsim.boulderMesh);
   // clear all climbs
   this.removeAllClimbs();
   // decide loading method based on file extension (bad?)
@@ -158,24 +176,16 @@ Climbsim.loadBoulder = function(boulderName){
                     );
                 }
                 Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
+                Climbsim.addBoulderToScene();
           });
           break;
       case 'nxs':
       case 'nxz':
           Climbsim.boulderMesh = new NexusObject('/models3d/' + boulder.model3D, Climbsim.renderer, render);
+          Climbsim.addBoulderToScene();
       // todo handle ply, potree
 
   };
-    Climbsim.boulderMesh.side = THREE.DoubleSide;
-    Climbsim.boulderMesh.name = boulderName;
-    if (!!boulder.initialTransform){
-      var xform = new THREE.Matrix4();
-      xform.set.apply(xform,boulder.initialTransform)
-      Climbsim.boulderMesh.applyMatrix(xform);
-    }
-    Climbsim.scene.add(Climbsim.boulderMesh);
-    $("#progressBar,#progressText").fadeOut();
-    Climbsim.loadClimbs();
 };
 
 Climbsim.loadClimbs = function(){

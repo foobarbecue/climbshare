@@ -6,6 +6,6 @@ FlowRouter.route('/:area/:boulder', {
     console.log('routed');
     BlazeLayout.render("mainLayout", {content: "boulderPage"});
 
-    Session.set('loadedBoulder',params.boulder);
+    //Session.set('loadedBoulder',params.boulder);
   }
 });
