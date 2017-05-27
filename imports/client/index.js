@@ -3,7 +3,7 @@ import THREE from 'three';
 import { Climbsim } from './climbsim.js';
 import { Session } from 'meteor/session';
 import "./ui/boulderpage.html"
-import "./ui/base.css"
+import "./ui/stylesheets/base.css"
 import "./ui/ui.js";
 import "../math_etc.js";
 
