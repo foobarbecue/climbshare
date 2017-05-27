@@ -69,7 +69,7 @@ Climbsim.init = function() {
   Climbsim.ready = true;
 
   // if there was a boulder specified in the URL, load it
-  Climbsim.loadBoulder(FlowRouter.getParam('boulder'));
+  Session.set('loadedBoulder',FlowRouter.getParam('boulder'));
 
 };
 
