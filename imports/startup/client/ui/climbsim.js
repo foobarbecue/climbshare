@@ -40,7 +40,7 @@ Climbsim.init = function() {
   Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
 
   // grid
-  var grid = new THREE.GridHelper(100,1);
+  var grid = new THREE.GridHelper(100,100);
   grid.rotateX(Math.PI/2);
   Climbsim.scene.add(grid);
   Climbsim.scene.add( new THREE.AmbientLight( 0x777777 ) );
