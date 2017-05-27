@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 window.THREE = THREE;
-import '/imports/math_etc.js';
+import '../models.js';
+import '../math_etc.js';
 //TODO find a better solution for including the three.js "examples" addons
-require('/imports/startup/client/three-extras/OrbitControls.js');
-require('/imports/startup/client/three-extras/ctm/CTMLoader.js');
-import '/imports/startup/client/three-extras/nexus.js'
-import '/imports/startup/client/three-extras/nexus_three.js'
+require('/imports/client/three-extras/OrbitControls.js');
+require('/imports/client/three-extras/ctm/CTMLoader.js');
+import '/imports/client/three-extras/nexus.js'
+import '/imports/client/three-extras/nexus_three.js'
 // import '/imports/startup/client/three-extras/gltf'
 export let Climbsim = {};
 
