@@ -20,4 +20,4 @@ insertBoulder = function(boulder){
                 createdOn:new Date()}
             )
         }
-    }
+    };

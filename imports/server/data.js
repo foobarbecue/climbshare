@@ -274,4 +274,4 @@ data = {
             "texture":"unbeatable.jpg",
         }
     }
-}
+};

@@ -59,7 +59,7 @@ Template.controlPanel.helpers({
             });
         }
     },
-})
+});
 
 Template.controlPanel.events({
     "change #boulderList": function (e, tmpl) {
@@ -81,14 +81,14 @@ Template.controlPanel.events({
                 content:$('#climbshareFeedback textarea').val(),
                 createdBy:Meteor.userId(),
                 createdOn:TimeSync.serverTime()
-            })
+            });
             alert("Feedback submitted.")
         }
         else{
             alert("Please log in to submit feedback.")
         }
     }
-})
+});
 Template.labels3D.labels = function () {
     loadedBoulder = Boulders.findOne({
         name: Session.get('loadedBoulder')
@@ -97,15 +97,17 @@ Template.labels3D.labels = function () {
         return Labels.find({
             "refers_to_boulder": loadedBoulder._id
         });
-    };
-}
+    }
+};
 Template.labels3D.helpers({
     labels: function () {
         boulder = Boulders.findOne({
             name: Session.get('loadedBoulder')
         });
 //             // if we don't have a boulder set, no point in showing any labels
-        if (!boulder) {return []};
+        if (!boulder) {
+            return []
+        }
         var displayFilterData = Session.get('filter');
         if (!!displayFilterData){
             // massage control panel show / hide form data into an array
@@ -113,7 +115,7 @@ Template.labels3D.helpers({
         }
         else{
             // set initial values in case DOM isn't available yet
-            var displayFilterData=[{name:'createdBy',value:'everyone'}]
+            var displayFilterData=[{name:'createdBy',value:'everyone'}];
             var displayFilterArray=['climb','warning','other'];
         }
         if (!!boulder) {
@@ -125,7 +127,7 @@ Template.labels3D.helpers({
             displayFilterData.forEach(function(obj){
                 if(obj.name == "createdBy"){
                     createdBy = obj.value
-                }})
+                }});
             if (!createdBy || createdBy === "everyone"){
                     createdBy = {$exists:true}
             }
@@ -134,7 +136,7 @@ Template.labels3D.helpers({
                 Climbs.find({boulder_id:boulder._id}).map(Climbsim.loadClimb);
             } else {
                 Climbsim.removeAllClimbs();
-            };
+            }
             return Labels.find({
                 refers_to_boulder: boulder._id,
                 refers_to_type: { '$in' : displayFilterArray },
@@ -177,7 +179,7 @@ Template.labels3D.events({
                     // $(event.currentTarget).children('.hidden').fadeIn();
     },
     'mouseleave .label3D': function (event) {
-        console.log($(':focus'))
+        console.log($(':focus'));
         if (!($(':focus').is($('select.labelType')))){
             Session.set("selectedLabel", undefined);
         }
@@ -198,7 +200,7 @@ Template.labels3D.events({
         }
     },
     'keydown .label3Dcontent': function(event){
-        console.log(event.which)
+        console.log(event.which);
         // Handle presses of the return key as ending input rather than
         // starting a new line
         if (event.which == 13){
@@ -209,10 +211,10 @@ Template.labels3D.events({
         }
     },
     'change .labelType': function(event, tmpl){
-        Labels.update(this._id, {$set:{refers_to_type:event.currentTarget.value}})
+        Labels.update(this._id, {$set:{refers_to_type:event.currentTarget.value}});
         event.target.blur();
     }
-})
+});
 
 function genLabelAdder(labelType){
     return function(){
@@ -241,7 +243,7 @@ function genLabelAdder(labelType){
     }}
 
 
-tools = []
+tools = [];
 function Tool(name, icon, effect, tooltip, instructions, showToUser) {
     this.name = name;
     this.icon = icon;
@@ -251,7 +253,7 @@ function Tool(name, icon, effect, tooltip, instructions, showToUser) {
     this.showToUser = showToUser;
     if (typeof(showToUser) === 'undefined'){
         this.showToUser=true;
-    };
+    }
 }
 
 tools = {
@@ -275,7 +277,7 @@ addVertexToClimb : new Tool('addVertexToClimb','/img/addVertex.png', function(){
             // delete latest vertex b/c people are "already" finished when the press enter. If statement to deal with bubbling which was causing all vertices to be removed.
             if (tools.current==tools.addVertexToClimb){
                 Climbs.update({_id:climb._id}, {$pop: {vertices:1}});
-            };
+            }
             tools.current=tools.addNewClimb;
 
             $(this).off('keydown.finishClimb')
@@ -300,7 +302,7 @@ addOther : new Tool('addLabel','/img/addOther.png', genLabelAdder('other'),
     'Tool: Add miscelleneous info',
     'Double click on the rock to add a miscelleneous label.'
 ),
-}
+};
 Template.toolbox.helpers({
 
     tools: tools,
@@ -317,7 +319,7 @@ Template.registerHelper('key_value', function(context, options) {
   var result = [];
   _.each(context, function(value, key, list){
     result.push({key:key, value:value});
-  })
+  });
   return result;
 });
 
@@ -338,7 +340,7 @@ Tracker.autorun(function () {
     } catch (TypeError) {
         console.log('failed to load ' + boulderName);
     }
-})
+});
 
 // Color the currently selected label and climb
 Tracker.autorun(function () {
@@ -355,7 +357,7 @@ Tracker.autorun(function () {
         $('.' + labelId).children('.hidden').fadeIn();
         var label = Labels.findOne(labelId);
         if (label && (label.refers_to_type == "climb")) {
-            climbId = label.refers_to_id
+            climbId = label.refers_to_id;
             selectedThreeObj = Climbsim.scene.getObjectByName(climbId);
             colorAllClimbsWhite();
             // turn the selected one red
@@ -369,10 +371,10 @@ Tracker.autorun(function () {
 Deps.autorun(function(){
       Climbsim.loadClimbs();
   }
-)
+);
 
 Accounts.ui.config({
         passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
-    })
+    });
 
 
