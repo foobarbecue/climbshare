@@ -2,7 +2,7 @@ data = {
     "boulders": {
         "pecksm":{
             "name":"Peck's Mystery",
-            "model3D":"pecksm.nxs",
+            "model3D":"pecksm.nxz",
             "area": "Socorro",
             "initialTransform": [
                 1.00000,

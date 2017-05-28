@@ -176,7 +176,6 @@ Climbsim.loadBoulder = function(boulderName){
                         {vertexColors: THREE.VertexColors, side: THREE.DoubleSide}
                     );
                 }
-                console.log('here')
                 Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
                 Climbsim.addBoulderToScene();
           });

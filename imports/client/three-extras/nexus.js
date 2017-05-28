@@ -23,33 +23,19 @@ Nexus = function() {
 
 var worker;
 
-var scripts = document.getElementsByTagName('script');
-var i, j, k;
-for(i = 0; i < scripts.length; i++) {
-	var attrs = scripts[i].attributes;
-	for(j = 0; j < attrs.length; j++) {
-		var a = attrs[j];
-		if(a.name != 'src') continue;
-		if(!a.value) continue;
-		if(a.value.search('nexus.js') >= 0) {
-			var path = a.value.replace('nexus.js', 'meshcoder_worker.js');
-			worker = new Worker(path);
-			worker.requests = {};
-			worker.count = 0;
-			worker.postRequest = function(sig, node, patches) {
-				var signature = { texcoords: sig.texcoords?1:0, colors: sig.colors?1:0, normals: sig.normals?1:0, indices: sig.indices?1:0 };
-				worker.postMessage({ signature:signature, node:{nface: node.nface, nvert: node.nvert, buffer:node.buffer, request:this.count}, patches:patches});
-				this.requests[this.count++] = node;
-			};
-			worker.onmessage = function(e) {
-				var node = this.requests[e.data.request];
-				node.buffer = e.data.buffer;
-				readyNode(node.context, node);
-			};
-			break;
-		}
-	}
-}
+worker = new Worker('/meshcoder_worker.js');
+worker.requests = {};
+worker.count = 0;
+worker.postRequest = function(sig, node, patches) {
+	var signature = { texcoords: sig.texcoords?1:0, colors: sig.colors?1:0, normals: sig.normals?1:0, indices: sig.indices?1:0 };
+	worker.postMessage({ signature:signature, node:{nface: node.nface, nvert: node.nvert, buffer:node.buffer, request:this.count}, patches:patches});
+	this.requests[this.count++] = node;
+};
+worker.onmessage = function(e) {
+	var node = this.requests[e.data.request];
+	node.buffer = e.data.buffer;
+	readyNode(node.context, node);
+};
 
 /* UTILITIES */
 
