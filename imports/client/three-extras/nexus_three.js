@@ -19,10 +19,10 @@ NexusObject = function(url, renderer, render, material) {
 	var nexus = this.nexus = new Nexus.Instance(gl);
 	nexus.open(url);
 	nexus.onLoad = function() {
-		var s = 1/nexus.mesh.sphere.radius;
-		var pos = nexus.mesh.sphere.center;
-		mesh.position.set(-pos[0]*s, -pos[1]*s, -pos[2]*s);
-		mesh.scale.set(s, s, s);
+		// var s = 1/nexus.mesh.sphere.radius;
+		// var pos = nexus.mesh.sphere.center;
+		// mesh.position.set(-pos[0]*s, -pos[1]*s, -pos[2]*s);
+		// mesh.scale.set(s, s, s);
 		if(mesh.autoMaterial)
 			mesh.material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 

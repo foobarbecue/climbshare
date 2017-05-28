@@ -3,7 +3,25 @@ data = {
         "pecksm":{
             "name":"Peck's Mystery",
             "model3D":"pecksm.nxs",
-            "area": "Socorro"
+            "area": "Socorro",
+            "initialTransform": [
+                1.00000,
+                0.00000,
+                0.00000,
+                -0.04468,
+                0.00000,
+                0.07062,
+                0.99750,
+                -3.47057,
+                0.00000,
+                -0.99751,
+                0.07062,
+                1.00912,
+                0.00000,
+                0.00000,
+                0.00000,
+                1.00000
+            ]
         },
         "streambed": {
             "name": "Streambed",
