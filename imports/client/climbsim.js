@@ -176,11 +176,15 @@ Climbsim.loadBoulder = function(boulderName){
                         {vertexColors: THREE.VertexColors, side: THREE.DoubleSide}
                     );
                 }
+                console.log('here')
                 Climbsim.boulderMesh = new THREE.Mesh(geometry, boulderMaterial);
                 Climbsim.addBoulderToScene();
           });
           break;
       case 'nxs':
+          Climbsim.boulderMesh = new NexusObject('/models3d/' + boulder.model3D, Climbsim.renderer, render);
+          Climbsim.addBoulderToScene();
+          break;
       case 'nxz':
           Climbsim.boulderMesh = new NexusObject('/models3d/' + boulder.model3D, Climbsim.renderer, render);
           Climbsim.addBoulderToScene();

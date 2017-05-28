@@ -1,4 +1,6 @@
 import "../models.js"
+import "./readData.js"
+import "./data.js"
 
 Meteor.publish("labels", function () {
     return Labels.find();
