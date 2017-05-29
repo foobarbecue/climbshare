@@ -3,9 +3,12 @@ import THREE from 'three';
 import { Climbsim } from './climbsim.js';
 import { Session } from 'meteor/session';
 import "./ui/boulderpage.html"
+import "./ui/areapage.html"
 import "./ui/stylesheets/base.css"
+import "openlayers/css/ol.css";
 import "./ui/ui.js";
 import "../math_etc.js";
+import "./map.js";
 
 // // initial variables
 // Session.set("selectedLabel", null)

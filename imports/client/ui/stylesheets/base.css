@@ -37,6 +37,13 @@ body{
     height: 100%;
     width: 100%;
 }
+#map{
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
 .flexcontainer{
     display: flex;
     flex-direction: column;

@@ -1,80 +1,38 @@
-Template.areaMap.onRendered(function() {
-    this.map = new ol.Map({
-        target: 'map',
-        layers: [
-            new ol.layer.Tile({
-                source: new ol.source.MapQuest({layer: 'sat'})
-            })
-        ],
+/**
+ * Created by aaron on 5/28/2017.
+ */
+import ol from "openlayers";
+
+
+let area = FlowRouter.getParam('area');
+let areaBoulders = Boulders.find({area:area}); // could this be const?
+let map;
+
+Template.areaMap.onRendered(function(){
+    this.subscribe("boulders");
+    map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.BingMaps({
+                        imagerySet:'AerialWithLabels',
+                        key:'AnPtlHlc_-w6pMue8NZ_LsUszDvhVRBV7s5fIm--skojzTnNKFHneZrPdpecItva',
+                    })
+                })
+            ],
         view: new ol.View({
-            center: ol.proj.transform([37.41, 8.82], 'EPSG:4326', 'EPSG:3857'),
-            zoom: 4
+            projection: 'EPSG:3857', // Web Mercator. This is the default, but being explicit.
+            center: ol.proj.transform([-106.829, 34], 'EPSG:4326', 'EPSG:3857'), // Lon Lat to Web Mercator
+            zoom: 10
         })
-    });
-    var vectorSource = new ol.source.Vector({
-    });
-        //{
-        //    text: new ol.style.Text({
-        //        text:'test',
-        //        font: '12px Calibri,sans-serif'
-        //    }),
-        //    stroke: new ol.style.Stroke({color: 'red', width: 2})
-        //}
-    var fill = new ol.style.Fill({
-        color: 'rgba(255,255,255,0.4)'
-    });
-    var stroke = new ol.style.Stroke({
-        color: '#3399CC',
-        width: 1.25
-    });
-
-    var markerStyle = function(feature) {
-        return [new ol.style.Style({
-            image: new ol.style.Circle({
-                fill: fill,
-                stroke: stroke,
-                radius: 5
-            }),
-            fill: fill,
-            stroke: stroke,
-            text: new ol.style.Text({
-                text: feature.get('name'),
-                fill: fill,
-                stroke: stroke
-            })
-        })];
-    };
-
-    var vectorLayer = new ol.layer.Vector({source: vectorSource});
-    vectorLayer.setStyle(markerStyle);
-    this.map.addLayer(vectorLayer);
-    var clickLinks = new ol.interaction.Select({condition: ol.events.condition.click});
-    this.map.addInteraction(clickLinks);
-    clickLinks.on('select', function(evt){
-        window.open(evt.target.getFeatures().getArray()[0].get('url'));
-    });
-    this.autorun(function() {
-        var area = Session.get('area');
-        var areaBoulders = Boulders.find({area:area}).fetch();
-        for (boulder in areaBoulders) {
-            var boulder = areaBoulders[boulder];
-            if (!!boulder.coords) {
-                var boulderFeature = new ol.Feature({
-                    geometry: new ol.geom.Point(boulder.coords).transform('EPSG:4326', 'EPSG:3857'),
-                    name: boulder.name,
-                    //TODO improve -- something like Django's reverse()?
-                    url: '/' + boulder.area + '/' + boulder.name
-                });
-                //
-                //TODO need to check if it's already there, or come up with better data binding
-                vectorSource.addFeature(boulderFeature);
-            }
-        }
-        // Zoom to the points
-        var map = Template.instance().map;
-        map.getView().fitExtent(vectorSource.getExtent(), map.getSize());
-    });
-
-    window.olmap = this.map;
-    this.map.render();
+    })
 });
+
+Template.areaMap.onCreated(function(){
+    areaBoulders.observe({
+        added: function(boulder){
+            console.log('adding'+boulder.name)
+        }
+    })
+});
+
