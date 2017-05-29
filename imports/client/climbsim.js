@@ -8,6 +8,7 @@ require('/imports/client/three-extras/ctm/CTMLoader.js');
 import '/imports/client/three-extras/nexus.js'
 import '/imports/client/three-extras/nexus_three.js'
 // import '/imports/startup/client/three-extras/gltf'
+// Climbsim should probably not be capitalized since it's an object rather than class
 export let Climbsim = {};
 import {FlowRouter} from 'meteor/kadira:flow-router';
 
@@ -19,7 +20,6 @@ Climbsim.init = function () {
     //$("#progressBar").progressbar();
     Climbsim.container = $('#threejs-container');
     Climbsim.scene = new THREE.Scene();
-    Climbsim.projector = new THREE.Projector();
     mouse2D = v(0, 0, 0);
     Climbsim.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 600);
     // position and point the camera to the center of the scene
@@ -279,8 +279,6 @@ function onmousemove(e) {
     mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
     mouse2D.z = 0.5;
-    // projector.unprojectVector(mouse2D.clone(), camera);
-    // raycaster = projector.pickingRay( mouse2D.clone(), camera );
     raycaster.setFromCamera(mouse2D, Climbsim.camera);
     if (typeof Climbsim.boulderMesh !== 'undefined') {
         intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);

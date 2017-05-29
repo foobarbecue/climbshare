@@ -19,10 +19,13 @@ NexusObject = function(url, renderer, render, material) {
 	var nexus = this.nexus = new Nexus.Instance(gl);
 	nexus.open(url);
 	nexus.onLoad = function() {
+		var boundingSphereCenter = new THREE.Vector3(...nexus.mesh.sphere.center)
+		geometry.boundingSphere = new THREE.Sphere(boundingSphereCenter, nexus.mesh.sphere.radius)
+
 		// var s = 1/nexus.mesh.sphere.radius;
 		// var pos = nexus.mesh.sphere.center;
-		// mesh.position.set(-pos[0]*s, -pos[1]*s, -pos[2]*s);
-		// mesh.scale.set(s, s, s);
+		//mesh.position.set(0,0,0);
+		//mesh.scale.set(1,1,1);
 		if(mesh.autoMaterial)
 			mesh.material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 
@@ -34,7 +37,7 @@ NexusObject = function(url, renderer, render, material) {
 			var colors = new Float32Array(4);
 			geometry.addAttribute( 'color', new THREE.BufferAttribute(colors, 4));
 			if(mesh.autoMaterial)
-				mesh.material = new THREE.MeshLambertMaterial({ vertexColors: THREE.VertexColors });
+				mesh.material = new THREE.MeshLambertMaterial({ vertexColors: THREE.VertexColors , side: THREE.DoubleSide});
 		}
 
 		if(this.mesh.vertex.texCoord) {
@@ -43,7 +46,7 @@ NexusObject = function(url, renderer, render, material) {
 			if(mesh.autoMaterial) {
 				var texture = new THREE.DataTexture( new Uint8Array([1, 1, 1]), 1, 1, THREE.RGBFormat );
 				texture.needsUpdate = true;
-				mesh.material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: texture } );
+				mesh.material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: texture  , side: THREE.DoubleSide} );
 			}
 		}
 
