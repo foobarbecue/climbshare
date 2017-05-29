@@ -1,8 +1,8 @@
 data = {
     "boulders": {
-        "pecksm":{
-            "name":"Peck's Mystery",
-            "model3D":"pecksm.nxz",
+        "pecksm": {
+            "name": "Peck's Mystery",
+            "model3D": "pecksm.nxz",
             "area": "Socorro",
             "initialTransform": [
                 1.00000,
@@ -25,9 +25,13 @@ data = {
         },
         "streambed": {
             "name": "Streambed",
-            "model3D": "streambedTrimmed.ctm",
+            "model3D": "streambed1tex.nxz",
             "area": "Socorro",
-            "coords": [ -106.988561, 34.005287],
+            "coords": [-106.988561, 34.005287],
+            "initialTransform": [1.0, 0.0, 0.0, 0.0,
+                0.0, -0.309, -0.951, -4.7312,
+                0.0, 0.951, -0.309, 1.6171,
+                0.0, 0.0, 0.0, 1.0],
             "climbs": {
                 "Right Roof": {
                     "references": [
@@ -218,7 +222,7 @@ data = {
         },
         "waterfall": {
             "name": "Waterfall Wall",
-            "coords": [ -106.991416, 34.002290],
+            "coords": [-106.991416, 34.002290],
             "area": "Socorro",
             "model3D": "waterfall.ctm",
             "initialTransform": [0.335966, -0.00230824, -0.0711763, -0.94192,
@@ -257,21 +261,22 @@ data = {
                 -0.0143308, -0.436025, -0.0189154, 1.31333,
                 0, 0, 0, 1]
         },
-        "walrus": {"name": "Walrus Boulder",
-            "area":"Socorro",
+        "walrus": {
+            "name": "Walrus Boulder",
+            "area": "Socorro",
             "model3D": "walrus.ctm",
-            "coords":[-106.986381, 33.982293],
+            "coords": [-106.986381, 33.982293],
             "texture": "walrus.jpg"
         },
         "gimmies": {
-            "name":"The Gimmies",
-            "model3D":"gimmies.ctm",
-            "texture":"gimmies.jpg",
+            "name": "The Gimmies",
+            "model3D": "gimmies.ctm",
+            "texture": "gimmies.jpg",
         },
         "unbeatable": {
-            "name":"Unbeatable Boulder",
-            "model3D":"unbeatable.ctm",
-            "texture":"unbeatable.jpg",
+            "name": "Unbeatable Boulder",
+            "model3D": "unbeatable.ctm",
+            "texture": "unbeatable.jpg",
         }
     }
 };
