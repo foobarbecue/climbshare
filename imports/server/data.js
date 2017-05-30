@@ -25,7 +25,7 @@ data = {
         },
         "streambed": {
             "name": "Streambed",
-            "model3D": "streambed1tex.nxz",
+            "model3D": "streambed.nxz",
             "area": "Socorro",
             "coords": [-106.988561, 34.005287],
             "initialTransform": [1.0, 0.0, 0.0, 0.0,
@@ -266,17 +266,20 @@ data = {
             "area": "Socorro",
             "model3D": "walrus.ctm",
             "coords": [-106.986381, 33.982293],
-            "texture": "walrus.jpg"
+            "texture": "walrus.jpg",
+            "area":"Socorro"
         },
         "gimmies": {
             "name": "The Gimmies",
             "model3D": "gimmies.ctm",
             "texture": "gimmies.jpg",
+            "area":"Socorro"
         },
         "unbeatable": {
             "name": "Unbeatable Boulder",
             "model3D": "unbeatable.ctm",
             "texture": "unbeatable.jpg",
+            "area":"Socorro"
         }
     }
 };
