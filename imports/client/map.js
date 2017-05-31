@@ -60,9 +60,8 @@ Template.areaMap.onRendered(function(){
             center: ol.proj.transform([-106.829, 34], 'EPSG:4326', 'EPSG:3857'), // Lon Lat to Web Mercator
             zoom: 10
         }),
-        interactions: [clickLinks]
     });
-
+    olmap.addInteraction(clickLinks);
     // Zoom to the points
 
 
