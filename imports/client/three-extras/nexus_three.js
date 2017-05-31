@@ -16,16 +16,13 @@ NexusObject = function(url, renderer, render, material) {
 	this.frustumCulled = false;
 
 	var mesh = this;
-	var nexus = this.nexus = new Nexus.Instance(gl);
-	nexus.open(url);
-	nexus.onLoad = function() {
-		var boundingSphereCenter = new THREE.Vector3(...nexus.mesh.sphere.center)
-		geometry.boundingSphere = new THREE.Sphere(boundingSphereCenter, nexus.mesh.sphere.radius)
-
-		// var s = 1/nexus.mesh.sphere.radius;
-		// var pos = nexus.mesh.sphere.center;
-		//mesh.position.set(0,0,0);
-		//mesh.scale.set(1,1,1);
+	var instance = this.instance = new Nexus.Instance(gl);
+	instance.open(url);
+	instance.onLoad = function() {
+		// var s = 1/instance.mesh.sphere.radius;
+		// var pos = instance.mesh.sphere.center;
+		// mesh.position.set(-pos[0]*s, -pos[1]*s, -pos[2]*s);
+		// mesh.scale.set(s, s, s);
 		if(mesh.autoMaterial)
 			mesh.material = new THREE.MeshLambertMaterial( { color: 0xffffff } );
 
@@ -37,7 +34,7 @@ NexusObject = function(url, renderer, render, material) {
 			var colors = new Float32Array(4);
 			geometry.addAttribute( 'color', new THREE.BufferAttribute(colors, 4));
 			if(mesh.autoMaterial)
-				mesh.material = new THREE.MeshLambertMaterial({ vertexColors: THREE.VertexColors , side: THREE.DoubleSide});
+				mesh.material = new THREE.MeshLambertMaterial({ vertexColors: THREE.VertexColors });
 		}
 
 		if(this.mesh.vertex.texCoord) {
@@ -46,7 +43,7 @@ NexusObject = function(url, renderer, render, material) {
 			if(mesh.autoMaterial) {
 				var texture = new THREE.DataTexture( new Uint8Array([1, 1, 1]), 1, 1, THREE.RGBFormat );
 				texture.needsUpdate = true;
-				mesh.material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: texture  , side: THREE.DoubleSide} );
+				mesh.material = new THREE.MeshLambertMaterial( { color: 0xffffff, map: texture } );
 			}
 		}
 
@@ -56,21 +53,58 @@ NexusObject = function(url, renderer, render, material) {
 		}
 		render();
 	};
-	nexus.onUpdate = function() { render(); }
+	instance.onUpdate = function() { render(); }
 
 	this.onAfterRender = function(renderer, scene, camera, geometry, material, group) { 
-		if(!nexus.isReady) return;
+		if(!instance.isReady) return;
 		var s = renderer.getSize();
-		nexus.updateView([0, 0, s.width, s.height], 
+		instance.updateView([0, 0, s.width, s.height], 
 			camera.projectionMatrix.elements, 
 			mesh.modelViewMatrix.elements);
 		var program = renderer.context.getParameter(gl.CURRENT_PROGRAM);
-		nexus.attributes['position'] = renderer.context.getAttribLocation(program, "position");
-		nexus.attributes['normal'] = renderer.context.getAttribLocation(program, "normal");
-		nexus.attributes['color'] = renderer.context.getAttribLocation(program, "color");
-		nexus.attributes['uv'] = renderer.context.getAttribLocation(program, "uv");
-		nexus.render();
+		instance.attributes['position'] = renderer.context.getAttribLocation(program, "position");
+		instance.attributes['normal'] = renderer.context.getAttribLocation(program, "normal");
+		instance.attributes['color'] = renderer.context.getAttribLocation(program, "color");
+		instance.attributes['uv'] = renderer.context.getAttribLocation(program, "uv");
+
+		instance.render();
 	}
 }
 
 NexusObject.prototype = Object.create(THREE.Mesh.prototype);
+
+NexusObject.prototype.raycast = function(raycaster, intersects) {
+	var instance = this.instance;
+	var nexus = instance.mesh;
+	if(!nexus.sphere) return;
+	var sp = nexus.sphere;
+	var c = sp.center;
+	var center = new THREE.Vector3(c[0], c[1], c[2]);
+	var sphere = new THREE.Sphere(center, sp.radius);
+	sphere.applyMatrix4( this.matrixWorld );
+
+	if ( raycaster.ray.intersectsSphere( sphere ) === false ) return;
+	//just check the last level spheres.
+	if(!nexus.sink) return;
+
+	var distance = -1.0;
+	for(var i = 0; i < nexus.sink; i++) {
+		var patch = nexus.nfirstpatch[i];
+		if(nexus.patches[patch*3] != nexus.sink)
+			continue;
+		var x = nexus.nspheres[i*5];
+		var y = nexus.nspheres[i*5+1];
+		var z = nexus.nspheres[i*5+2];
+		var r = nexus.nspheres[i*5+4]; //tight radius
+		var sphere = new THREE.Sphere(new THREE.Vector3(x, y, z), r);
+		sphere.applyMatrix4( this.matrixWorld );
+		if ( raycaster.ray.intersectsSphere( sphere ) != false ) {
+			var d = sphere.center.lengthSq();
+			if(distance == -1.0 || d < distance)
+				distance = d;
+		}
+	}
+	if(distance == -1.0) return;
+
+	intersects.push({ distance: distance, object: this} );
+}

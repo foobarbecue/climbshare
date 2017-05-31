@@ -281,11 +281,24 @@ function onmousemove(e) {
     mouse2D.z = 0.5;
     raycaster.setFromCamera(mouse2D, Climbsim.camera);
     if (typeof Climbsim.boulderMesh !== 'undefined') {
-        intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);
-        if (intersects.length > 0) {
-            var pos = intersects[0].point;
-            if (typeof pos != null) {
-                Climbsim.mouse3D.position.set(pos.x, pos.y, pos.z);
+        // If the object is a Nexus object, it has its own raycast function and we'll use that
+        if('raycast' in Climbsim.boulderMesh){
+            let intersects = [];
+            Climbsim.boulderMesh.raycast(raycaster, intersects);
+            console.log(intersects);
+            if (intersects.length > 0) {
+                let pos = intersects[0].object.position;
+                if (typeof pos != null) {
+                    Climbsim.mouse3D.position.set(pos.x, pos.y, pos.z);
+                }
+            }
+        } else {
+            intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);
+            if (intersects.length > 0) {
+                let pos = intersects[0].point;
+                if (typeof pos != null) {
+                    Climbsim.mouse3D.position.set(pos.x, pos.y, pos.z);
+                }
             }
         }
     }

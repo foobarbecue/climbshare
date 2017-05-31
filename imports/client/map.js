@@ -2,10 +2,10 @@
  * Created by aaron on 5/28/2017.
  */
 
-import ol from "openlayers"
+//import ol from "openlayers"
 //Use below to load unminified openlayers for debugging. npm/ is an alias defined in .babelrc and implemented using
 //babel-plugin-module-resolver
-//import ol from "npm/openlayers/dist/ol-debug.js"
+import ol from "npm/openlayers/dist/ol-debug.js"
 
 Template.areaMap.onRendered(function(){
     this.subscribe("boulders");
@@ -14,6 +14,32 @@ Template.areaMap.onRendered(function(){
     let areaBoulders = Boulders.find({area:area}); // could this be const?
     let boulderVectorSource = new ol.source.Vector();
     let clickLinks = new ol.interaction.Select({condition: ol.events.condition.click});
+    clickLinks.on('select', function(evt){
+        window.open(evt.target.getFeatures().getArray()[0].get('url'));
+    });
+    let fill = new ol.style.Fill({
+        color: 'rgba(255,255,255,0.4)'
+    });
+    let stroke = new ol.style.Stroke({
+        color: '#3399CC',
+        width: 1.25
+    });
+    let markerStyle = function(feature) {
+        return [new ol.style.Style({
+            image: new ol.style.Circle({
+                fill: fill,
+                stroke: stroke,
+                radius: 5
+            }),
+            fill: fill,
+            stroke: stroke,
+            text: new ol.style.Text({
+                text: feature.get('name'),
+                fill: fill,
+                stroke: stroke
+            })
+        })];
+    };
 
     let olmap = new ol.Map({
         target: 'map',
@@ -24,7 +50,10 @@ Template.areaMap.onRendered(function(){
                     key:'AnPtlHlc_-w6pMue8NZ_LsUszDvhVRBV7s5fIm--skojzTnNKFHneZrPdpecItva',
                 })
             }),
-            new ol.layer.Vector({source:boulderVectorSource})
+            new ol.layer.Vector({
+                source:boulderVectorSource,
+                style: markerStyle
+            })
         ],
         view: new ol.View({
             projection: 'EPSG:3857', // Web Mercator. This is the default, just being explicit.
@@ -33,6 +62,9 @@ Template.areaMap.onRendered(function(){
         }),
         interactions: [clickLinks]
     });
+
+    // Zoom to the points
+
 
     areaBoulders.observe({
         added: function(boulder){
@@ -46,6 +78,7 @@ Template.areaMap.onRendered(function(){
                 boulderVectorSource.addFeature(boulderFeature);
                 console.log(boulderFeature);
             }
+            olmap.getView().fit(boulderVectorSource.getExtent(), olmap.getSize());
         }
     });
 });
