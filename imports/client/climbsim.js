@@ -285,7 +285,6 @@ function onmousemove(e) {
         if('raycast' in Climbsim.boulderMesh){
             let intersects = [];
             Climbsim.boulderMesh.raycast(raycaster, intersects);
-            console.log(intersects);
             if (intersects.length > 0) {
                 let pos = intersects[0].object.position;
                 if (typeof pos != null) {

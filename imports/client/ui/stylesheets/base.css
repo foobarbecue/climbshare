@@ -1,5 +1,6 @@
-body{
-    display: flex;
+html, body{
+    height: 100%;
+    width: 100%;
 }
 
 #progressText{
@@ -142,7 +143,9 @@ input[type=radio]:checked + img{
 }
 
 /*TODO probably move this Map page stuff to own file*/
-#map{
-    width: 100%;
+
+#mapid{
     height: 100%;
+    width: 100%;
+    position: absolute;
 }

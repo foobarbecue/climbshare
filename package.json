@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "babel-runtime": "^6.23.0",
-    "openlayers": "^4.1.1",
+    "leaflet": "^1.0.3",
     "three": "^0.85.0"
   },
   "devDependencies": {
