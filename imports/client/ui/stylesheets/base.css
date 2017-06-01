@@ -79,6 +79,7 @@ body{
 #controlPanel {
     width:200px;
     padding-right:0;
+    position: absolute;
 }
 #controlPanel > :not(h3){
     margin-right:4px;
