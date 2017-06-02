@@ -6,6 +6,7 @@
 //Use below to load unminified openlayers for debugging. npm/ is an alias defined in .babelrc and implemented using
 //babel-plugin-module-resolver
 import leaflet from "leaflet"
+import "leaflet-bing-layer"
 import "leaflet/dist/leaflet.css"
 
 Template.areaMap.onRendered(function(){
@@ -22,21 +23,39 @@ Template.areaMap.onRendered(function(){
     //     window.open(evt.target.getFeatures().getArray()[0].get('url'));
     // });
 
-// Initialize the map and assign it to a variable for later use
-    var map = leaflet.map('mapid', {
+    leaflet.Icon.Default.imagePath = '/images/';
+    let map = leaflet.map('mapid', {
+        closePopupOnClick: false,
         // Set latitude and longitude of the map center (required)
         center: [12.99766, -84.90838],
         // Set the initial zoom level, values 0-18, where 0 is most zoomed-out (required)
-        zoom: 5
+        zoom: 5,
     });
-
-// Create a Tile Layer and add it to the map
-    var tiles = new L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png').addTo(map);
-
+    let boulders = new leaflet.featureGroup();
+    window.boulders = boulders;
+    leaflet.tileLayer.bing('AnPtlHlc_-w6pMue8NZ_LsUszDvhVRBV7s5fIm--skojzTnNKFHneZrPdpecItva').addTo(map);
     areaBoulders.observe({
         added: function(boulder){
-            // let marker = leaflet.marker([boulder.coords[0], boulder.coords[1]]).addTo(areamap);
+            console.log(boulder);
+            try {
+                let marker = leaflet.marker([boulder.coords[1], boulder.coords[0]]).addTo(map);
+                marker.addTo(boulders);
+                let label = leaflet.popup({autoClose: false});
+                // Maybe this should be a meteor template. Dunno how I'd get it into the popup then though.
+                label.setContent(
+                    `<a href=/${encodeURI(area)}/${encodeURI(boulder.name)}>
+                        <img src=/models3d/thumbs/${encodeURI(boulder.name)}.jpg>
+                     </a>`
+                );
+                marker.bindPopup(label);
+                marker.openPopup();
+                map.fitBounds(boulders.getBounds());
+            }
+            catch (TypeError){
+                 console.log('No coords for ' + boulder.name)
+            }
         }
     });
 });
 
+window.leaflet = leaflet;
