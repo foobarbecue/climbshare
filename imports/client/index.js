@@ -302,7 +302,7 @@ addBeta : new Tool('addLabel','/img/addBeta.png', genLabelAdder('beta'),
 ),
 addOther : new Tool('addLabel','/img/addOther.png', genLabelAdder('other'),
     'Tool: Add miscelleneous info',
-    'Double click on the rock to add a miscelleneous label.'
+    'Double click on the rock to add a miscellaneous label.'
 ),
 };
 Template.toolbox.helpers({

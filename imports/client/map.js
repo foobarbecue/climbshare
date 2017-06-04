@@ -8,54 +8,85 @@
 import leaflet from "leaflet"
 import "leaflet-bing-layer"
 import "leaflet/dist/leaflet.css"
+import { Session } from "meteor/session"
+import { jsPlumb } from "jsplumb"
+
+var mapDisplay;
+var boulderMarkerGroup;
+var jsplumb;
 
 Template.areaMap.onRendered(function(){
     this.subscribe("boulders");
 
-    // $(window).resize(function () {
-    //     var h = $(window).height(), offsetTop = 90; // Calculate the top offset
-    //     $('#mapid').css('height', (h - offsetTop));
-    // }).resize();
-
-    let area = FlowRouter.getParam('area');
-    let areaBoulders = Boulders.find({area:area}); // could this be const?
-    // clickLinks.on('select', function(evt){
-    //     window.open(evt.target.getFeatures().getArray()[0].get('url'));
-    // });
-
     leaflet.Icon.Default.imagePath = '/images/';
-    let map = leaflet.map('mapid', {
+    mapDisplay = leaflet.map('mapid', {
         closePopupOnClick: false,
         // Set latitude and longitude of the map center (required)
-        center: [12.99766, -84.90838],
+        center: [34,-107],
         // Set the initial zoom level, values 0-18, where 0 is most zoomed-out (required)
-        zoom: 5,
+        zoom: 13,
     });
-    let boulders = new leaflet.featureGroup();
-    window.boulders = boulders;
+    boulderMarkerGroup = new leaflet.featureGroup();
+    window.map = mapDisplay;
     leaflet.tileLayer.bing('AnPtlHlc_-w6pMue8NZ_LsUszDvhVRBV7s5fIm--skojzTnNKFHneZrPdpecItva').addTo(map);
-    areaBoulders.observe({
-        added: function(boulder){
-            console.log(boulder);
-            try {
-                let marker = leaflet.marker([boulder.coords[1], boulder.coords[0]]).addTo(map);
-                marker.addTo(boulders);
-                let label = leaflet.popup({autoClose: false});
-                // Maybe this should be a meteor template. Dunno how I'd get it into the popup then though.
-                label.setContent(
-                    `<a href=/${encodeURI(area)}/${encodeURI(boulder.name)}>
-                        <img src=/models3d/thumbs/${encodeURI(boulder.name)}.jpg>
-                     </a>`
-                );
-                marker.bindPopup(label);
-                marker.openPopup();
-                map.fitBounds(boulders.getBounds());
-            }
-            catch (TypeError){
-                 console.log('No coords for ' + boulder.name)
+    jsplumb = jsPlumb.getInstance();
+    window.jsplumb = jsplumb;
+    // Override getOffset because the one that comes with jsPlumb doesn't seem to work with leaflet markers (maybe because of
+    // css translate3d?)
+    // jsplumb.getOffset = function(el, relativeToRoot, container){
+    //     let pos = $(el).position();
+    //     return pos
+    // }
+    }
+);
+Template.areaMap.helpers(
+    // TODO this is same as in the onRendered... find out how to define only once
+    {
+        boulders: function () {
+            let area = FlowRouter.getParam('area');
+            return Boulders.find({'area': area});
+        }
+    }
+);
+Template.boulderthumb.onRendered(
+    function() {
+        let boulder = this.data;
+
+        // Add to map
+        // try {
+        if(!!boulder.coords) {
+            var marker = leaflet.marker([boulder.coords[1], boulder.coords[0]]).addTo(mapDisplay);
+            marker.addTo(boulderMarkerGroup);
+            marker.getElement().className += (' ' + boulder._id);
+            var label = leaflet.popup(
+                {
+                    autoClose: false,
+                    minWidth: '200px',
+                    maxWidth: '200px',
+                });
+            // Maybe this should be a meteor template. Dunno how I'd get it into the popup then though.
+            // label.setContent(
+            //     `<a href=/${encodeURI(area)}/${encodeURI(boulder.name)}>
+            //         <img src=/models3d/thumbs/${encodeURI(boulder.name)}.jpg>
+            //      </a>`
+            // );
+            label.setContent(`<div id='${boulder.name}marker'>${boulder.name}</div>`);
+            marker.bindPopup(label);
+            // map.fitBounds(boulderMarkerGroup.getBounds());
+
+
+            // Connect with jsPlumb
+            var boulderThumbDiv = this.find('div');
+            var markerDiv = marker._icon;
+            if (markerDiv && boulderThumbDiv) {
+                var thumbEl = jsplumb.addEndpoint(boulderThumbDiv, {anchor: 'Center'}, {
+                    isSource: true,
+                    isTarget: true
+                });
+                var markerEl = jsplumb.addEndpoint(markerDiv, {anchor: 'Center'});
+                console.log(jsplumb.connect({source: markerEl, target: thumbEl}));
+                jsplumb.repaint(markerDiv, $(markerDiv).position())
             }
         }
-    });
-});
-
-window.leaflet = leaflet;
+    }
+);

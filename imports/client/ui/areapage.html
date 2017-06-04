@@ -1,4 +1,15 @@
 <template name="areaMap">
         <div id="mapid" class="map">
         </div>
+    <div id="boulderlist">
+        {{#each boulder in boulders}}
+            {{>boulderthumb boulder}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="boulderthumb">
+    <div class="{{_id}} boulderthumb">
+        <a href="/{{area}}/{{name}}">{{name}}</a>
+    </div>
 </template>
