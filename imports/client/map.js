@@ -11,7 +11,11 @@ import "leaflet/dist/leaflet.css"
 import {jsPlumb} from "jsplumb"
 
 let mapDisplay;
-const jsplumb = jsPlumb.getInstance();
+const jsplumb = jsPlumb.getInstance({
+    Connector:["Bezier",{stub:20}],
+    PaintStyle:{ stroke: "black", strokeWidth: 5}
+
+});
 
 Template.areaMap.onRendered(function () {
         this.subscribe("boulders");
@@ -68,11 +72,8 @@ Template.boulderthumb.onRendered(
             let boulderThumbDiv = this.find('.boulderthumbInner');
             let markerDiv = marker._icon;
             if (markerDiv && boulderThumbDiv) {
-                let thumbEl = jsplumb.addEndpoint(boulderThumbDiv, {anchor: 'AutoDefault'}, {
-                    isSource: true,
-                    isTarget: true
-                });
-                let markerEl = jsplumb.addEndpoint(markerDiv, {anchor: 'Center'});
+                let thumbEl = jsplumb.addEndpoint(boulderThumbDiv, {anchor: 'AutoDefault'});
+                let markerEl = jsplumb.addEndpoint(markerDiv, {anchor: 'BottomCenter'},{paintStyle:{fill:"none", stroke:"black"}});
                 jsplumb.connect({source: markerEl, target: thumbEl});
             }
         }
