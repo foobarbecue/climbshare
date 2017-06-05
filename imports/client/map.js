@@ -33,10 +33,9 @@ Template.areaMap.onRendered(function(){
     window.jsplumb = jsplumb;
     // Override getOffset because the one that comes with jsPlumb doesn't seem to work with leaflet markers (maybe because of
     // css translate3d?)
-    // jsplumb.getOffset = function(el, relativeToRoot, container){
-    //     let pos = $(el).position();
-    //     return pos
-    // }
+    jsplumb.getOffset = function(el, relativeToRoot, container){
+         return $(el).offset();
+    }
     }
 );
 Template.areaMap.helpers(
@@ -72,11 +71,14 @@ Template.boulderthumb.onRendered(
             // );
             label.setContent(`<div id='${boulder.name}marker'>${boulder.name}</div>`);
             marker.bindPopup(label);
-            // map.fitBounds(boulderMarkerGroup.getBounds());
+            mapDisplay.on('move',function(){
+                jsplumb.repaintEverything();
+            })
+            map.fitBounds(boulderMarkerGroup.getBounds(),{padding: [50,50]});
 
 
             // Connect with jsPlumb
-            var boulderThumbDiv = this.find('div');
+            var boulderThumbDiv = this.find('.boulderthumbInner');
             var markerDiv = marker._icon;
             if (markerDiv && boulderThumbDiv) {
                 var thumbEl = jsplumb.addEndpoint(boulderThumbDiv, {anchor: 'AutoDefault'}, {
@@ -85,7 +87,7 @@ Template.boulderthumb.onRendered(
                 });
                 var markerEl = jsplumb.addEndpoint(markerDiv, {anchor: 'Center'});
                 console.log(jsplumb.connect({source: markerEl, target: thumbEl}));
-                jsplumb.repaint(markerDiv, $(markerDiv).position())
+                // jsplumb.repaint(markerDiv, $(markerDiv).offset());
             }
         }
     }
