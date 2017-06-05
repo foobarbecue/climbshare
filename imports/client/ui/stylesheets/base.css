@@ -156,14 +156,38 @@ input[type=radio]:checked + img{
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
     pointer-events: none;
 }
 
 .boulderthumb{
-    width:50%;
+    width:100%;
+    display: grid;
 }
 
-.jtk-endpoint, .jtk-connector{
-    z-index: 2000;
+.boulderthumb div{
+    position: absolute;
+    pointer-events: auto;
+    /*align-self: center;*/
 }
+
+.boulderthumb{
+    margin: 20px;
+}
+
+.boulderthumb:nth-child(even) > div{
+    right: 20px;
+}
+
+.boulderthumb:nth-child(odd) > div{
+    left: 20px;
+}
+
+.boulderthumbTitle{
+    z-index: 10;
+
+}
+
+/*.jtk-endpoint, .jtk-connector{*/
+    /*z-index: 2000;*/
+/*}*/

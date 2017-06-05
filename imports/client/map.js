@@ -79,7 +79,7 @@ Template.boulderthumb.onRendered(
             var boulderThumbDiv = this.find('div');
             var markerDiv = marker._icon;
             if (markerDiv && boulderThumbDiv) {
-                var thumbEl = jsplumb.addEndpoint(boulderThumbDiv, {anchor: 'Center'}, {
+                var thumbEl = jsplumb.addEndpoint(boulderThumbDiv, {anchor: 'AutoDefault'}, {
                     isSource: true,
                     isTarget: true
                 });

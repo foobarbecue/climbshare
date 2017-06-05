@@ -10,6 +10,11 @@
 
 <template name="boulderthumb">
     <div class="{{_id}} boulderthumb">
-        <a href="/{{area}}/{{name}}">{{name}}</a>
+        <div style="position: absolute">
+            <div class="boulderthumbTitle">{{name}}</div>
+            <a href="/{{area}}/{{name}}">
+                <img src="/models3d/thumbs/{{name}}.jpg">
+            </a>
+        </div>
     </div>
 </template>
