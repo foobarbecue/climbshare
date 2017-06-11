@@ -2,11 +2,12 @@ import * as THREE from 'three';
 window.THREE = THREE;
 import '../models.js';
 import '../math_etc.js';
-//TODO find a better solution for including the three.js "examples" addons
+//TODO find a better solution for including the three.js "examples" addons using import rather than require
 require('/imports/client/three-extras/OrbitControls.js');
 require('/imports/client/three-extras/ctm/CTMLoader.js');
-import '/imports/client/three-extras/nexus.js'
-import '/imports/client/three-extras/nexus_three.js'
+require('/node_modules/three/examples/js/loaders/PLYLoader.js');
+import '/imports/client/three-extras/nexus.js';
+import '/imports/client/three-extras/nexus_three.js';
 // import '/imports/startup/client/three-extras/gltf'
 // Climbsim should probably not be capitalized since it's an object rather than class
 export let Climbsim = {};
@@ -160,6 +161,7 @@ Climbsim.loadBoulder = function (boulderName) {
     }
     boulder = Boulders.findOne({name: boulderName});
 
+
     // clear all climbs
     this.removeAllClimbs();
     // decide loading method based on file extension (bad?)
@@ -192,7 +194,22 @@ Climbsim.loadBoulder = function (boulderName) {
             Climbsim.addBoulderToScene();
         // todo handle ply, potree
 
+        // Add raycast model
+        var loader = new THREE.PLYLoader();
+        loader.load('/models3d/' + boulder.model3D + '-small.ply', function(geometry){
+            // var material = new THREE.MeshStandardMaterial( { color: 0x0055ff, shading: THREE.FlatShading } );
+            var mesh = new THREE.Mesh(geometry);
+            mesh.material.visible = false;
+            Climbsim.boulderMeshSimple = mesh;
+            Climbsim.scene.add(mesh)
+            if (!!boulder.initialTransform) {
+                var xform = new THREE.Matrix4();
+                xform.set.apply(xform, boulder.initialTransform);
+                Climbsim.boulderMeshSimple.applyMatrix(xform);
+            }
+        })
     }
+
 };
 
 Climbsim.loadClimbs = function () {
@@ -281,18 +298,18 @@ function onmousemove(e) {
     mouse2D.z = 0.5;
     raycaster.setFromCamera(mouse2D, Climbsim.camera);
     if (typeof Climbsim.boulderMesh !== 'undefined') {
-        // If the object is a Nexus object, it has its own raycast function and we'll use that
-        if('raycast' in Climbsim.boulderMesh){
-            let intersects = [];
-            Climbsim.boulderMesh.raycast(raycaster, intersects);
-            if (intersects.length > 0) {
-                let pos = intersects[0].object.position;
-                if (typeof pos != null) {
-                    Climbsim.mouse3D.position.set(pos.x, pos.y, pos.z);
-                }
-            }
-        } else {
-            intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);
+        // // If the object is a Nexus object, it has its own raycast function and we'll use that
+        // if('raycast' in Climbsim.boulderMesh){
+        //     let intersects = [];
+        //     Climbsim.boulderMesh.raycast(raycaster, intersects);
+        //     if (intersects.length > 0) {
+        //         let pos = intersects[0].object.position;
+        //         if (typeof pos != null) {
+        //             Climbsim.mouse3D.position.set(pos.x, pos.y, pos.z);
+        //         }
+        //     }
+        // } else {
+            intersects = raycaster.intersectObject(Climbsim.boulderMeshSimple, true);
             if (intersects.length > 0) {
                 let pos = intersects[0].point;
                 if (typeof pos != null) {
@@ -300,7 +317,7 @@ function onmousemove(e) {
                 }
             }
         }
-    }
+    // }
 
 //  live drawing for addClimb mouseTool
     if (typeof tools !== "undefined" &&
