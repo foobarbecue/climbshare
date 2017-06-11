@@ -63,7 +63,6 @@ Template.boulderthumb.onRendered(
 
             label.setContent(`<div id='${boulder.name}marker'>${boulder.name}</div>`);
             marker.bindPopup(label);
-<<<<<<< HEAD
             mapDisplay.on('move', function () {
                 jsplumb.repaintEverything();
             });
@@ -76,25 +75,6 @@ Template.boulderthumb.onRendered(
                 let thumbEl = jsplumb.addEndpoint(boulderThumbDiv, {anchor: 'AutoDefault'});
                 let markerEl = jsplumb.addEndpoint(markerDiv, {anchor: 'BottomCenter'},{paintStyle:{fill:"none", stroke:"black"}});
                 jsplumb.connect({source: markerEl, target: thumbEl});
-=======
-            mapDisplay.on('move',function(){
-                jsplumb.repaintEverything();
-            })
-            map.fitBounds(boulderMarkerGroup.getBounds(),{padding: [50,50]});
-
-
-            // Connect with jsPlumb
-            var boulderThumbDiv = this.find('.boulderthumbInner');
-            var markerDiv = marker._icon;
-            if (markerDiv && boulderThumbDiv) {
-                var thumbEl = jsplumb.addEndpoint(boulderThumbDiv, {anchor: 'AutoDefault'}, {
-                    isSource: true,
-                    isTarget: true
-                });
-                var markerEl = jsplumb.addEndpoint(markerDiv, {anchor: 'Center'});
-                console.log(jsplumb.connect({source: markerEl, target: thumbEl}));
-                // jsplumb.repaint(markerDiv, $(markerDiv).offset());
->>>>>>> f65959d7c485daf41dd45d4092369c68ab95bcc6
             }
         }
     }
