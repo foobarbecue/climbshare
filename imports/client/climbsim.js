@@ -6,6 +6,7 @@ import '../math_etc.js';
 require('/imports/client/three-extras/OrbitControls.js');
 require('/imports/client/three-extras/ctm/CTMLoader.js');
 require('/node_modules/three/examples/js/loaders/PLYLoader.js');
+import { THREEx } from '/imports/client/three-extras/threex.laser/threex.laserbeam.js';
 import '/imports/client/three-extras/nexus.js';
 import '/imports/client/three-extras/nexus_three.js';
 // import '/imports/startup/client/three-extras/gltf'
@@ -27,11 +28,15 @@ Climbsim.init = function () {
     Climbsim.camera.position.set(1, -20, 5);
     // we use Z up for compatibility with UTM and lat lon
     Climbsim.camera.up.set(0, 0, 1);
-    // make a 3D mouse out of a sphere for manipulating
-    // stuff
-    Climbsim.mouse3D = new THREE.Mesh(
-        new THREE.SphereGeometry(0.1, 6, 6),
-        new THREE.MeshBasicMaterial({color: 'red', transparent: true}));
+
+    // make a 3D mouse for manipulating stuff
+    var dir = new THREE.Vector3( 1, 2, 0 );
+    dir.normalize();
+    var origin = new THREE.Vector3( 0, 0, 0 );
+    var length = 1;
+    var hex = 0xffff00;
+    var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+    Climbsim.mouse3D = arrowHelper;
     Climbsim.scene.add(Climbsim.mouse3D);
     Climbsim.container.on('mousemove', onmousemove);
     // TODO maybe this in template event handlers
@@ -297,7 +302,7 @@ function onmousemove(e) {
     mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
     mouse2D.z = 0.5;
     raycaster.setFromCamera(mouse2D, Climbsim.camera);
-    if (typeof Climbsim.boulderMesh !== 'undefined') {
+    if (typeof Climbsim.boulderMeshSimple !== 'undefined') {
         // // If the object is a Nexus object, it has its own raycast function and we'll use that
         // if('raycast' in Climbsim.boulderMesh){
         //     let intersects = [];
@@ -309,12 +314,18 @@ function onmousemove(e) {
         //         }
         //     }
         // } else {
-            intersects = raycaster.intersectObject(Climbsim.boulderMeshSimple, true);
+
+            let intersects = raycaster.intersectObject(Climbsim.boulderMeshSimple, true);
             if (intersects.length > 0) {
-                let pos = intersects[0].point;
-                if (typeof pos != null) {
-                    Climbsim.mouse3D.position.set(pos.x, pos.y, pos.z);
-                }
+                let intersect = intersects[0];
+                Climbsim.mouse3D.position.copy(intersect.point);
+
+                // Climbsim.mouse3D.translateOnAxis(normal, 1);
+                var normalMatrix = new THREE.Matrix3().getNormalMatrix( intersect.object.matrixWorld );
+                var worldNormal = intersect.face.normal.clone().applyMatrix3( normalMatrix ).normalize();
+                Climbsim.mouse3D.lookAt( intersect.face.normal );
+                Climbsim.mouse3D.position.copy( intersect.point );
+                //Climbsim.mouse3D.translateOnAxis(Climbsim.mouse3D.getWorldDirection(), -1)
             }
         }
     // }
@@ -336,8 +347,8 @@ Climbsim.animate = function () {
 
 function render() {
     oscillator = ((Math.sin(clock.getElapsedTime() * 3)) + Math.PI / 2);
-    Climbsim.mouse3D.material.color.setRGB(1, 0, 0);
-    Climbsim.mouse3D.material.opacity = oscillator / Math.PI;
+    // Climbsim.mouse3D.material.color.setRGB(1, 0, 0);
+    // Climbsim.mouse3D.material.opacity = oscillator / Math.PI;
     Nexus.beginFrame(Climbsim.renderer.context);
     Climbsim.renderer.render(Climbsim.scene, Climbsim.camera);
     Nexus.endFrame(Climbsim.renderer.context);
