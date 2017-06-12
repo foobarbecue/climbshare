@@ -298,6 +298,10 @@ Climbsim.moveLatestVertexToMousePos = function () {
 function onmousemove(e) {
     // mouse movement without any buttons pressed should move the 3d mouse
     e.preventDefault();
+    // don't move the mouse3D if we are orbiting the view
+    if (Climbsim.controls.state !== Climbsim.controls.STATES.NONE){
+        return
+    };
     mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
     mouse2D.z = 0.5;
