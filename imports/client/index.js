@@ -281,11 +281,8 @@ addVertexToClimb : new Tool('addVertexToClimb','/img/addVertex.png', function(){
                 Climbs.update({_id:climb._id}, {$pop: {vertices:1}});
             }
             tools.current=tools.addNewClimb;
-
             $(this).off('keydown.finishClimb')
         }
-
-
     })
     },
     'Double click on the rock to add a new vertex' + Session.get('selectedLabel'),
@@ -337,7 +334,9 @@ Template.toolbox.events({
 Tracker.autorun(function () {
     try {
         var boulderName = Session.get('loadedBoulder');
-        Climbsim.loadBoulder(boulderName);
+        // There are references to climbs inside loadBoulder. Using nonreactive keeps the boulder from being redrawn
+        // when climbs change.
+        Tracker.nonreactive(function(){Climbsim.loadBoulder(boulderName)});
         $('#boulderList').val(boulderName);
     } catch (TypeError) {
         console.log('failed to load ' + boulderName);
