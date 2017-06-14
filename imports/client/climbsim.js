@@ -35,8 +35,10 @@ Climbsim.init = function () {
     var origin = new THREE.Vector3( 0, 0, 0 );
     var length = 1;
     var hex = 0xffff00;
-    var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-    Climbsim.mouse3D = arrowHelper;
+    Climbsim.mouse3D = new THREE.Mesh(
+        new THREE.CylinderGeometry( 0, 0.08, 0.24),
+        new THREE.MeshBasicMaterial({wireframe: true})
+    );
     Climbsim.scene.add(Climbsim.mouse3D);
     Climbsim.container.on('mousemove', onmousemove);
     // TODO maybe this in template event handlers
@@ -324,12 +326,13 @@ function onmousemove(e) {
                 let intersect = intersects[0];
                 Climbsim.mouse3D.position.copy(intersect.point);
 
-                // Climbsim.mouse3D.translateOnAxis(normal, 1);
-                var normalMatrix = new THREE.Matrix3().getNormalMatrix( intersect.object.matrixWorld );
-                var worldNormal = intersect.face.normal.clone().applyMatrix3( normalMatrix ).normalize();
-                Climbsim.mouse3D.lookAt( intersect.face.normal );
+                // Thanks to https://stackoverflow.com/questions/9038465/three-js-object3d-cylinder-rotation-to-align-to-a-vector
+                Climbsim.mouse3D.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,-1), intersect.face.normal);
+                let mouseLength = Climbsim.mouse3D.geometry.parameters.height;
                 Climbsim.mouse3D.position.copy( intersect.point );
-                //Climbsim.mouse3D.translateOnAxis(Climbsim.mouse3D.getWorldDirection(), -1)
+                Climbsim.mouse3D.translateY(-mouseLength/2);
+                // Shift so that end of cylinder is on mesh point instead of center
+
             }
         }
     // }
