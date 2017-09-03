@@ -45,7 +45,7 @@ function getCurrentDir() {
 
 var path = getCurrentDir();
 
-meco = new Worker(path.replace('nexus.js', 'meco.js'));
+meco = new Worker('/meco.js'));
 meco.requests = {};
 meco.count = 0;
 meco.postRequest = function(sig, node, patches) {
@@ -67,7 +67,7 @@ meco.onmessage = function(e) {
 	node.context.readyNode(node);
 };
 
-corto = new Worker(path.replace('nexus.js', 'corto.js'));
+corto = new Worker('/corto.js');
 corto.requests = {};
 corto.count = 0;
 corto.postRequest = function(node) {
