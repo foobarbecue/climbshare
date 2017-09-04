@@ -45,7 +45,7 @@ function getCurrentDir() {
 
 var path = getCurrentDir();
 
-meco = new Worker('/meco.js'));
+meco = new Worker('/meshcoder_worker.js');
 meco.requests = {};
 meco.count = 0;
 meco.postRequest = function(sig, node, patches) {

@@ -8,7 +8,7 @@ require('/imports/client/three-extras/ctm/CTMLoader.js');
 require('/node_modules/three/examples/js/loaders/PLYLoader.js');
 import { THREEx } from '/imports/client/three-extras/threex.laser/threex.laserbeam.js';
 import '/imports/client/three-extras/nexus.js';
-import '/imports/client/three-extras/nexus_three.js';
+require('/imports/client/three-extras/NEXUSLoader.js');
 // import '/imports/startup/client/three-extras/gltf'
 // Climbsim should probably not be capitalized since it's an object rather than class
 export let Climbsim = {};
@@ -17,7 +17,7 @@ import {FlowRouter} from 'meteor/kadira:flow-router';
 window.Climbsim = Climbsim;
 var clock = new THREE.Clock();
 var raycaster = new THREE.Raycaster();
-var mouse2D, intersects, oscillator;
+var mouse2D, intersects, oscillator, nxzloader;
 Climbsim.init = function () {
     //$("#progressBar").progressbar();
     Climbsim.container = $('#threejs-container');
@@ -174,6 +174,7 @@ Climbsim.loadBoulder = function (boulderName) {
     // decide loading method based on file extension (bad?)
     switch (boulder.model3D.slice(-3)) {
         case 'ctm':
+            Climbsim.filetype = 'ctm';
             // todo CTM loader is not available
             var loader = new THREE.CTMLoader();
             loader.load('/models3d/' + boulder.model3D,
@@ -192,12 +193,24 @@ Climbsim.loadBoulder = function (boulderName) {
                     Climbsim.addBoulderToScene();
                 });
             break;
-        case 'nxs':
-            Climbsim.boulderMesh = new NexusObject('/models3d/' + boulder.model3D, Climbsim.renderer, render);
-            Climbsim.addBoulderToScene();
-            break;
+        // case 'nxs':
+        //     Climbsim.boulderMesh = new NexusObject('/models3d/' + boulder.model3D, Climbsim.renderer, render);
+        //     Climbsim.addBoulderToScene();
+        //     break;
         case 'nxz':
-            Climbsim.boulderMesh = new NexusObject('/models3d/' + boulder.model3D, Climbsim.renderer, render);
+            Climbsim.filetype = 'nxz';
+            nxzloader = new THREE.NEXUSLoader();
+            Climbsim.boulderMesh = nxzloader.load(
+                '/models3d/' + boulder.model3D,
+                {
+                    onLoad: () => {
+                        console.log('loaded');
+                        render()
+                    }
+                    ,
+                    onError: () => console.log(nxzerr)
+                }
+            );
             Climbsim.addBoulderToScene();
         // todo handle ply, potree
 
@@ -356,9 +369,14 @@ function render() {
     oscillator = ((Math.sin(clock.getElapsedTime() * 3)) + Math.PI / 2);
     // Climbsim.mouse3D.material.color.setRGB(1, 0, 0);
     // Climbsim.mouse3D.material.opacity = oscillator / Math.PI;
-    Nexus.beginFrame(Climbsim.renderer.context);
-    Climbsim.renderer.render(Climbsim.scene, Climbsim.camera);
-    Nexus.endFrame(Climbsim.renderer.context);
+    if (Climbsim.filetype == 'nxz'){
+        Climbsim.boulderMesh.update(Climbsim.renderer, Climbsim.camera);
+        Climbsim.renderer.render(Climbsim.scene, Climbsim.camera);
+        nxzloader.update();
+    } else {
+        Climbsim.renderer.render(Climbsim.scene, Climbsim.camera);
+    }
+
 }
 
 function onWindowResize() {
