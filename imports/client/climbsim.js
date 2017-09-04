@@ -213,23 +213,7 @@ Climbsim.loadBoulder = function (boulderName) {
             );
             Climbsim.addBoulderToScene();
         // todo handle ply, potree
-
-        // Add raycast model
-        var loader = new THREE.PLYLoader();
-        loader.load('/models3d/' + boulder.model3D + '-small.ply', function(geometry){
-            // var material = new THREE.MeshStandardMaterial( { color: 0x0055ff, shading: THREE.FlatShading } );
-            var mesh = new THREE.Mesh(geometry);
-            mesh.material.visible = false;
-            Climbsim.boulderMeshSimple = mesh;
-            Climbsim.scene.add(mesh)
-            if (!!boulder.initialTransform) {
-                var xform = new THREE.Matrix4();
-                xform.set.apply(xform, boulder.initialTransform);
-                Climbsim.boulderMeshSimple.applyMatrix(xform);
-            }
-        })
     }
-
 };
 
 Climbsim.loadClimbs = function () {
@@ -321,20 +305,9 @@ function onmousemove(e) {
     mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
     mouse2D.z = 0.5;
     raycaster.setFromCamera(mouse2D, Climbsim.camera);
-    if (typeof Climbsim.boulderMeshSimple !== 'undefined') {
-        // // If the object is a Nexus object, it has its own raycast function and we'll use that
-        // if('raycast' in Climbsim.boulderMesh){
-        //     let intersects = [];
-        //     Climbsim.boulderMesh.raycast(raycaster, intersects);
-        //     if (intersects.length > 0) {
-        //         let pos = intersects[0].object.position;
-        //         if (typeof pos != null) {
-        //             Climbsim.mouse3D.position.set(pos.x, pos.y, pos.z);
-        //         }
-        //     }
-        // } else {
+    if (typeof Climbsim.boulderMesh !== 'undefined') {
 
-            let intersects = raycaster.intersectObject(Climbsim.boulderMeshSimple, true);
+            let intersects = raycaster.intersectObject(Climbsim.boulderMesh, true);
             if (intersects.length > 0) {
                 let intersect = intersects[0];
                 Climbsim.mouse3D.position.copy(intersect.point);
