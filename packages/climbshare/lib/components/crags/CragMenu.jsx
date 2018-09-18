@@ -4,6 +4,20 @@ import Helmet from 'react-helmet'
 import Crags from '../../modules/crags/collection.js'
 
 
+const CragMenuItem = (props) => <span>{props.crag.name}test</span>;
+
+getMenuItem = (crag) => {
+
+    return {
+        to: { pathname: '/crag/' + crag._id }, //todo should use Utils.getRoutePath or something
+        component: <CragMenuItem />,
+        componentProps: {
+            crag: crag
+        }
+    }
+
+}
+
 const CragMenu = ({results=[]}) => {
   return (
       <div>
@@ -12,7 +26,7 @@ const CragMenu = ({results=[]}) => {
       </Helmet>
       <Components.Dropdown
           title = "crags"
-          menuItems = {results.map(crag => crag.name)}
+          menuItems = {results.map(getMenuItem)}
       />
       </div>
   )
