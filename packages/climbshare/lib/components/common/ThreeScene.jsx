@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import * as THREE from 'three';
-import { Components, registerComponent } from 'meteor/vulcan:core'
+import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
+import Crags from "../../modules/crags/collection";
 
 class ThreeScene extends Component{
+
   componentDidMount(){
     const width = this.mount.clientWidth;
     const height = this.mount.clientHeight;
@@ -23,7 +25,7 @@ class ThreeScene extends Component{
     this.mount.appendChild(this.renderer.domElement);
     //ADD CUBE
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: '#433F81'     });
+    const material = new THREE.MeshBasicMaterial({ color: this.props.document.color });
     this.cube = new THREE.Mesh(geometry, material);
     this.scene.add(this.cube);
     this.start()
@@ -58,4 +60,9 @@ class ThreeScene extends Component{
     )
   }
 }
-registerComponent({name:'ThreeScene', component: ThreeScene });
+
+const queryOptions = {
+    collection: Crags
+};
+
+registerComponent('ThreeScene', ThreeScene, [withSingle, queryOptions]);

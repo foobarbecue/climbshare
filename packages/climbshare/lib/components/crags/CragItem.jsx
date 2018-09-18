@@ -1,15 +1,8 @@
 import React from 'react'
-import { Components, registerComponent } from 'meteor/vulcan:core'
+import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
 
-import Crags from '../../modules/crags/collection.js'
-
-if (Meteor.isClient){
-    console.log(Crags);
-}
-
-
-const CragItem = (props, context) => (
-    <div>this will be a single crag</div>
-);
+const CragItem = (props, context) => {
+    return <Components.ThreeScene documentId={props.params._id} />;
+};
 
 registerComponent({name:'CragItem', component: CragItem });

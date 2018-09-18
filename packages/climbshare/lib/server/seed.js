@@ -9,7 +9,8 @@ const seedData = [
     initialTransform: [1.0, 0.0, 0.0, 0.0,
       0.0, -0.309, -0.951, -4.7312,
       0.0, 0.951, -0.309, 1.6171,
-      0.0, 0.0, 0.0, 1.0]
+      0.0, 0.0, 0.0, 1.0],
+    color: "blue"
   },
   {
     name: "pecks mystery",
@@ -18,7 +19,8 @@ const seedData = [
     initialTransform: [1.0, 0.0, 0.0, 0.0,
       0.0, -0.309, -0.951, -4.7312,
       0.0, 0.951, -0.309, 1.6171,
-      0.0, 0.0, 0.0, 1.0]
+      0.0, 0.0, 0.0, 1.0],
+    color: "red"
   }
 ];
 
@@ -29,7 +31,7 @@ Meteor.startup(()=>{
     Promise.awaitAll(seedData.map(document => newMutation({
       collection: Crags,
       document,
-      validate: false
+      // validate: false
     })));
   }
 });

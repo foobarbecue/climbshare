@@ -12,32 +12,32 @@ const schema = {
     label: 'Name',
     type: String,
     canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
     optional: true,
-    canCreate: ['members'],
-    canUpdate: ['members']
   },
   lat: {
     label: 'Latitude',
     type: Number,
     canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
     optional: true,
-    canCreate: ['members'],
-    canUpdate: ['members']
   },
   lon: {
     label: 'Longitude',
     type: Number,
     canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
     optional: true,
-    canCreate: ['members'],
-    canUpdate: ['members']
   },
   initialTransform:{ // does this need permissions and stuff?
     type: Array,
     canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
     optional: true,
-    canCreate: ['members'],
-    canUpdate: ['members']
   },
   'initialTransform.$': {
     type: Number
@@ -45,15 +45,23 @@ const schema = {
   model3D:{
     type: String,
     canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
     optional: true,
-    canCreate: ['members'],
-    canUpdate: ['members']
+  },
+  color:{
+    type: String,
+    canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
+    optional: true,
   },
   createdAt: {
     type: Date,
     optional: true,
-    canCreate: ['members'],
-    canUpdate: ['members']
+    canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
   },
 };
 
