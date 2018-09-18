@@ -2,7 +2,12 @@ import React from 'react'
 import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
 
 const CragItem = (props, context) => {
-    return <Components.ThreeScene documentId={props.params._id} />;
+    return (
+        <div>
+            <Components.ThreeScene documentId={props.params._id} />
+            <Components.CragMenu />
+        </div>
+    );
 };
 
 registerComponent({name:'CragItem', component: CragItem });
