@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TrackballControls from '../../no_module_avail/trackball.js'
 import * as THREE from 'three';
 import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
 import Crags from "../../modules/crags/collection";
@@ -23,13 +24,23 @@ class ThreeScene extends Component{
     this.renderer.setClearColor('#000000');
     this.renderer.setSize(width, height);
     this.mount.appendChild(this.renderer.domElement);
+
+    //Add controls
+    this.controls = new TrackballControls(this.camera, this.canvas);
+    this.controls.rotateSpeed = 10;
+    this.controls.zoomSpeed = 5;
+    this.controls.panSpeed = 5;
+    this.controls.staticMoving = false;
+    this.controls.dynamicDampingFactor = 0.1;
+    // this.controls.minDistance = 2;
+    // this.controls.maxDistance = 12;
+
     //ADD CUBE
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshBasicMaterial({ color: this.props.document.color });
     this.cube = new THREE.Mesh(geometry, material);
     this.scene.add(this.cube);
-    this.start()
-    console.log(this)
+    this.start();
   }
   componentWillUnmount(){
     this.stop();
@@ -44,8 +55,7 @@ class ThreeScene extends Component{
     cancelAnimationFrame(this.frameId)
   };
   animate = () => {
-    this.cube.rotation.x += 0.01;
-    this.cube.rotation.y += 0.01;
+    this.controls.update();
     this.renderScene();
     this.frameId = window.requestAnimationFrame(this.animate)
   };
@@ -53,13 +63,7 @@ class ThreeScene extends Component{
     this.renderer.render(this.scene, this.camera)
   };
   componentDidUpdate = () => {
-      try {
-          this.cube.material.color.set(this.props.document.color)
-      }
-      catch(e){
-          console.log(e)
-      }
-
+      this.cube.material.color.set(this.props.document.color)
   };
   render(){
     return(
