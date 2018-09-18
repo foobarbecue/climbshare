@@ -29,6 +29,7 @@ class ThreeScene extends Component{
     this.cube = new THREE.Mesh(geometry, material);
     this.scene.add(this.cube);
     this.start()
+    console.log(this)
   }
   componentWillUnmount(){
     this.stop();
@@ -50,6 +51,15 @@ class ThreeScene extends Component{
   };
   renderScene = () => {
     this.renderer.render(this.scene, this.camera)
+  };
+  componentDidUpdate = () => {
+      try {
+          this.cube.material.color.set(this.props.document.color)
+      }
+      catch(e){
+          console.log(e)
+      }
+
   };
   render(){
     return(
