@@ -73,6 +73,7 @@ class ThreeScene extends Component{
   componentDidUpdate = (prevProps) => {
       if (!this.cragMesh || (this.props.document !== prevProps.document)){
           this.scene.remove(this.cragMesh);
+          Nexus.clearContexts();
           this.cragMesh = new NexusObject('/models3d/' + this.props.document.modelFilename,
               this.renderer,
               this.renderScene);

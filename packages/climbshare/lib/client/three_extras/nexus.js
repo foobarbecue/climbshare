@@ -890,7 +890,9 @@ function getContext(gl) {
 	return c;
 }
 
-
+function clearContexts(){
+  contexts = [];
+}
 
 function beginFrame(gl, fps) { //each context has a separate frame count.
 	var c = getContext(gl);
@@ -1236,6 +1238,8 @@ function setMaxCacheSize(gl, size) {
 
 return { Mesh: Mesh, Renderer: Instance, Renderable: Instance, Instance:Instance,
 	Debug: Debug, contexts: contexts, beginFrame:beginFrame, endFrame:endFrame, 
-	setTargetError:setTargetError, setTargetFps:setTargetFps, setMaxCacheSize:setMaxCacheSize };
+	setTargetError:setTargetError, setTargetFps:setTargetFps, setMaxCacheSize:setMaxCacheSize,
+  clearContexts:clearContexts
+};
 
 }();
