@@ -37,7 +37,7 @@ class ThreeScene extends Component{
 
     //ADD CUBE
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: this.props.document.color });
+    const material = new THREE.MeshBasicMaterial();
     this.cube = new THREE.Mesh(geometry, material);
     this.scene.add(this.cube);
     this.start();
@@ -68,7 +68,7 @@ class ThreeScene extends Component{
   render(){
     return(
       <div
-        style={{ width: '400px', height: '400px' }}
+        style={{ width: '100%', height: '100%', position: 'absolute' }}
         ref={(mount) => { this.mount = mount }}
       />
     )

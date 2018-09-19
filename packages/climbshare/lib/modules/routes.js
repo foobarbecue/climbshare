@@ -1,5 +1,6 @@
 import { addRoute, Components } from 'meteor/vulcan:core'
 
+import '../components/common/Layout.jsx'
 import '../components/crags/CragItem.jsx'
 import '../components/crags/CragList.jsx'
 import '../components/crags/CragMenu.jsx'

@@ -4,7 +4,7 @@ import Helmet from 'react-helmet'
 import Crags from '../../modules/crags/collection.js'
 
 
-const CragMenuItem = (props) => <span>{props.crag.name}test</span>;
+const CragMenuItem = (props) => <span>{props.crag.name}</span>;
 
 getMenuItem = (crag) => {
 
@@ -21,9 +21,7 @@ getMenuItem = (crag) => {
 const CragMenu = ({results=[]}) => {
   return (
       <div>
-      <Helmet>
-          <link name="bootstrap" rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"/>
-      </Helmet>
+
       <Components.Dropdown
           title = "crags"
           menuItems = {results.map(getMenuItem)}
