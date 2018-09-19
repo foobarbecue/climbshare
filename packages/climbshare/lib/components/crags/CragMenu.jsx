@@ -12,7 +12,8 @@ getMenuItem = (crag) => {
         to: { pathname: '/crag/' + crag._id }, //todo should use Utils.getRoutePath or something
         component: <CragMenuItem />,
         componentProps: {
-            crag: crag
+            crag: crag,
+            id: crag._id
         }
     }
 
@@ -24,6 +25,7 @@ const CragMenu = ({results=[]}) => {
 
       <Components.Dropdown
           title = "crags"
+          id = "cragDropdown"
           menuItems = {results.map(getMenuItem)}
       />
       </div>
