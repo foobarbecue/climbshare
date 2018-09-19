@@ -42,14 +42,7 @@ const schema = {
   'initialTransform.$': {
     type: Number
   },
-  model3D:{
-    type: String,
-    canRead: ['guests'],
-    canCreate: ['guests'],
-    canUpdate: ['guests'],
-    optional: true,
-  },
-  color:{
+  modelFilename:{
     type: String,
     canRead: ['guests'],
     canCreate: ['guests'],
