@@ -1,4 +1,4 @@
-data = {
+export default data = {
     "boulders": {
         "pecksm": {
             "name": "Peck's Mystery",
@@ -267,7 +267,6 @@ data = {
             "model3D": "walrus.ctm",
             "coords": [-106.986381, 33.982293],
             "texture": "walrus.jpg",
-            "area":"Socorro"
         },
         "gimmies": {
             "name": "The Gimmies",

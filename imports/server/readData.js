@@ -1,4 +1,4 @@
-insertBoulder = function(boulder){
+export default insertBoulder = function(boulder){
     var boulderUpsertRes = Boulders.upsert({name:boulder.name},boulder);
     for (var climbName in boulder.climbs){
         var climb=boulder.climbs[climbName];

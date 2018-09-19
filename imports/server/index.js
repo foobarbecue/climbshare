@@ -1,6 +1,6 @@
 import "../models.js"
-import "./readData.js"
-import "./data.js"
+import insertBoulder from "./readData.js"
+import data from "./data.js"
 
 Meteor.publish("labels", function () {
     return Labels.find();
