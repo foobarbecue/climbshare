@@ -6,7 +6,7 @@ import '../math_etc.js';
 require('/imports/client/three-extras/OrbitControls.js');
 require('/imports/client/three-extras/ctm/CTMLoader.js');
 require('/node_modules/three/examples/js/loaders/PLYLoader.js');
-import { THREEx } from '/imports/client/three-extras/threex.laser/threex.laserbeam.js';
+// import { THREEx } from '/imports/client/three-extras/threex.laser/threex.laserbeam.js';
 import '/imports/client/three-extras/nexus.js';
 import '/imports/client/three-extras/nexus_three.js';
 // import '/imports/startup/client/three-extras/gltf'
