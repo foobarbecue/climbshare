@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import TrackballControls from '../../client/three_extras/trackball.js'
+import OrbitControls from '../../client/three_extras/trackball.js'
 import * as THREE from 'three';
 import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
 import Crags from "../../modules/crags/collection";
 import '../../client/three_extras/nexus.js';
 import NexusObject from '../../client/three_extras/nexus_three.js';
+import 'three-orbitcontrols';
 
 class ThreeScene extends Component{
 
@@ -32,12 +33,12 @@ class ThreeScene extends Component{
     this.renderer.setClearColor('#000000');
     this.renderer.setSize(width, height);
     this.mount.appendChild(this.renderer.domElement);
-    this.controls = new TrackballControls(this.camera, this.canvas);
-    this.controls.rotateSpeed = 10;
-    this.controls.zoomSpeed = 1;
-    this.controls.panSpeed = 1;
-    this.controls.staticMoving = false;
-    this.controls.dynamicDampingFactor = 0.5;
+
+    this.controls = new OrbitControls(this.camera, this.canvas);
+    this.controls.dragToLook = true;
+    this.controls.rollSpeed = 0.5;
+    this.controls.movementSpeed = 25;
+
     this.start();
   }
 
