@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
-import TrackballControls from '../../no_module_avail/trackball.js'
+import TrackballControls from '../../client/three_extras/trackball.js'
 import * as THREE from 'three';
 import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
 import Crags from "../../modules/crags/collection";
+import '../../client/three_extras/nexus.js';
+import NexusObject from '../../client/three_extras/nexus_three.js';
 
 class ThreeScene extends Component{
 
   componentDidMount(){
     const width = this.mount.clientWidth;
     const height = this.mount.clientHeight;
-    //ADD SCENE
+
     this.scene = new THREE.Scene();
-    //ADD CAMERA
+
+    //lights
+    this.scene.add(new THREE.AmbientLight(0x777777));
+
+    //camera
     this.camera = new THREE.PerspectiveCamera(
       75,
       width / height,
@@ -19,27 +25,18 @@ class ThreeScene extends Component{
       1000
     );
     this.camera.position.z = 4;
-    //ADD RENDERER
+
+    //action
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setClearColor('#000000');
     this.renderer.setSize(width, height);
     this.mount.appendChild(this.renderer.domElement);
-
-    //Add controls
     this.controls = new TrackballControls(this.camera, this.canvas);
     this.controls.rotateSpeed = 10;
     this.controls.zoomSpeed = 5;
     this.controls.panSpeed = 5;
     this.controls.staticMoving = false;
     this.controls.dynamicDampingFactor = 0.1;
-    // this.controls.minDistance = 2;
-    // this.controls.maxDistance = 12;
-
-    //ADD CUBE
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial();
-    this.cube = new THREE.Mesh(geometry, material);
-    this.scene.add(this.cube);
     this.start();
   }
   componentWillUnmount(){
@@ -60,10 +57,13 @@ class ThreeScene extends Component{
     this.frameId = window.requestAnimationFrame(this.animate)
   };
   renderScene = () => {
-    this.renderer.render(this.scene, this.camera)
+    Nexus.beginFrame(this.renderer.context);
+    this.renderer.render(this.scene, this.camera);
+    Nexus.endFrame(this.renderer.context);
   };
   componentDidUpdate = () => {
-      this.cube.material.color.set(this.props.document.color)
+      this.cragMesh = new NexusObject('/models3d/pecksm.nxz', this.renderer, this.renderScene);
+      this.scene.add(this.cragMesh)
   };
   render(){
     return(
