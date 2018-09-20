@@ -5,7 +5,7 @@ import Crags from "../../modules/crags/collection";
 import '../../client/three_extras/nexus.js';
 import PLYLoader from 'three-ply-loader';
 import NexusObject from '../../client/three_extras/nexus_three.js';
-import OrbitControls from 'three-orbitcontrols';
+import OrbitControls from '../../client/three_extras/OrbitControls.js';
 
 class ThreeScene extends Component{
 
