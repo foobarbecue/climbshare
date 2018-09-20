@@ -77,11 +77,10 @@ class ThreeScene extends Component{
   };
   move3DmouseTo2Dmouse = (e) =>{
 
-      // TODO fix this -- broken b/c STATE is private in new version of orbitcontrols
       // don't move the mouse3D if we are orbiting the view
-      // if (this.controls.state !== this.controls.STATES.NONE){
-      //     return
-      // };
+      if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
+          return
+      };
       this.mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
       this.mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
       this.mouse2D.z = 0.5;
