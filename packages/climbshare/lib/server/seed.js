@@ -10,7 +10,8 @@ const seedData = [
       0.0, -0.309, -0.951, -4.7312,
       0.0, 0.951, -0.309, 1.6171,
       0.0, 0.0, 0.0, 1.0],
-    modelFilename: "streambed.nxz"
+    modelFilename: "streambed.nxz",
+    modelFilenameLoRes: "streambed-lores.ply"
   },
   {
     name: "pecks mystery",
@@ -20,7 +21,8 @@ const seedData = [
       0.0, -0.309, -0.951, -4.7312,
       0.0, 0.951, -0.309, 1.6171,
       0.0, 0.0, 0.0, 1.0],
-    modelFilename: "pecksm.nxz"
+    modelFilename: "pecksm.nxz",
+    modelFilenameLoRes: "pecksm-lores.ply"
   }
 ];
 

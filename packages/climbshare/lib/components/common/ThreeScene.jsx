@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
 import Crags from "../../modules/crags/collection";
 import '../../client/three_extras/nexus.js';
+import PLYLoader from 'three-ply-loader';
 import NexusObject from '../../client/three_extras/nexus_three.js';
 import 'three-orbitcontrols';
 
@@ -14,7 +15,7 @@ class ThreeScene extends Component{
     const height = this.mount.clientHeight;
 
     this.scene = new THREE.Scene();
-    window.scene = this.scene;
+    window.threeSceneInstance = this;
 
     //lights
     this.scene.add(new THREE.AmbientLight(0xFFFFFF));
@@ -38,6 +39,12 @@ class ThreeScene extends Component{
     this.controls.dragToLook = true;
     this.controls.rollSpeed = 0.5;
     this.controls.movementSpeed = 25;
+
+    this.mouse2D = new THREE.Vector3(0, 0, 0);
+    this.mouse3D = new THREE.Mesh(
+        new THREE.SphereGeometry(0.1, 6, 6),
+        new THREE.MeshBasicMaterial({color: 'red', transparent: true}));
+    this.raycaster = new THREE.Raycaster();
 
     this.start();
   }
@@ -66,6 +73,26 @@ class ThreeScene extends Component{
     this.renderScene();
     this.frameId = window.requestAnimationFrame(this.animate)
   };
+  move3DmouseTo2Dmouse = (e) =>{
+
+      // TODO fix this -- broken b/c STATE is private in new version of orbitcontrols
+      // don't move the mouse3D if we are orbiting the view
+      // if (this.controls.state !== this.controls.STATES.NONE){
+      //     return
+      // };
+      this.mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
+      this.mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      this.mouse2D.z = 0.5;
+      if (this.hasOwnProperty("cragMeshLoRes")){
+          this.raycaster.setFromCamera(this.mouse2D, this.camera);
+          let intersects = this.raycaster.intersectObject(this.cragMeshLoRes, true);
+          if (intersects.length > 0) {
+              let intersect = intersects[0];
+              this.mouse3D.position.copy(intersect.point);
+              console.log(this.mouse3D.position);
+        }
+      }
+  };
   renderScene = () => {
     Nexus.beginFrame(this.renderer.context);
     this.renderer.render(this.scene, this.camera);
@@ -73,8 +100,14 @@ class ThreeScene extends Component{
   };
   componentDidUpdate = (prevProps) => {
       if (!this.cragMesh || (this.props.document !== prevProps.document)){
+          // remove old mesh & cleanup
           this.scene.remove(this.cragMesh);
+          if (this.hasOwnProperty("cragMeshLoRes")){
+              this.scene.remove(this.cragMeshLoRes)
+          }
           Nexus.clearContexts();
+
+          // load new high res mesh
           this.cragMesh = new NexusObject('/models3d/' + this.props.document.modelFilename,
               this.renderer,
               this.renderScene);
@@ -83,6 +116,21 @@ class ThreeScene extends Component{
           mat.set.apply(mat, initialTransform);
           this.cragMesh.applyMatrix(mat);
           this.scene.add(this.cragMesh);
+
+          // Load low res version of mesh for raycasting.
+          // This is a hack until https://github.com/cnr-isti-vclab/nexus/issues/9 is resolved.
+          if (this.props.document.hasOwnProperty("modelFilenameLoRes")){
+              PLYLoader(THREE) // super weird but using as advised in package instructions
+              let plyloader = new THREE.PLYLoader;
+              plyloader.load('/models3d/' + this.props.document.modelFilenameLoRes, (geom) =>{
+                  this.cragMeshLoRes = new THREE.Mesh(geom);
+                  this.cragMeshLoRes.material.visible = false;
+                  this.cragMeshLoRes.applyMatrix(mat);
+                  this.scene.add(this.cragMeshLoRes);
+              })
+          }
+
+
       }
 
   };
@@ -91,6 +139,7 @@ class ThreeScene extends Component{
       <div
         style={{ width: '100%', height: '100%', position: 'absolute' }}
         ref={(mount) => { this.mount = mount }}
+        onMouseMove={this.move3DmouseTo2Dmouse}
       />
     )
   }

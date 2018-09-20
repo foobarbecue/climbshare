@@ -49,6 +49,13 @@ const schema = {
     canUpdate: ['guests'],
     optional: true,
   },
+  modelFilenameLoRes:{
+    type: String,
+    canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
+    optional: true,
+  },
   createdAt: {
     type: Date,
     optional: true,
