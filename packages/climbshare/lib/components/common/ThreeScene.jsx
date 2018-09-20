@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import OrbitControls from '../../client/three_extras/trackball.js'
 import * as THREE from 'three';
 import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
 import Crags from "../../modules/crags/collection";
 import '../../client/three_extras/nexus.js';
 import PLYLoader from 'three-ply-loader';
 import NexusObject from '../../client/three_extras/nexus_three.js';
-import 'three-orbitcontrols';
+import OrbitControls from 'three-orbitcontrols';
 
 class ThreeScene extends Component{
 
@@ -36,14 +35,17 @@ class ThreeScene extends Component{
     this.mount.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.canvas);
-    this.controls.dragToLook = true;
-    this.controls.rollSpeed = 0.5;
-    this.controls.movementSpeed = 25;
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.2;
+    this.controls.rotateSpeed = 0.01;
+    this.controls.panSpeed = 0.01;
+    this.controls.screenSpacePanning = true;
 
     this.mouse2D = new THREE.Vector3(0, 0, 0);
     this.mouse3D = new THREE.Mesh(
-        new THREE.SphereGeometry(0.1, 6, 6),
+        new THREE.SphereGeometry(0.05, 6, 6),
         new THREE.MeshBasicMaterial({color: 'red', transparent: true}));
+    this.scene.add(this.mouse3D);
     this.raycaster = new THREE.Raycaster();
 
     this.start();
@@ -89,7 +91,7 @@ class ThreeScene extends Component{
           if (intersects.length > 0) {
               let intersect = intersects[0];
               this.mouse3D.position.copy(intersect.point);
-              console.log(this.mouse3D.position);
+
         }
       }
   };
@@ -115,6 +117,7 @@ class ThreeScene extends Component{
           let initialTransform = this.props.document.initialTransform;
           mat.set.apply(mat, initialTransform);
           this.cragMesh.applyMatrix(mat);
+          this.cragMesh.material.side = THREE.DoubleSide;
           this.scene.add(this.cragMesh);
 
           // Load low res version of mesh for raycasting.
