@@ -73,8 +73,10 @@ const schema = {
       fieldName: 'crag',
       type: 'Crag',
       resolver: (climb, args, context) => {
-        return context.Crags.findOne({ name: climb.cragName })._id
+        console.log(climb);
+        return Crags.findOne({ name: climb.cragName })._id
       },
+      addOriginalField: true
     }
   }
 };

@@ -4,7 +4,7 @@ import Climbs from '../../modules/climbs/collection.js'
 
 const ClimbList = ({results=[]}) => {
   return (
-      results.map(climb => <div> {climb.name} </div>)
+      results.map(climb => <div> {climb.name}, {climb.cragId} </div>)
   )
 };
 

@@ -204,19 +204,23 @@ Meteor.startup(()=>{
   if (Crags.find().fetch().length === 0) {
     // eslint-disable-next-line no-console
     console.log('// creating dummy crags');
-    Promise.awaitAll(seedCrags.map(document => newMutation({
+    seedCrags.map(document => newMutation({
       collection: Crags,
       document,
       // validate: false
-    })));
+    }));
   }
   if (Climbs.find().fetch().length === 0) {
     console.log('// creating dummy climbs');
-    Promise.awaitAll(seedClimbs.map(document => newMutation({
-      collection: Climbs,
-      document,
-      validate: false
-    })));
+    seedClimbs.map(document => {
+      document.cragId = Crags.findOne({name:document.cragName})._id;
+      console.log(document);
+      newMutation({
+        collection: Climbs,
+        document,
+        validate: false
+      });
+    });
   }
   }
 );
