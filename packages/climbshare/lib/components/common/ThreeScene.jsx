@@ -26,6 +26,7 @@ class ThreeScene extends Component{
       0.01,
       600
     );
+    this.resetCameraPosition();
 
     //action
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
