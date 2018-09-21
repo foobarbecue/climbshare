@@ -26,7 +26,6 @@ class ThreeScene extends Component{
       0.01,
       600
     );
-    this.resetCameraPosition();
 
     //action
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -99,15 +98,23 @@ class ThreeScene extends Component{
     this.renderer.render(this.scene, this.camera);
     Nexus.endFrame(this.renderer.context);
   };
+
+  //TODO this code manually adds, removes, and changes which mesh is shown. There's probably a more elegant way.
+  //for example, a child component for crags with mount and unmount methods
   componentDidUpdate = (prevProps) => {
-      if (!this.cragMesh || (this.props.document !== prevProps.document)){
+      // if we've loaded a crag and need to switch to new one
+      if (!!this.cragMesh && (this.props.document !== prevProps.document)) {
           // remove old mesh & cleanup
           this.scene.remove(this.cragMesh);
+          delete this.cragMesh; //TODO Could get rid of this and check scene.children.includes later instead
           if (this.hasOwnProperty("cragMeshLoRes")){
               this.scene.remove(this.cragMeshLoRes)
           }
           Nexus.clearContexts();
+      }
 
+      // if there's no mesh loaded (either first load, or we just removed successfully)
+      if (!this.cragMesh){
           // load new high res mesh
           this.cragMesh = new NexusObject('/models3d/' + this.props.document.modelFilename,
               this.renderer,
@@ -132,6 +139,8 @@ class ThreeScene extends Component{
               })
           }
 
+          // reset camera -- need this on first load as well as switching mesh
+          this.resetCameraPosition();
 
       }
 
