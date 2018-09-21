@@ -2,23 +2,23 @@ import { createCollection, getDefaultResolvers, getDefaultMutations } from 'mete
 import schema from './schema.js';
 import Users from 'meteor/vulcan:users';
 
-const Crags = createCollection({
-  collectionName: 'Crags',
-  typeName: 'Crag',
+const Climbs = createCollection({
+  collectionName: 'Climbs',
+  typeName: 'Climb',
   schema,
-  resolvers: getDefaultResolvers('Crags'),
-  mutations: getDefaultMutations('Crags'),
+  resolvers: getDefaultResolvers('Climbs'),
+  mutations: getDefaultMutations('Climbs'),
   // checkAccess: () => { return true; }
 });
 
 Users.groups.guests.can([
-  'crags.new'
+  'climbs.new'
 ]);
 
-Crags.addDefaultView(terms => {
+Climbs.addDefaultView(terms => {
   return {
     options:{sort:'name'}
   };
 });
 
-export default Crags;
+export default Climbs;
