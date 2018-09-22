@@ -1,6 +1,3 @@
-// For a vulcanjs schema, this is minimal, but I feel it is extremely cluttered.
-// Vulcanjs schemas don't even work unless you have canCreate and canUpdate on
-// at least one field.
 
 const schema = {
   _id: {
