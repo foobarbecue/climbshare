@@ -63,6 +63,17 @@ const schema = {
     canCreate: ['guests'],
     canUpdate: ['guests'],
   },
+  climbs: {
+    type: String,
+    resolveAs: {
+      fieldName: 'climbs',
+      type: 'Climb',
+      resolver: (climb, args, context) => {
+        return context.Climbs.find({climbName:climb.name})
+      },
+      addOriginalField: true
+    }
+  }
 };
 
 export default schema;

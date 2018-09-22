@@ -80,7 +80,7 @@ class ThreeScene extends Component{
       // don't move the mouse3D if we are orbiting the view
       if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
           return
-      };
+      }
       this.mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
       this.mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
       this.mouse2D.z = 0.5;
@@ -130,7 +130,7 @@ class ThreeScene extends Component{
           // Load low res version of mesh for raycasting.
           // This is a hack until https://github.com/cnr-isti-vclab/nexus/issues/9 is resolved.
           if (this.props.document.hasOwnProperty("modelFilenameLoRes")){
-              PLYLoader(THREE) // super weird but using as advised in package instructions
+              PLYLoader(THREE); // super weird but using as advised in package instructions
               let plyloader = new THREE.PLYLoader;
               plyloader.load('/models3d/' + this.props.document.modelFilenameLoRes, (geom) =>{
                   this.cragMeshLoRes = new THREE.Mesh(geom);
@@ -152,6 +152,7 @@ class ThreeScene extends Component{
         style={{ width: '100%', height: '100%', position: 'absolute' }}
         ref={(mount) => { this.mount = mount }}
         onMouseMove={this.move3DmouseTo2Dmouse}
+        onDoubleClick={this.createClimb}
       />
     )
   }
