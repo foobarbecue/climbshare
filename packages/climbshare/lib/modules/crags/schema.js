@@ -64,10 +64,10 @@ const schema = {
     canUpdate: ['guests'],
   },
   climbs: {
-    type: String,
+    type: Object,
     resolveAs: {
-      fieldName: 'climbs',
-      type: 'Climb',
+      fieldName: 'climbList',
+      type: '[Climb]',
       resolver: (climb, args, context) => {
         return context.Climbs.find({climbName:climb.name})
       },
