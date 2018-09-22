@@ -148,15 +148,12 @@ class ThreeScene extends Component{
   };
   render(){
     return(
-      <div>
-        {this.params.document.climbList.map((climb)=>climb.name)}
         <div
           style={{ width: '100%', height: '100%', position: 'absolute' }}
           ref={(mount) => { this.mount = mount }}
           onMouseMove={this.move3DmouseTo2Dmouse}
           onDoubleClick={this.createClimb}
         />
-      </div>
     )
   }
 }

@@ -62,11 +62,12 @@ const schema = {
   },
   climbs: {
     type: Object,
+    canRead: ['guests'],
     resolveAs: {
-      fieldName: 'climbList',
+      fieldName: 'climbs',
       type: '[Climb]',
-      resolver: (climb, args, context) => {
-        return context.Climbs.find({climbName:climb.name})
+      resolver: (crag, args, context) => {
+        return context.Climbs.find({cragName:crag.name}).fetch();
       },
       addOriginalField: true
     }
