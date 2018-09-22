@@ -33,7 +33,10 @@ const schema = {
     ]
   },
   difficulty: {
-    type: String
+    type: String,
+    canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
   },
   vertices:{
     type: Array,

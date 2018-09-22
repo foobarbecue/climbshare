@@ -6,8 +6,15 @@ import '../../client/three_extras/nexus.js';
 import PLYLoader from 'three-ply-loader';
 import NexusObject from '../../client/three_extras/nexus_three.js';
 import OrbitControls from '../../client/three_extras/OrbitControls.js';
+import curvify from '../../modules/climbs/curvify.js'
 
 class ThreeScene extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      climbFormOpen: false
+    }
+  }
 
   componentDidMount(){
     const width = this.mount.clientWidth;
@@ -100,6 +107,7 @@ class ThreeScene extends Component{
     Nexus.endFrame(this.renderer.context);
   };
 
+
   //TODO this code manually adds, removes, and changes which mesh is shown. There's probably a more elegant way.
   //for example, a child component for crags with mount and unmount methods
   componentDidUpdate = (prevProps) => {
@@ -146,14 +154,36 @@ class ThreeScene extends Component{
       }
 
   };
+
+  onDoubleClick = () => {
+    this.setState((state, props)=>{
+      return {climbFormOpen:true}
+    })
+  };
+
+  closeClimbForm = () => {
+    console.log('closing form');
+    this.setState((state, props)=>{
+      return {climbFormOpen:false}
+    })
+  };
+
   render(){
     return(
+        <>
         <div
           style={{ width: '100%', height: '100%', position: 'absolute' }}
           ref={(mount) => { this.mount = mount }}
           onMouseMove={this.move3DmouseTo2Dmouse}
-          onDoubleClick={this.createClimb}
+          onDoubleClick={this.onDoubleClick}
         />
+        <Components.ClimbsNewForm
+          climbId = {this.props.document._id}
+          threeScene = {this.scene}
+          show = {this.state.climbFormOpen}
+          closeModal = {this.closeClimbForm}
+        />
+        </>
     )
   }
 }
