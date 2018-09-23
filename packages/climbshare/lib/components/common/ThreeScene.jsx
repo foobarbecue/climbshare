@@ -177,7 +177,7 @@ class ThreeScene extends Component{
           onDoubleClick={this.onDoubleClick}
         />
         <Components.ClimbsNewForm
-          cragId = {this.props.document._id}
+          cragId = {this.props.documentId}
           threeScene = {this.scene}
           show = {this.state.climbFormOpen}
           closeModal = {this.closeClimbForm}
