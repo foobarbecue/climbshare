@@ -41,11 +41,11 @@ class ThreeScene extends Component{
     this.renderer.setSize(width, height);
     this.mount.appendChild(this.renderer.domElement);
 
-    this.controls = new OrbitControls(this.camera, this.canvas);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.2;
-    this.controls.rotateSpeed = 0.01;
-    this.controls.panSpeed = 0.01;
+    this.controls.rotateSpeed = 0.5;
+    this.controls.panSpeed = 0.5;
     this.controls.screenSpacePanning = true;
 
     this.mouse2D = new THREE.Vector3(0, 0, 0);
@@ -162,13 +162,12 @@ class ThreeScene extends Component{
   };
 
   closeClimbForm = () => {
-    console.log('closing form');
     this.setState((state, props)=>{
       return {climbFormOpen:false}
     })
   };
 
-  render(){
+  render = () => {
     return(
         <>
         <div
@@ -178,7 +177,7 @@ class ThreeScene extends Component{
           onDoubleClick={this.onDoubleClick}
         />
         <Components.ClimbsNewForm
-          climbId = {this.props.document._id}
+          cragId = {this.props.document._id}
           threeScene = {this.scene}
           show = {this.state.climbFormOpen}
           closeModal = {this.closeClimbForm}
