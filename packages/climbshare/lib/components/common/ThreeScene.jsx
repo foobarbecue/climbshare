@@ -12,7 +12,8 @@ class ThreeScene extends Component{
   constructor(props){
     super(props);
     this.state = {
-      climbFormOpen: false
+      climbFormOpen: false,
+      threeSceneRendered: false
     }
   }
 
@@ -80,6 +81,7 @@ class ThreeScene extends Component{
   animate = () => {
     this.controls.update();
     this.renderScene();
+    this.setState({'threeSceneRendered':true});
     this.frameId = window.requestAnimationFrame(this.animate)
   };
   move3DmouseTo2Dmouse = (e) =>{
@@ -124,6 +126,9 @@ class ThreeScene extends Component{
 
       // if there's no mesh loaded (either first load, or we just removed successfully)
       if (!this.cragMesh){
+        // reset camera -- need this on first load as well as switching mesh
+        this.resetCameraPosition();
+
           // load new high res mesh
           this.cragMesh = new NexusObject('/models3d/' + this.props.document.modelFilename,
               this.renderer,
@@ -148,8 +153,8 @@ class ThreeScene extends Component{
               })
           }
 
-          // reset camera -- need this on first load as well as switching mesh
-          this.resetCameraPosition();
+
+
 
       }
 
@@ -181,6 +186,10 @@ class ThreeScene extends Component{
           threeScene = {this.scene}
           show = {this.state.climbFormOpen}
           closeModal = {this.closeClimbForm}
+        />
+        <Components.ClimbsDisp
+          threescene={this.scene}
+          threeSceneRendered={this.state.threeSceneRendered}
         />
         </>
     )

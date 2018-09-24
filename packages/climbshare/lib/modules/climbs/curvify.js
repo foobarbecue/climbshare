@@ -22,12 +22,12 @@ const midPullPoint = function (start, end, pull) {
  * @param {Vector3} pull
  * @param {Material} material
  */
-const curvify = function (pointlist, pull, material) {
+const curvify = function (pointlist, pull = new THREE.Vector3(0,-1,0), material = new THREE.LineBasicMaterial()) {
     // Check that there's more than one point in the list -- otherwise
     // makes no sense to draw curves.
     if (pointlist.length > 1){
-        const pull = pull || new THREE.Vector3(0,-1,0);
-        const material = material || new THREE.LineBasicMaterial();
+        // const pull = pull || new THREE.Vector3(0,-1,0);
+        // const material = material || new THREE.LineBasicMaterial();
         const cp = new THREE.CurvePath();
         for ( let i=0 ; i < pointlist.length-1 ; i++){
             let start = pointlist[i];
