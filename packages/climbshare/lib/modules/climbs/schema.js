@@ -44,6 +44,7 @@ const schema = {
     canCreate: ['guests'],
     canUpdate: ['guests'],
     optional: true,
+    hidden:true
   },
   'vertices.$': {
     type: Array,
@@ -59,6 +60,7 @@ const schema = {
     canRead: ['guests'],
     canCreate: ['guests'],
     canUpdate: ['guests'],
+    hidden: true
   },
   cragName:{
     type: String,
@@ -72,15 +74,7 @@ const schema = {
     canRead: ['guests'],
     canCreate: ['guests'],
     canUpdate: ['guests'],
-    resolveAs: {
-      fieldName: 'crag',
-      type: 'Crag',
-      resolver: (climb, args, context) => {
-        console.log(climb);
-        return context.Crags.findOne({ name: climb.cragName })._id
-      },
-      addOriginalField: true
-    }
+    hidden: true
   }
 };
 

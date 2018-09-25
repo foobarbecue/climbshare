@@ -11,7 +11,6 @@ const ClimbsNewForm = ({currentUser, closeModal, show, cragId}) => (
       successCallback={closeModal}
       onHide={closeModal}
       prefilledProps={{cragId}}
-      fields={['name','climbType','difficulty','cragId']}
     />
   </Components.Modal>
 );
