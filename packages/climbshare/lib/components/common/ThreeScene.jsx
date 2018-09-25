@@ -13,7 +13,8 @@ class ThreeScene extends Component{
     super(props);
     this.state = {
       climbFormOpen: false,
-      threeSceneRendered: false
+      threeSceneRendered: false,
+      drawingNewClimb: false,
     }
   }
 
@@ -113,64 +114,65 @@ class ThreeScene extends Component{
   //TODO this code manually adds, removes, and changes which mesh is shown. There's probably a more elegant way.
   //for example, a child component for crags with mount and unmount methods
   componentDidUpdate = (prevProps) => {
+    if (!this.props.loading) {
       // if we've loaded a crag and need to switch to new one
       if (!!this.cragMesh && (this.props.document !== prevProps.document)) {
-          // remove old mesh & cleanup
-          this.scene.remove(this.cragMesh);
-          delete this.cragMesh; //TODO Could get rid of this and check scene.children.includes later instead
-          if (this.hasOwnProperty("cragMeshLoRes")){
-              this.scene.remove(this.cragMeshLoRes)
-          }
-          Nexus.clearContexts();
+        // remove old mesh & cleanup
+        this.scene.remove(this.cragMesh);
+        delete this.cragMesh; //TODO Could get rid of this and check scene.children.includes later instead
+        if (this.hasOwnProperty("cragMeshLoRes")) {
+          this.scene.remove(this.cragMeshLoRes)
+        }
+        Nexus.clearContexts();
       }
 
       // if there's no mesh loaded (either first load, or we just removed successfully)
-      if (!this.cragMesh){
+      if (!this.cragMesh) {
         // reset camera -- need this on first load as well as switching mesh
         this.resetCameraPosition();
 
-          // load new high res mesh
-          this.cragMesh = new NexusObject('/models3d/' + this.props.document.modelFilename,
-              this.renderer,
-              this.renderScene);
-          let mat = new THREE.Matrix4();
-          let initialTransform = this.props.document.initialTransform;
-          mat.set.apply(mat, initialTransform);
-          this.cragMesh.applyMatrix(mat);
-          this.cragMesh.material.side = THREE.DoubleSide;
-          this.scene.add(this.cragMesh);
+        // load new high res mesh
+        this.cragMesh = new NexusObject('/models3d/' + this.props.document.modelFilename,
+          this.renderer,
+          this.renderScene);
+        let mat = new THREE.Matrix4();
+        let initialTransform = this.props.document.initialTransform;
+        mat.set.apply(mat, initialTransform);
+        this.cragMesh.applyMatrix(mat);
+        this.cragMesh.material.side = THREE.DoubleSide;
+        this.scene.add(this.cragMesh);
 
-          // Load low res version of mesh for raycasting.
-          // This is a hack until https://github.com/cnr-isti-vclab/nexus/issues/9 is resolved.
-          if (this.props.document.hasOwnProperty("modelFilenameLoRes")){
-              PLYLoader(THREE); // super weird but using as advised in package instructions
-              let plyloader = new THREE.PLYLoader;
-              plyloader.load('/models3d/' + this.props.document.modelFilenameLoRes, (geom) =>{
-                  this.cragMeshLoRes = new THREE.Mesh(geom);
-                  this.cragMeshLoRes.material.visible = false;
-                  this.cragMeshLoRes.applyMatrix(mat);
-                  this.scene.add(this.cragMeshLoRes);
-              })
-          }
-
-
-
-
+        // Load low res version of mesh for raycasting.
+        // This is a hack until https://github.com/cnr-isti-vclab/nexus/issues/9 is resolved.
+        if (this.props.document.hasOwnProperty("modelFilenameLoRes")) {
+          PLYLoader(THREE); // super weird but using as advised in package instructions
+          let plyloader = new THREE.PLYLoader;
+          plyloader.load('/models3d/' + this.props.document.modelFilenameLoRes, (geom) => {
+            this.cragMeshLoRes = new THREE.Mesh(geom);
+            this.cragMeshLoRes.material.visible = false;
+            this.cragMeshLoRes.applyMatrix(mat);
+            this.scene.add(this.cragMeshLoRes);
+          })
+        }
       }
-
+    }
   };
 
   onDoubleClick = () => {
-    this.setState((state, props)=>{
-      return {climbFormOpen:true}
-    })
+    this.setState({climbFormOpen:true})
   };
 
   closeClimbForm = () => {
-    this.setState((state, props)=>{
-      return {climbFormOpen:false}
-    })
+    this.setState({climbFormOpen:false})
   };
+
+  beginDrawingClimb = (document) => {
+    this.setState((state, props)=>{
+      // return {drawingNewClimb: document._id}
+      console.log('success adding new climb')
+      console.log(document)
+    })
+  }
 
   render = () => {
     return(
@@ -186,8 +188,11 @@ class ThreeScene extends Component{
           threeScene = {this.scene}
           show = {this.state.climbFormOpen}
           closeModal = {this.closeClimbForm}
+          successCallback = {this.beginDrawingClimb}
         />
         <Components.ClimbsDisp
+          terms={{cragId: this.props.documentId}}
+          cragId = {this.props.documentId}
           threescene={this.scene}
           threeSceneRendered={this.state.threeSceneRendered}
         />

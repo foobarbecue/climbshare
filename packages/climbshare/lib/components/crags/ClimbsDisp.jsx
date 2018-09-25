@@ -6,17 +6,28 @@ import PropTypes from 'prop-types'
 
 class ClimbsDisp extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {readyToDraw: false}
+  }
+
+  // componentDidUpdate(props){
+  //   if(this.props.threeSceneRendered){
+  //     this.setState({readyToDraw: true})
+  //   }
+  // }
+
   render = () =>
     <>
-      {this.props.loading ? <p>loading</p> :
-        this.props.results.map(
+      {(this.props.threeSceneRendered && !this.props.loading) ? this.props.results.map(
         climb =>
           <Components.ClimbItem
             climb={climb}
             scene={this.props.threescene}
             key={climb._id}
+            threeSceneRendered={this.props.threeSceneRendered}
           />
-      )}
+      ) : <p>waiting for threescene</p>}
     </>
 }
 

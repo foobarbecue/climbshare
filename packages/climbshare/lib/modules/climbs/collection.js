@@ -17,6 +17,7 @@ Users.groups.guests.can([
 
 Climbs.addDefaultView(terms => {
   return {
+    selector:{cragId:terms.cragId},
     options:{sort:'name'}
   };
 });

@@ -62,13 +62,6 @@ const schema = {
     canUpdate: ['guests'],
     hidden: true
   },
-  cragName:{
-    type: String,
-    optional: true,
-    canRead: ['guests'],
-    canCreate: ['guests'],
-    canUpdate: ['guests'],
-  },
   cragId: {
     type: String,
     canRead: ['guests'],
