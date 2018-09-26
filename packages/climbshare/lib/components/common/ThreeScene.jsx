@@ -16,6 +16,7 @@ class ThreeScene extends Component{
       threeSceneRendered: false,
       drawingNewClimb: false,
     }
+    this.mouseMoving = false;
   }
 
   componentDidMount(){
@@ -86,6 +87,7 @@ class ThreeScene extends Component{
     this.frameId = window.requestAnimationFrame(this.animate)
   };
   move3DmouseTo2Dmouse = (e) =>{
+    this.mouseMoving = true;
 
       // don't move the mouse3D if we are orbiting the view
       if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
@@ -158,7 +160,18 @@ class ThreeScene extends Component{
     }
   };
 
-  onDoubleClick = () => {
+  onMouseDown = () => {
+    this.mouseMoving = false;
+  }
+
+  onMouseUp = () => {
+    // this is to prevent triggering onclick at the end of a drag
+    if(!this.mouseMoving){
+      this.onClick()
+    }
+  };
+
+  onClick = () => {
     this.setState({climbFormOpen:true})
   };
 
@@ -169,8 +182,8 @@ class ThreeScene extends Component{
   beginDrawingClimb = (document) => {
     this.setState((state, props)=>{
       // return {drawingNewClimb: document._id}
-      console.log('success adding new climb')
-      console.log(document)
+      this.setState({climbFormOpen:false});
+      this.setState({drawingNewClimb:document._id});
     })
   }
 
@@ -180,8 +193,9 @@ class ThreeScene extends Component{
         <div
           style={{ width: '100%', height: '100%', position: 'absolute' }}
           ref={(mount) => { this.mount = mount }}
+          onMouseDown={this.onMouseDown}
           onMouseMove={this.move3DmouseTo2Dmouse}
-          onDoubleClick={this.onDoubleClick}
+          onMouseUp={this.onMouseUp}
         />
         <Components.ClimbsNewForm
           cragId = {this.props.documentId}
