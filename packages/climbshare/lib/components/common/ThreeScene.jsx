@@ -106,6 +106,7 @@ class ThreeScene extends Component{
         }
       }
   };
+
   renderScene = () => {
     Nexus.beginFrame(this.renderer.context);
     this.renderer.render(this.scene, this.camera);
@@ -160,20 +161,37 @@ class ThreeScene extends Component{
     }
   };
 
-  onMouseDown = () => {
+  onMouseDown = (evt) => {
     this.mouseMoving = false;
   }
 
-  onMouseUp = () => {
+  onMouseUp = (evt) => {
+
     // this is to prevent triggering onclick at the end of a drag
     if(!this.mouseMoving){
-      this.onClick()
+      // If it's a right click and we're drawing a climb, then finish drawing the climb
+      if (evt.button==2){
+        if (this.state.drawingNewClimb){
+          this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+          this.setState({drawingNewClimb:false});
+        }
+      } else{
+        this.onClick()
+      }
     }
   };
 
   onClick = () => {
-    this.setState({climbFormOpen:true})
+    if (this.state.drawingNewClimb){
+      this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position)
+    }else{
+      this.setState({climbFormOpen:true});
+    }
   };
+
+  addNewVertexToClimb(climb, position){
+    console.log(`adding ${position} to ${climb}`);
+  }
 
   closeClimbForm = () => {
     this.setState({climbFormOpen:false})
@@ -181,11 +199,9 @@ class ThreeScene extends Component{
 
   beginDrawingClimb = (document) => {
     this.setState((state, props)=>{
-      // return {drawingNewClimb: document._id}
-      this.setState({climbFormOpen:false});
-      this.setState({drawingNewClimb:document._id});
+      return {climbFormOpen:false, drawingNewClimb: document._id}
     })
-  }
+  };
 
   render = () => {
     return(
