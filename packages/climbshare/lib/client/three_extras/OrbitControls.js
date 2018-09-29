@@ -72,6 +72,8 @@ THREE.OrbitControls = function ( object, domElement ) {
   // Set to false to disable use of the keys
   this.enableKeys = true;
 
+
+
   // The four arrow keys
   this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
 
@@ -87,6 +89,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
   this.state = this.STATES.NONE;
 
+  this.distThreshold = 0.5;
+  this.moveStopWaitTime = 1000; // in ms
   this.recentlyMoved = false;
 
   //
@@ -470,12 +474,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     // console.log('rotate distance:');
     // console.log(rotateDelta.length);
-    if (rotateDelta.length() > 0.5){
+    if (rotateDelta.length() > scope.distThreshold){
       scope.recentlyMoved = true;
-      console.log('setting moved');
       setTimeout(()=>{
-        console.log('unsetting moved');
-        scope.recentlyMoved = false;}, 1000);
+        scope.recentlyMoved = false;}, scope.moveStopWaitTime);
     }
 
     rotateStart.copy( rotateEnd );
@@ -502,6 +504,12 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     }
 
+    if (dollyDelta.length() > scope.distThreshold){
+      scope.recentlyMoved = true;
+      setTimeout(()=>{
+        scope.recentlyMoved = false;}, scope.moveStopWaitTime);
+    }
+
     dollyStart.copy( dollyEnd );
 
     scope.update();
@@ -519,6 +527,12 @@ THREE.OrbitControls = function ( object, domElement ) {
     pan( panDelta.x, panDelta.y );
 
     panStart.copy( panEnd );
+
+    if (panDelta.length() > scope.distThreshold){
+      scope.recentlyMoved = true;
+      setTimeout(()=>{
+        scope.recentlyMoved = false;}, scope.moveStopWaitTime);
+    }
 
     scope.update();
 
