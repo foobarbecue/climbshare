@@ -28,7 +28,7 @@ const curvify = function (pointlist, pull = new THREE.Vector3(0,-1,0), material 
     if (pointlist.length > 1){
         // const pull = pull || new THREE.Vector3(0,-1,0);
         // const material = material || new THREE.LineBasicMaterial();
-        const cp = new THREE.CurvePath();
+        let cp = new THREE.CurvePath();
         for ( let i=0 ; i < pointlist.length-1 ; i++){
             let start = pointlist[i];
             let end = pointlist[i+1];
@@ -36,8 +36,10 @@ const curvify = function (pointlist, pull = new THREE.Vector3(0,-1,0), material 
             let curveSegment=new THREE.QuadraticBezierCurve3(start, midPointPulled, end);
             cp.add(curveSegment);
         }
-        const curvifiedProblem = new THREE.Line(cp.createPointsGeometry(200) , material);
-        return curvifiedProblem
+        const cpPoints = cp.getPoints(200);
+        const geom = new THREE.Geometry();
+        geom.setFromPoints(cpPoints);
+      return new THREE.Line(geom, material)
     }
     else{
         return null
