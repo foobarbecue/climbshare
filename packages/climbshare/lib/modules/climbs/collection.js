@@ -11,8 +11,10 @@ const Climbs = createCollection({
   // checkAccess: () => { return true; }
 });
 
-Users.groups.guests.can([
-  'climbs.new'
+Users.groups.members.can([
+  'climb.create',
+  'climb.edit.own',
+  'climb.update.own'
 ]);
 
 Climbs.addDefaultView(terms => {

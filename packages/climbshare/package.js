@@ -18,6 +18,9 @@ Package.onUse(function (api) {
     'vulcan:ui-bootstrap@1.12.4',
 
   ]);
+  api.addFiles([
+    'lib/stylesheets/main.css'
+  ], ['client']);
 
   api.mainModule('lib/server/main.js', 'server');
   api.mainModule('lib/client/main.js', 'client');

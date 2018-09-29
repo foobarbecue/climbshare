@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as THREE from 'three';
-import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
+import { Components, registerComponent, withSingle, withUpdate, withCurrentUser } from 'meteor/vulcan:core'
 import Crags from "../../modules/crags/collection";
+import Climbs from "../../modules/climbs/collection";
 import '../../client/three_extras/nexus.js';
 import PLYLoader from 'three-ply-loader';
 import NexusObject from '../../client/three_extras/nexus_three.js';
@@ -17,6 +18,8 @@ class ThreeScene extends Component{
       drawingNewClimb: false,
     }
     this.mouseMoving = false;
+    this.newClimbVerts = [];
+    this.newClimbTerminalSegment = null;
   }
 
   onResize = () => {
@@ -27,8 +30,6 @@ class ThreeScene extends Component{
   };
 
   componentDidMount(){
-    const width = this.mount.clientWidth;
-    const height = this.mount.clientHeight;
 
     this.scene = new THREE.Scene();
     window.threeSceneInstance = this;
@@ -96,7 +97,6 @@ class ThreeScene extends Component{
     this.frameId = window.requestAnimationFrame(this.animate)
   };
   move3DmouseTo2Dmouse = (e) =>{
-    this.mouseMoving = true;
 
       // don't move the mouse3D if we are orbiting the view
       if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
@@ -114,6 +114,13 @@ class ThreeScene extends Component{
 
         }
       }
+      if (this.state.drawingNewClimb){
+        const lastVertIndex = this.newClimbVerts.length -1;
+        this.scene.remove(this.newClimbTerminalSegment);
+        this.newClimbTerminalSegment = curvify([this.newClimbVerts[lastVertIndex], this.mouse3D.position]);
+        this.scene.remove(this.newClimbTerminalSegment);
+      }
+
   };
 
   renderScene = () => {
@@ -191,15 +198,21 @@ class ThreeScene extends Component{
   };
 
   onClick = () => {
-    if (this.state.drawingNewClimb){
-      this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position)
-    }else{
+    //Ignore click if we are orbiting
+    if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
+      return
+    }
+
+    this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+    if (!this.state.drawingNewClimb){
       this.setState({climbFormOpen:true});
     }
   };
 
-  addNewVertexToClimb(climb, position){
-    console.log(`adding ${position} to ${climb}`);
+  addNewVertexToClimb(climbId, position){
+    console.log(`adding ${position} to ${climbId}`);
+    this.newClimbVerts.push(position);
+    // this.props.updateClimb({selector:{_id:climbId}, data:{'vertices.0': [4,5,6]}});
   }
 
   closeClimbForm = () => {
@@ -207,9 +220,7 @@ class ThreeScene extends Component{
   };
 
   beginDrawingClimb = (document) => {
-    this.setState((state, props)=>{
-      return {climbFormOpen:false, drawingNewClimb: document._id}
-    })
+    this.setState({climbFormOpen:false, drawingNewClimb: document._id});
   };
 
   render = () => {
@@ -218,9 +229,8 @@ class ThreeScene extends Component{
         <div
           style={{ width: '100%', height: '100%', position: 'absolute' }}
           ref={(mount) => { this.mount = mount }}
-          onMouseDown={this.onMouseDown}
+          onClick={this.onClick}
           onMouseMove={this.move3DmouseTo2Dmouse}
-          onMouseUp={this.onMouseUp}
         />
         <Components.ClimbsNewForm
           cragId = {this.props.documentId}
@@ -240,8 +250,12 @@ class ThreeScene extends Component{
   }
 }
 
-const queryOptions = {
-    collection: Crags
+const cragHoCOptions = {
+  collection: Crags
 };
 
-registerComponent('ThreeScene', ThreeScene, [withSingle, queryOptions]);
+const climbHoCOptions = {
+  collection: Climbs
+};
+
+registerComponent('ThreeScene', ThreeScene, withCurrentUser, [withSingle, cragHoCOptions], [withUpdate, climbHoCOptions]);
