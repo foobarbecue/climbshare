@@ -19,6 +19,13 @@ class ThreeScene extends Component{
     this.mouseMoving = false;
   }
 
+  onResize = () => {
+    console.log('resizing');
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  };
+
   componentDidMount(){
     const width = this.mount.clientWidth;
     const height = this.mount.clientHeight;
@@ -32,7 +39,7 @@ class ThreeScene extends Component{
     //camera
     this.camera = new THREE.PerspectiveCamera(
       35,
-      width / height,
+      window.innerWidth / window.innerHeight,
       0.01,
       600
     );
@@ -41,7 +48,9 @@ class ThreeScene extends Component{
     //action
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setClearColor('#000000');
-    this.renderer.setSize(width, height);
+    window.addEventListener('resize',this.onResize);
+    this.onResize();
+
     this.mount.appendChild(this.renderer.domElement);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
