@@ -19,14 +19,17 @@ class ClimbsDisp extends Component {
 
   render = () =>
     <>
-      {(this.props.threeSceneRendered && !this.props.loading) ? this.props.results.map(
-        climb =>
-          <Components.ClimbItem
-            climb={climb}
-            scene={this.props.threescene}
-            key={climb._id}
-            threeSceneRendered={this.props.threeSceneRendered}
-          />
+      {(this.props.threeSceneRendered && !this.props.loading) ?
+          this.props.results.map(
+          climb =>
+            <Components.ClimbItem
+              climb={climb}
+              vertices={climb.vertices}
+              unSavedVertices={this.props.newClimbVerts}
+              scene={this.props.threescene}
+              key={climb._id}
+              threeSceneRendered={this.props.threeSceneRendered}
+            />
       ) : <p>waiting for threescene</p>}
     </>
 }

@@ -29,7 +29,8 @@ class ClimbItem extends Component {
   };
 
   componentDidUpdate = () => {
-
+      this.removeFromScene();
+      this.addToScene();
   };
 
   componentWillMount = () => {

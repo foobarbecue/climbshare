@@ -16,10 +16,10 @@ class ThreeScene extends Component{
     this.state = {
       climbFormOpen: false,
       threeSceneRendered: false,
-      drawingNewClimb: false,
+      newClimbId: '',
+      newClimbVerts: []
     };
-    this.newClimbVerts = [];
-    this.newClimbTerminalSegment = null;
+    this.newClimb = null;
   }
 
   onResize = () => {
@@ -116,12 +116,11 @@ class ThreeScene extends Component{
               this.mouse3D.position.copy(intersect.point);
         }
       }
-      if (this.state.drawingNewClimb){
-        const lastVertIndex = this.newClimbVerts.length -1;
-        this.scene.remove(this.newClimbTerminalSegment);
-        this.newClimbTerminalSegment = curvify([this.newClimbVerts[lastVertIndex], this.mouse3D.position]);
-        this.scene.remove(this.newClimbTerminalSegment);
-      }
+      // if (this.state.newClimbId){
+      //   // const lastVertIndex = this.newClimb.vertices.length -1;
+      //   // this.newClimbTerminalSegment = curvify([this.newClimbVerts[lastVertIndex], this.mouse3D.position]);
+      //   // this.scene.remove(this.newClimbTerminalSegment);
+      // }
 
   };
 
@@ -193,30 +192,35 @@ class ThreeScene extends Component{
     }
 
     //If a climb isn't in progress, start one
-    if (!this.state.drawingNewClimb){
+    if (!this.state.newClimbId){
       this.setState({climbFormOpen:true});
       return null;
     }else {
       //Left mouse click: add vertex to climb
       if (evt.button == 0) {
-        this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+        this.addVertexToNewClimb(this.mouse3D.position);
         return null;
       }
 
       //Right mouse click: finish climb
       if (evt.button == 2) {
-        this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+        this.addVertexToNewClimb(this.mouse3D.position);
         this.props.updateClimb({
-          selector: {_id: this.state.drawingNewClimb},
-          data: {'vertices': this.newClimbVerts.map((vert) => vert.toArray())}
+          selector: {_id: this.state.newClimbId},
+          data: {'vertices': this.state.newClimbVerts.map((vert) => vert.toArray())}
         });
-        this.setState({drawingNewClimb: false});
+        this.setState({newClimbId: '', newClimbVerts: []});
+        this.newClimb = null;
       }
     }
   };
 
-  addNewVertexToClimb = (climbId, position) => {
-    this.newClimbVerts.push(position.clone());
+  addVertexToNewClimb = (position) => {
+    this.setState({newClimbVerts:
+        this.state.newClimbVerts.concat(
+          position.clone()
+        )
+    });
   };
 
   closeClimbForm = () => {
@@ -224,8 +228,9 @@ class ThreeScene extends Component{
   };
 
   beginDrawingClimb = (document) => {
-    this.setState({climbFormOpen:false, drawingNewClimb: document._id});
-    this.addNewVertexToClimb(document._id, this.mouse3D.position);
+    this.setState({climbFormOpen:false, newClimbId: document._id});
+    this.newClimb = document;
+    this.addVertexToNewClimb(this.mouse3D.position);
   };
 
   render = () => {
@@ -250,6 +255,7 @@ class ThreeScene extends Component{
           cragId = {this.props.documentId}
           threescene={this.scene}
           threeSceneRendered={this.state.threeSceneRendered}
+          unSavedVertices={this.state.newClimbVerts}
         />
         </>
     )
