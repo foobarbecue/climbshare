@@ -16,14 +16,12 @@ class ThreeScene extends Component{
       climbFormOpen: false,
       threeSceneRendered: false,
       drawingNewClimb: false,
-    }
-    this.mouseMoving = false;
+    };
     this.newClimbVerts = [];
     this.newClimbTerminalSegment = null;
   }
 
   onResize = () => {
-    console.log('resizing');
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -82,20 +80,24 @@ class ThreeScene extends Component{
     this.stop();
     this.mount.removeChild(this.renderer.domElement)
   }
+
   start = () => {
     if (!this.frameId) {
       this.frameId = requestAnimationFrame(this.animate)
     }
   };
+
   stop = () => {
     cancelAnimationFrame(this.frameId)
   };
+
   animate = () => {
     this.controls.update();
     this.renderScene();
     this.setState({'threeSceneRendered':true});
     this.frameId = window.requestAnimationFrame(this.animate)
   };
+
   move3DmouseTo2Dmouse = (e) =>{
 
       // don't move the mouse3D if we are orbiting the view
@@ -111,7 +113,6 @@ class ThreeScene extends Component{
           if (intersects.length > 0) {
               let intersect = intersects[0];
               this.mouse3D.position.copy(intersect.point);
-
         }
       }
       if (this.state.drawingNewClimb){
@@ -177,43 +178,37 @@ class ThreeScene extends Component{
     }
   };
 
-  onMouseDown = (evt) => {
-    this.mouseMoving = false;
-  }
-
-  onMouseUp = (evt) => {
-
-    // this is to prevent triggering onclick at the end of a drag
-    if(!this.mouseMoving){
-      // If it's a right click and we're drawing a climb, then finish drawing the climb
-      if (evt.button==2){
-        if (this.state.drawingNewClimb){
-          this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
-          this.setState({drawingNewClimb:false});
-        }
-      } else{
-        this.onClick()
-      }
-    }
-  };
-
-  onClick = () => {
+  onClick = (evt) => {
     //Ignore click if we are orbiting
-    if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
-      return
+    if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)) {
+      return null;
     }
 
-    this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+    //If a climb isn't in progress, start one
     if (!this.state.drawingNewClimb){
       this.setState({climbFormOpen:true});
+      return null;
+    }
+
+    //Left mouse click: add vertex to climb
+    if (evt.button == 0){
+      this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+      return null;
+    }
+
+      //Right mouse click: finish climb
+    if (evt.button == 2){
+      this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+      this.props.updateClimb({selector:{_id:this.state.drawingNewClimb},
+        data:{'vertices': this.newClimbVerts.map((vert)=>vert.toArray())}
+      });
+      this.setState({drawingNewClimb:false});
     }
   };
 
-  addNewVertexToClimb(climbId, position){
-    console.log(`adding ${position} to ${climbId}`);
-    this.newClimbVerts.push(position);
-    // this.props.updateClimb({selector:{_id:climbId}, data:{'vertices.0': [4,5,6]}});
-  }
+  addNewVertexToClimb = (climbId, position) => {
+    this.newClimbVerts.push(position.clone());
+  };
 
   closeClimbForm = () => {
     this.setState({climbFormOpen:false})
@@ -221,6 +216,7 @@ class ThreeScene extends Component{
 
   beginDrawingClimb = (document) => {
     this.setState({climbFormOpen:false, drawingNewClimb: document._id});
+    this.addNewVertexToClimb(document._id, this.mouse3D.position);
   };
 
   render = () => {
@@ -230,6 +226,7 @@ class ThreeScene extends Component{
           style={{ width: '100%', height: '100%', position: 'absolute' }}
           ref={(mount) => { this.mount = mount }}
           onClick={this.onClick}
+          onContextMenu={this.onClick} // need this because onClick doesn't trigger on right click
           onMouseMove={this.move3DmouseTo2Dmouse}
         />
         <Components.ClimbsNewForm
