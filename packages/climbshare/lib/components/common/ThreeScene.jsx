@@ -86,6 +86,7 @@ class ThreeScene extends Component{
     if (!this.frameId) {
       this.frameId = requestAnimationFrame(this.animate)
     }
+    this.setState({'threeSceneRendered':true});
   };
 
   stop = () => {
@@ -95,7 +96,6 @@ class ThreeScene extends Component{
   animate = () => {
     this.controls.update();
     this.renderScene();
-    this.setState({'threeSceneRendered':true});
     this.frameId = window.requestAnimationFrame(this.animate)
   };
 
@@ -188,7 +188,7 @@ class ThreeScene extends Component{
     // User clicked on the rock. If not logged in, prompt for login.
     if (!this.props.currentUser){
 
-      this.props.flash({message:'stuff'});
+      let res = this.props.flash({key: 'users.please_log_in', message:'Please log in to create or edit climbs.'});
       return null;
     }
 
