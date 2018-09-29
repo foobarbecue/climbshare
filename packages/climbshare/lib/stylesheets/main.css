@@ -1,0 +1,17 @@
+.accounts-ui {
+    z-index: 1;
+    position: absolute;
+    right: 0;
+}
+
+.flash-messages {
+    display: inline-flex;
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    z-index: 2;
+}
+
+.flash-messages div{
+    margin: auto;
+}

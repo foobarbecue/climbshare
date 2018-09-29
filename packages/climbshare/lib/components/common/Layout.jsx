@@ -10,6 +10,7 @@ const Layout = ({children}) =>
     </Helmet>
     <Components.AccountsLoginForm />
     <div className="main">
+      <Components.FlashMessages />
       {children}
 
     </div>

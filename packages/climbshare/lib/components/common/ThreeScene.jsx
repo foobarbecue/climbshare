@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as THREE from 'three';
-import { Components, registerComponent, withSingle, withUpdate, withCurrentUser } from 'meteor/vulcan:core'
+import { Components, withMessages, registerComponent, withSingle, withUpdate, withCurrentUser } from 'meteor/vulcan:core'
 import Crags from "../../modules/crags/collection";
 import Climbs from "../../modules/climbs/collection";
 import '../../client/three_extras/nexus.js';
@@ -8,6 +8,7 @@ import PLYLoader from 'three-ply-loader';
 import NexusObject from '../../client/three_extras/nexus_three.js';
 import OrbitControls from '../../client/three_extras/OrbitControls.js';
 import curvify from '../../modules/climbs/curvify.js'
+import {FormattedMessage} from "meteor/vulcan:i18n";
 
 class ThreeScene extends Component{
   constructor(props){
@@ -179,8 +180,15 @@ class ThreeScene extends Component{
   };
 
   onClick = (evt) => {
-    //Ignore click if we are orbiting
-    if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)) {
+    //Ignore click if we are manipulating the 3D view controls
+    if (!!this.controls && this.controls.recentlyMoved) {
+      return null;
+    }
+
+    // User clicked on the rock. If not logged in, prompt for login.
+    if (!this.props.currentUser){
+
+      this.props.flash({message:'stuff'});
       return null;
     }
 
@@ -188,21 +196,22 @@ class ThreeScene extends Component{
     if (!this.state.drawingNewClimb){
       this.setState({climbFormOpen:true});
       return null;
-    }
-
-    //Left mouse click: add vertex to climb
-    if (evt.button == 0){
-      this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
-      return null;
-    }
+    }else {
+      //Left mouse click: add vertex to climb
+      if (evt.button == 0) {
+        this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+        return null;
+      }
 
       //Right mouse click: finish climb
-    if (evt.button == 2){
-      this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
-      this.props.updateClimb({selector:{_id:this.state.drawingNewClimb},
-        data:{'vertices': this.newClimbVerts.map((vert)=>vert.toArray())}
-      });
-      this.setState({drawingNewClimb:false});
+      if (evt.button == 2) {
+        this.addNewVertexToClimb(this.state.drawingNewClimb, this.mouse3D.position);
+        this.props.updateClimb({
+          selector: {_id: this.state.drawingNewClimb},
+          data: {'vertices': this.newClimbVerts.map((vert) => vert.toArray())}
+        });
+        this.setState({drawingNewClimb: false});
+      }
     }
   };
 
@@ -255,4 +264,4 @@ const climbHoCOptions = {
   collection: Climbs
 };
 
-registerComponent('ThreeScene', ThreeScene, withCurrentUser, [withSingle, cragHoCOptions], [withUpdate, climbHoCOptions]);
+registerComponent('ThreeScene', ThreeScene, withCurrentUser, withMessages, [withSingle, cragHoCOptions], [withUpdate, climbHoCOptions]);

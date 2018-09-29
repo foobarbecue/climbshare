@@ -87,6 +87,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
   this.state = this.STATES.NONE;
 
+  this.recentlyMoved = false;
+
   //
   // public methods
   //
@@ -465,6 +467,16 @@ THREE.OrbitControls = function ( object, domElement ) {
     rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientHeight ); // yes, height
 
     rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight );
+
+    // console.log('rotate distance:');
+    // console.log(rotateDelta.length);
+    if (rotateDelta.length() > 0.5){
+      scope.recentlyMoved = true;
+      console.log('setting moved');
+      setTimeout(()=>{
+        console.log('unsetting moved');
+        scope.recentlyMoved = false;}, 1000);
+    }
 
     rotateStart.copy( rotateEnd );
 
