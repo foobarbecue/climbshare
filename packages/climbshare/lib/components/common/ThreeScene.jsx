@@ -218,7 +218,7 @@ class ThreeScene extends Component{
   addVertexToNewClimb = (position) => {
     this.setState({newClimbVerts:
         this.state.newClimbVerts.concat(
-          position.clone()
+          [position.toArray()]
         )
     });
   };
@@ -255,7 +255,7 @@ class ThreeScene extends Component{
           cragId = {this.props.documentId}
           threescene={this.scene}
           threeSceneRendered={this.state.threeSceneRendered}
-          unSavedVertices={this.state.newClimbVerts}
+          newClimbVerts={this.state.newClimbVerts}
         />
         </>
     )

@@ -25,7 +25,7 @@ class ClimbsDisp extends Component {
             <Components.ClimbItem
               climb={climb}
               vertices={climb.vertices}
-              unSavedVertices={this.props.newClimbVerts}
+              newClimbVerts={this.props.newClimbVerts}
               scene={this.props.threescene}
               key={climb._id}
               threeSceneRendered={this.props.threeSceneRendered}

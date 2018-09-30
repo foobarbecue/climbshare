@@ -18,10 +18,13 @@ class ClimbItem extends Component {
 
   addToScene = () =>{
     // "Curvify" segments and add to scene
-    const vertices = this.props.climb.vertices.map((vertex) => new Vector3(vertex[0], vertex[1], vertex[2]));
-    const climbCurvified = curvify(vertices);
-    climbCurvified.name = this.props.climb._id;
-    this.props.scene.add(climbCurvified);
+    let vertices =  this.props.climb.vertices || this.props.newClimbVerts;
+    if (vertices.length > 1){
+      vertices = vertices.map((vertex) => new Vector3(vertex[0], vertex[1], vertex[2]));
+      let climbCurvified = curvify(vertices);
+      climbCurvified.name = this.props.climb._id;
+      this.props.scene.add(climbCurvified);
+    }
   };
 
   componentWillUnmount = () => {
