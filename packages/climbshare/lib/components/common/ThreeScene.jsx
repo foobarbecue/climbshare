@@ -264,6 +264,7 @@ class ThreeScene extends Component{
           threescene={this.scene}
           threeSceneRendered={this.state.threeSceneRendered}
           newClimbVerts={this.state.newClimbVerts}
+          camera={this.camera}
         />
         </>
     )

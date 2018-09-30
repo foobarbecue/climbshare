@@ -32,23 +32,38 @@ class ClimbItem extends Component {
   };
 
   componentDidUpdate = () => {
-      this.removeFromScene();
-      this.addToScene();
+      // this.removeFromScene();
+      // this.addToScene();
   };
 
   componentWillMount = () => {
     // If the climb has more than one vertex, (re)draw it on the three scene
-    if (!!this.props.climb.vertices && (this.props.climb.vertices.length > 1)) {
-
+    const vertices =  this.props.climb.vertices || this.props.newClimbVerts;
+    if (vertices.length > 1) {
       this.removeFromScene();
       this.addToScene();
     }
-  }
-
-  render = () => {
-
-    return null
   };
+
+  getLabelPositionStyle = () =>{
+    const vertices =  this.props.climb.vertices || this.props.newClimbVerts;
+    if (vertices.length > 1) {
+      let pos3D = vertices[0];
+      pos3D = new Vector3(...pos3D);
+      const pos2D = pos3D.project(this.props.camera);
+      const style = {
+        left: (pos2D.x + 1) / 2 * window.innerWidth,
+        right: -(pos2D.y - 1) / 2 * window.innerHeight
+      };
+      return style;
+    }
+    return null;
+  };
+
+  render = () =>
+    <div className={"climb-label"} style={this.getLabelPositionStyle()}>
+      {this.props.climb.name}
+    </div>
 }
 
 
