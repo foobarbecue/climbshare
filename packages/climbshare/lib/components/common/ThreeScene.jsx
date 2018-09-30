@@ -20,6 +20,7 @@ class ThreeScene extends Component{
       newClimbVerts: []
     };
     this.newClimb = null;
+    this.latestTerminalSegment = null;
   }
 
   onResize = () => {
@@ -102,6 +103,7 @@ class ThreeScene extends Component{
   move3DmouseTo2Dmouse = (e) =>{
 
       // don't move the mouse3D if we are orbiting the view
+      // TODO this is doing a similar thing to this.controls.movedRecently so maybe share logic
       if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
           return
       }
@@ -116,11 +118,16 @@ class ThreeScene extends Component{
               this.mouse3D.position.copy(intersect.point);
         }
       }
-      // if (this.state.newClimbId){
-      //   // const lastVertIndex = this.newClimb.vertices.length -1;
-      //   // this.newClimbTerminalSegment = curvify([this.newClimbVerts[lastVertIndex], this.mouse3D.position]);
-      //   // this.scene.remove(this.newClimbTerminalSegment);
-      // }
+
+      // If the user is drawing a new climb, then animate the last segment to follow the mouse
+      if (this.state.newClimbVerts.length > 0){
+        const lastVertIndex = this.state.newClimbVerts.length -1;
+        const startPos = new THREE.Vector3( ... this.state.newClimbVerts[lastVertIndex]);
+        const terminalSegment = curvify([startPos, this.mouse3D.position]);
+        terminalSegment.name = 'terminalSegment';
+        try {this.scene.remove(this.scene.getObjectByName('terminalSegment'))} catch(err){}
+        this.scene.add(terminalSegment);
+      }
 
   };
 
@@ -205,9 +212,10 @@ class ThreeScene extends Component{
       //Right mouse click: finish climb
       if (evt.button == 2) {
         this.addVertexToNewClimb(this.mouse3D.position);
+        const verticesForDB = (this.state.newClimbVerts.concat([this.mouse3D.position.toArray()]));
         this.props.updateClimb({
           selector: {_id: this.state.newClimbId},
-          data: {'vertices': this.state.newClimbVerts.map((vert) => vert.toArray())}
+          data: {'vertices': verticesForDB}
         });
         this.setState({newClimbId: '', newClimbVerts: []});
         this.newClimb = null;

@@ -20,7 +20,7 @@ class ClimbItem extends Component {
     // "Curvify" segments and add to scene
     let vertices =  this.props.climb.vertices || this.props.newClimbVerts;
     if (vertices.length > 1){
-      vertices = vertices.map((vertex) => new Vector3(vertex[0], vertex[1], vertex[2]));
+      vertices = vertices.map((vertex) => new Vector3(... vertex));
       let climbCurvified = curvify(vertices);
       climbCurvified.name = this.props.climb._id;
       this.props.scene.add(climbCurvified);
