@@ -53,7 +53,7 @@ class ClimbItem extends Component {
       const pos2D = pos3D.project(this.props.camera);
       const style = {
         left: (pos2D.x + 1) / 2 * window.innerWidth,
-        right: -(pos2D.y - 1) / 2 * window.innerHeight
+        top: -(pos2D.y - 1) / 2 * window.innerHeight
       };
       return style;
     }

@@ -17,7 +17,8 @@ class ThreeScene extends Component{
       climbFormOpen: false,
       threeSceneRendered: false,
       newClimbId: '',
-      newClimbVerts: []
+      newClimbVerts: [],
+      cameraPosition: []
     };
     this.newClimb = null;
     this.latestTerminalSegment = null;
@@ -105,7 +106,8 @@ class ThreeScene extends Component{
       // don't move the mouse3D if we are orbiting the view
       // TODO this is doing a similar thing to this.controls.movedRecently so maybe share logic
       if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
-          return
+        this.setState({cameraPosition: this.camera.position.toArray()})
+        return
       }
       this.mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
       this.mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -265,6 +267,7 @@ class ThreeScene extends Component{
           threeSceneRendered={this.state.threeSceneRendered}
           newClimbVerts={this.state.newClimbVerts}
           camera={this.camera}
+          cameraPosition={this.state.cameraPosition}
         />
         </>
     )

@@ -19,4 +19,5 @@
 .climb-label{
     z-index: 1;
     position: fixed;
+    color: black;
 }
