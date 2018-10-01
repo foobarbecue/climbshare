@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
-import {Vector3} from 'three';
+import {Vector3, LineBasicMaterial} from 'three';
 import {Components, registerComponent, withList, withCurrentUser} from 'meteor/vulcan:core'
 import curvify from '../../modules/climbs/curvify.js'
+import * as THREE from "three";
 
 class ClimbItem extends Component {
   constructor (props) {
@@ -10,7 +11,7 @@ class ClimbItem extends Component {
 
   removeFromScene = () => {
     // Remove from three scene if already exists
-    const existingClimb = this.props.scene.getObjectByName(this.props.climb._id);
+    const existingClimb = this.props.scene.getObjectByName(this.props.climb._id); // TODO avoid always looking this up
     if (!!existingClimb) {
       this.props.scene.remove(existingClimb);
     }
@@ -27,13 +28,24 @@ class ClimbItem extends Component {
     }
   };
 
+  setColor = ()=>{
+    const existingClimb = this.props.scene.getObjectByName(this.props.climb._id);
+    if (!!existingClimb) {
+      this.props.scene.remove(existingClimb);
+    }
+  };
+
+  componentWillReceiveProps = ()=>{
+    console.log('climbReceiveProps')
+  }
+
   componentWillUnmount = () => {
     this.removeFromScene()
   };
 
   componentDidUpdate = () => {
-      // this.removeFromScene();
-      // this.addToScene();
+      this.removeFromScene();
+      this.addToScene();
   };
 
   componentWillMount = () => {
@@ -60,10 +72,16 @@ class ClimbItem extends Component {
     return null;
   };
 
-  render = () =>
-    <div className={"climb-label"} style={this.getLabelPositionStyle()}>
-      {this.props.climb.name}
+  render = () => {
+    return (
+    <div
+      className={"climb-label"}
+      style={this.getLabelPositionStyle()}
+
+    >
+      <div>{this.props.climb.name} <i>{this.props.climb.difficulty}</i></div>
     </div>
+)}
 }
 
 

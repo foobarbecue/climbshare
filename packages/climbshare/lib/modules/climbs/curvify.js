@@ -26,9 +26,13 @@ const curvify = function (pointlist, pull = new THREE.Vector3(0,-1,0), material 
     // Check that there's more than one point in the list -- otherwise
     // makes no sense to draw curves.
     if (pointlist.length > 1){
-        // const pull = pull || new THREE.Vector3(0,-1,0);
-        // const material = material || new THREE.LineBasicMaterial();
+        // Start and end vertices might be arrays or Vector3 -- coerce to Vector3
+
+
         let cp = new THREE.CurvePath();
+      for ( let i=0 ; i < pointlist.length-1 ; i++){
+          if(!pointlist[i].isVector3){pointlist[i] = new Vector3(...(pointlist[i]));}
+        }
         for ( let i=0 ; i < pointlist.length-1 ; i++){
             let start = pointlist[i];
             let end = pointlist[i+1];

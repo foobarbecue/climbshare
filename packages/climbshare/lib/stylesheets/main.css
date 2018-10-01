@@ -21,3 +21,20 @@
     position: fixed;
     color: black;
 }
+
+.climb-label{
+    position: absolute;
+    padding: 0 12px 0 4px;
+    border-radius: 0 10px 10px 10px;
+    background:rgba(255,255,255,0.3);
+    border: thin black solid;
+    float: left;
+}
+.climb-label-details{
+    display: none;
+    bottom: 0;
+}
+
+.climb-label:hover .climb-label-details{
+    display: inherit;
+}
