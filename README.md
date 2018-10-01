@@ -30,6 +30,8 @@ You can also run your own server. We'll have a guide up soon, but Climba is just
  - Built-in SfM engine which can add photos one by one (let's use [AliceVision](https://alicevision.github.io/))
  - Augmented reality
  - Stick figure climber on the 3D
+ - Solar exposure predictor
+ - Rock temperature forecast
 
 
 ## Philosophy
