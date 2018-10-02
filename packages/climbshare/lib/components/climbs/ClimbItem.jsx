@@ -65,15 +65,20 @@ class ClimbItem extends Component {
   };
 
   render = () => {
-    return (
-    <div
-      className={"climb-label"}
-      style={this.getLabelPositionStyle()}
-      onMouseOver={this.selectThisClimb}
-    >
-      <div>{this.props.climb.name} <i>{this.props.climb.difficulty}</i></div>
-    </div>
-)}
+    const vertices =  this.props.climb.vertices || this.props.newClimbVerts;
+    if (vertices.length > 1){
+      return (
+        <div
+          className={"climb-label"}
+          style={this.getLabelPositionStyle()}
+          onMouseOver={this.selectThisClimb}
+        >
+          <div>{this.props.climb.name} <i>{this.props.climb.difficulty}</i></div>
+        </div>
+      )
+    }
+    else return null;
+}
 }
 
 
