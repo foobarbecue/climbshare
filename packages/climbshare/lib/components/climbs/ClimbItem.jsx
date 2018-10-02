@@ -5,9 +5,6 @@ import curvify from '../../modules/climbs/curvify.js'
 import * as THREE from "three";
 
 class ClimbItem extends Component {
-  constructor (props) {
-    super(props)
-  }
 
   removeFromScene = () => {
     // Remove from three scene if already exists
@@ -22,22 +19,13 @@ class ClimbItem extends Component {
     let vertices =  this.props.climb.vertices || this.props.newClimbVerts;
     if (vertices.length > 1){
       vertices = vertices.map((vertex) => new Vector3(... vertex));
-      let climbCurvified = curvify(vertices);
+      const color = (this.props.climb._id === this.props.selectedClimbId) ? 'red' : 'white';
+      let material = new LineBasicMaterial({color: color});
+      let climbCurvified = curvify(vertices, new THREE.Vector3(0,-1,0), material); // TODO probably worth optimizing
       climbCurvified.name = this.props.climb._id;
       this.props.scene.add(climbCurvified);
     }
   };
-
-  setColor = ()=>{
-    const existingClimb = this.props.scene.getObjectByName(this.props.climb._id);
-    if (!!existingClimb) {
-      this.props.scene.remove(existingClimb);
-    }
-  };
-
-  componentWillReceiveProps = ()=>{
-    console.log('climbReceiveProps')
-  }
 
   componentWillUnmount = () => {
     this.removeFromScene()
@@ -55,6 +43,10 @@ class ClimbItem extends Component {
       this.removeFromScene();
       this.addToScene();
     }
+  };
+
+  selectThisClimb = ()=>{
+    this.props.selectClimb(this.props.climb._id)
   };
 
   getLabelPositionStyle = () =>{
@@ -77,7 +69,7 @@ class ClimbItem extends Component {
     <div
       className={"climb-label"}
       style={this.getLabelPositionStyle()}
-
+      onMouseOver={this.selectThisClimb}
     >
       <div>{this.props.climb.name} <i>{this.props.climb.difficulty}</i></div>
     </div>

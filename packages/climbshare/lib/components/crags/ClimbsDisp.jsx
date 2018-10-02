@@ -31,6 +31,8 @@ class ClimbsDisp extends Component {
               threeSceneRendered={this.props.threeSceneRendered}
               camera={this.props.camera}
               cameraPosition={this.props.cameraPosition}
+              selectedClimbId={this.props.selectedClimbId}
+              selectClimb={this.props.selectClimb}
             />
       ) : <p>waiting for threescene</p>}
     </>
