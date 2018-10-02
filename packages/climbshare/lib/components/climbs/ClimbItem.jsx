@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import {Vector3, LineBasicMaterial} from 'three';
-import {Components, registerComponent, withList, withCurrentUser} from 'meteor/vulcan:core'
-import curvify from '../../modules/climbs/curvify.js'
+import {Components, registerComponent, withList, withCurrentUser} from 'meteor/vulcan:core';
+import curvify from '../../modules/climbs/curvify.js';
 import * as THREE from "three";
 
 class ClimbItem extends Component {
