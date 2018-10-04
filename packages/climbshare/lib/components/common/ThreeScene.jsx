@@ -268,6 +268,7 @@ class ThreeScene extends Component{
           newClimbVerts={this.state.newClimbVerts}
           camera={this.camera}
           cameraPosition={this.state.cameraPosition}
+          selectedClimb={this.props.selectedClimb}
           selectedClimbId={this.props.selectedClimbId}
           selectClimb={this.props.selectClimb}
         />

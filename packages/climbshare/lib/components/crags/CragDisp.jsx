@@ -6,14 +6,14 @@ class CragDisp extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedClimbId: '' ,
+      selectedClimb: null,
       activeTool: 'drawClimb' // TODO tools module. Probably a base class and inheritance
     }
   }
 
-  selectClimb = (climbId)=>{
-    if (climbId !== this.state.selectedClimbId){
-      this.setState({ selectedClimbId: climbId })
+  selectClimb = (climb)=>{
+    if (climb !== this.state.selectedClimb){
+      this.setState({ selectedClimb: climb })
     }
   };
 
@@ -21,7 +21,9 @@ class CragDisp extends Component {
         <div>
           <Components.ThreeScene
             documentId={this.props.params._id}
-            selectedClimbId={this.state.selectedClimbId}
+            selectedClimb={this.state.selectedClimb}
+//          .selectedClimb alone doesn't trigger re-render
+            selectedClimbId={this.state.selectedClimb ? this.state.selectedClimb._id : null}
             selectClimb={this.selectClimb}
             activeTool={this.state.activeTool}
           />
@@ -29,9 +31,11 @@ class CragDisp extends Component {
           {/*Probably get rid of this once we have a nice crag list page*/}
           <Components.CragMenu />
 
-          <Components.ToolBox />
-          {this.state.selectedClimbId ?
-            <Components.ClimbDetails documentId={this.state.selectedClimbId}/> : null
+          <Components.Toolbox />
+          {
+            this.state.selectedClimb ?
+            <Components.ClimbDetails document={this.state.selectedClimb} />
+            : null
           }
 
         </div>;

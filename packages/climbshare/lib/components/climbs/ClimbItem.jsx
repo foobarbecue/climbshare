@@ -46,7 +46,7 @@ class ClimbItem extends Component {
   };
 
   selectThisClimb = ()=>{
-    this.props.selectClimb(this.props.climb._id)
+    this.props.selectClimb(this.props.climb);
   };
 
   getLabelPositionStyle = () =>{

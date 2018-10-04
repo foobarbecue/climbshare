@@ -13,7 +13,6 @@ import '../components/climbs/ClimbsDisp.jsx'
 import '../components/common/ThreeScene.jsx'
 import '../components/common/FrontPage.jsx'
 
-
 addRoute({ name: 'climbs', path: '/climbs/', componentName: 'ClimbList'});
 addRoute({ name: 'crag', path: '/crag/:_id', componentName: 'CragDisp'});
 addRoute({ name: 'index', path: '/', componentName: 'CragMenu'});
