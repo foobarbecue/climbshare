@@ -4,7 +4,7 @@ Climba is an open platform for virtual 3D climbing stuff. "Stuff" includes guide
 
 ## Getting started
 
-For now, email me at <aaron@climbscene.com> for access to the testing server. We will launch it publicly once we are confident it's secure and relatively stable.
+For now, email me at <mail@climbscene.com> for access to the testing server. We will launch it publicly once we are confident it's secure and relatively stable.
 You can also run your own server. Here's how:
 
  1. Install [meteor](https://install.meteor.com) 
@@ -14,17 +14,17 @@ You can also run your own server. Here's how:
  
 ## Features 
 
- [x] Climb display
- [x] Drawing climbs on meshes and saving to database 
- [x] Crag upload
- [x] Progressive mesh display using [Nexus](https://github.com/cnr-isti-vclab/nexus)
- [ ] Routesetting and route archiving tools for climbing gyms
- [ ] Smartphone support
- [ ] Built-in SfM engine which can add photos one by one (let's use [AliceVision](https://alicevision.github.io/))
- [ ] Augmented reality
- [ ] Stick figure climber on the 3D
- [ ] Solar exposure predictor
- [ ] Rock temperature forecast
+ - [x] Climb display
+ - [x] Drawing climbs on meshes and saving to database 
+ - [x] Crag upload
+ - [x] Progressive mesh display using [Nexus](https://github.com/cnr-isti-vclab/nexus)
+ - [ ] Routesetting and route archiving tools for climbing gyms
+ - [ ] Smartphone support
+ - [ ] Built-in SfM engine which can add photos one by one (let's use [AliceVision](https://alicevision.github.io/))
+ - [ ] Augmented reality
+ - [ ] Stick figure climber on the 3D
+ - [ ] Solar exposure predictor
+ - [ ] Rock temperature forecast
 
 
 ## Philosophy
