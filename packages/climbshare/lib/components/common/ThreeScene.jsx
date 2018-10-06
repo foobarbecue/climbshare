@@ -21,7 +21,6 @@ class ThreeScene extends Component{
       cameraPosition: []
     };
     this.newClimb = null;
-    this.latestTerminalSegment = null;
   }
 
   onResize = () => {
@@ -52,8 +51,8 @@ class ThreeScene extends Component{
     this.renderer.setClearColor('#000000');
     window.addEventListener('resize',this.onResize);
     this.onResize();
-
     this.mount.appendChild(this.renderer.domElement);
+    this.renderer.domElement.classList.add("threeScene");
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true;
@@ -247,11 +246,12 @@ class ThreeScene extends Component{
     return(
         <>
         <div
-          style={{ width: '100%', height: '100%', position: 'absolute' }}
+          className={"threeScene"}
           ref={(mount) => { this.mount = mount }}
           onClick={this.onClick}
           onContextMenu={this.onClick} // need this because onClick doesn't trigger on right click
           onMouseMove={this.move3DmouseTo2Dmouse}
+          onWheel={this.move3DmouseTo2Dmouse} // TODO not working
         />
         <Components.ClimbsNewForm
           cragId = {this.props.documentId}

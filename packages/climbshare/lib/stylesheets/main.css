@@ -1,7 +1,19 @@
+.wrapper {
+    margin: 10px;
+}
+
+.threeScene {
+    left: 0;
+    top: 0;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
 .accounts-ui {
     z-index: 1;
     position: absolute;
-    right: 0;
+    right: 10px;
 }
 
 .flash-messages {
