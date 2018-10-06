@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
 import {Components, registerComponent, withSingle, withCurrentUser} from 'meteor/vulcan:core';
+import tools from '../../modules/tools.js';
 
-const tools = ['addClimb','addBeta','addWarning','addOther'];
+const Toolbox = (props) =>
+  <div className={"toolbox-pane"}>
 
-class Toolbox extends Component {
-  render = () =>
-
-    <div className={"toolbox-pane"}>
-      {tools.map((toolName)=>
-        <img className={'toolIcon'} src={'/tool_icons/'+toolName+'.png'} key={toolName}/>
-      )}
-    </div>
-}
+    {tools.map((tool) => {
+          return (<img
+            className={
+              (props.activeTool && (tool.name === props.activeTool.name))
+              ? 'toolIcon selected'
+              : 'toolIcon'}
+            onClick={() => {
+              props.setActiveTool(tool)
+            }}
+            src={'/tool_icons/' + tool.name + '.png'}
+            key={tool.name}
+          />)
+        }
+    )}
+  </div>;
 
 registerComponent('Toolbox', Toolbox);

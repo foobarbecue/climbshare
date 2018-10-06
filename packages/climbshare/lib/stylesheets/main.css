@@ -1,6 +1,3 @@
-.wrapper {
-}
-
 .threeScene {
     left: 0;
     top: 0;
@@ -61,8 +58,7 @@
     color: black;
 }
 
-.toolbox-pane, .climb-details-pane{
-    min-width: 30%;
+.toolbox-pane, .climb-details-pane, .dropdown-menu, .instructions-pane, button{
     z-index: 50;
     background:rgba(255,255,255,0.3);
     border: thin black solid;
@@ -78,9 +74,38 @@
     justify-self: start;
 }
 
+.instructions-pane-wrapper {
+    grid-row: 3;
+    grid-column: 1 / 4;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+}
+
+.instructions-pane {
+    grid-column: 2;
+    justify-self: center;
+    align-self: end;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+}
+
 .toolbox-pane img {
     display: block;
     padding: 5px;
+    border: 0;
+}
+
+.toolIcon{
+    border-radius: 5px;
+    border: thin transparent;
+}
+
+.toolIcon.selected {
+    background-color: white;
+}
+
+.toolIcon:hover {
+    border: thin white solid;
 }
 
 .climb-details-pane{

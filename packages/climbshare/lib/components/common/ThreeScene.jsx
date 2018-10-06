@@ -8,6 +8,7 @@ import PLYLoader from 'three-ply-loader';
 import NexusObject from '../../client/three_extras/nexus_three.js';
 import OrbitControls from '../../client/three_extras/OrbitControls.js';
 import curvify from '../../modules/climbs/curvify.js'
+import tools from '../../modules/tools.js'
 import {FormattedMessage} from "meteor/vulcan:i18n";
 
 class ThreeScene extends Component{
@@ -105,9 +106,9 @@ class ThreeScene extends Component{
       // don't move the mouse3D if we are orbiting the view
       // TODO this is doing a similar thing to this.controls.movedRecently so maybe share logic
       if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
-        this.setState({cameraPosition: this.camera.position.toArray()})
         return
       }
+      this.setState({cameraPosition: this.camera.position.toArray()}) //TODO do this for wheel too
       this.mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
       this.mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
       this.mouse2D.z = 0.5;
@@ -192,36 +193,45 @@ class ThreeScene extends Component{
       return null;
     }
 
-    // User clicked on the rock. If not logged in, prompt for login.
-    if (!this.props.currentUser){
+    switch (this.props.activeTool.name) { //TODO maybe move tool logic into tools.js
+      case 'addClimb':
+        // User clicked on the rock. If not logged in, prompt for login.
+        if (!this.props.currentUser) {
 
-      let res = this.props.flash({key: 'users.please_log_in', message:'Please log in to create or edit climbs.'});
-      return null;
+          let res = this.props.flash({key: 'users.please_log_in', message: 'Please log in to create or edit climbs.'});
+          return null;
+        }
+
+        //If a climb isn't in progress, start one
+          this.setState({climbFormOpen: true});
+        break;
+
+      case 'drawClimb':
+          {
+          //Left mouse click: add vertex to climb
+          if (evt.button == 0) {
+            this.addVertexToNewClimb(this.mouse3D.position);
+            return null;
+          }
+
+          //Right mouse click: finish climb
+          if (evt.button == 2) {
+            this.addVertexToNewClimb(this.mouse3D.position);
+            const verticesForDB = (this.state.newClimbVerts.concat([this.mouse3D.position.toArray()]));
+            this.props.updateClimb({
+              selector: {_id: this.state.newClimbId},
+              data: {'vertices': verticesForDB}
+            });
+            this.setState({newClimbId: '', newClimbVerts: []});
+            this.newClimb = null;
+            this.props.setActiveTool(tools[0]) // TODO enum or make setActiveTool take string or something
+          }
+        }
+        break;
+
+        // TODO rest of the tools
     }
 
-    //If a climb isn't in progress, start one
-    if (!this.state.newClimbId){
-      this.setState({climbFormOpen:true});
-      return null;
-    }else {
-      //Left mouse click: add vertex to climb
-      if (evt.button == 0) {
-        this.addVertexToNewClimb(this.mouse3D.position);
-        return null;
-      }
-
-      //Right mouse click: finish climb
-      if (evt.button == 2) {
-        this.addVertexToNewClimb(this.mouse3D.position);
-        const verticesForDB = (this.state.newClimbVerts.concat([this.mouse3D.position.toArray()]));
-        this.props.updateClimb({
-          selector: {_id: this.state.newClimbId},
-          data: {'vertices': verticesForDB}
-        });
-        this.setState({newClimbId: '', newClimbVerts: []});
-        this.newClimb = null;
-      }
-    }
   };
 
   addVertexToNewClimb = (position) => {
@@ -240,6 +250,7 @@ class ThreeScene extends Component{
     this.setState({climbFormOpen:false, newClimbId: document._id});
     this.newClimb = document;
     this.addVertexToNewClimb(this.mouse3D.position);
+    this.props.setActiveTool(tools[1]);
   };
 
   render = () => {

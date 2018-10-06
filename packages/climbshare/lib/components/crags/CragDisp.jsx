@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Components, registerComponent } from 'meteor/vulcan:core'
+import { Components, registerComponent } from 'meteor/vulcan:core';
+import tools from '../../modules/tools.js';
 
 class CragDisp extends Component {
 
@@ -7,9 +8,14 @@ class CragDisp extends Component {
     super(props);
     this.state = {
       selectedClimb: null,
-      activeTool: 'drawClimb' // TODO tools module. Probably a base class and inheritance
+      activeTool: tools[0]
     }
   }
+
+  setActiveTool = (tool)=>{
+    // TODO accept string
+    this.setState({activeTool: tool})
+  };
 
   selectClimb = (climb)=>{
     if (climb !== this.state.selectedClimb){
@@ -25,13 +31,17 @@ class CragDisp extends Component {
 //          .selectedClimb alone doesn't trigger re-render
             selectedClimbId={this.state.selectedClimb ? this.state.selectedClimb._id : null}
             selectClimb={this.selectClimb}
+            setActiveTool = {this.setActiveTool}
             activeTool={this.state.activeTool}
           />
 
           {/*Probably get rid of this once we have a nice crag list page*/}
           <Components.CragMenu />
 
-          <Components.Toolbox />
+          <Components.Toolbox
+            setActiveTool = {this.setActiveTool}
+            activeTool={this.state.activeTool}
+          />
           {
             this.state.selectedClimb ?
             <Components.ClimbDetails
@@ -39,6 +49,11 @@ class CragDisp extends Component {
             />
             : null
           }
+
+          <Components.Instructions
+            setActiveTool = {this.setActiveTool}
+            activeTool={this.state.activeTool}
+          />
 
         </>;
 
