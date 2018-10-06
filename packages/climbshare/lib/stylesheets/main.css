@@ -1,5 +1,4 @@
 .wrapper {
-    margin: 10px;
 }
 
 .threeScene {
@@ -13,7 +12,8 @@
 .accounts-ui {
     z-index: 1;
     position: absolute;
-    right: 10px;
+    right: 0;
+    margin: 10px;
 }
 
 .flash-messages {
@@ -49,4 +49,37 @@
 
 .climb-label:hover .climb-label-details{
     display: inherit;
+}
+
+.main {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+    grid-template-columns: auto 1fr auto;
+    color: black;
+}
+
+.toolbox-pane, .climb-details-pane{
+    min-width: 30%;
+    z-index: 50;
+    background:rgba(255,255,255,0.3);
+    border: thin black solid;
+    align-self: start;
+    padding: 5px;
+}
+
+.toolbox-pane{
+    grid-row: 2;
+    grid-column: 1;
+    border-radius: 0 10px 10px 0;
+    left: 0;
+}
+
+.climb-details-pane{
+    grid-row: 2;
+    grid-column: 3;
+    border-radius: 10px 0 0 10px;
+    right: 0;
 }

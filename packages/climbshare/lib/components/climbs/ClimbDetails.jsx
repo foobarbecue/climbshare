@@ -7,7 +7,13 @@ class ClimbDetails extends Component {
     if (this.props.loading) {return null}
     else return (
       <div className={"climb-details-pane"}>
-        <h1>{this.props.document.name}</h1>
+        <h3>{this.props.document.name} <i>{this.props.document.difficulty}</i></h3>
+        <p>{this.props.climbType}</p>
+        <p>Created by {this.props.document.user} on {this.props.document.createdAt}</p>
+        <h5>Description</h5>
+        <p>{this.props.document.description}</p>
+        <h5>References</h5>
+        <p>{this.props.document.references}</p>
       </div>
     )
   }

@@ -3,7 +3,11 @@ import {Components, registerComponent, withSingle, withCurrentUser} from 'meteor
 
 class Toolbox extends Component {
   render = () =>
-    <div className={"toolbox-pane"}>The toolbox is not yet implemented.</div>
+
+    <div className={"toolbox-pane"}>
+      <span className={"pane-header"}>Toolbox</span>
+      <p>Will be collapsable and filled with tool icons and such.</p>
+    </div>
 }
 
 registerComponent('Toolbox', Toolbox);

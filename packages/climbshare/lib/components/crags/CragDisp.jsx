@@ -18,7 +18,7 @@ class CragDisp extends Component {
   };
 
   render = ()=>
-        <div>
+        <>
           <Components.ThreeScene
             documentId={this.props.params._id}
             selectedClimb={this.state.selectedClimb}
@@ -34,11 +34,13 @@ class CragDisp extends Component {
           <Components.Toolbox />
           {
             this.state.selectedClimb ?
-            <Components.ClimbDetails document={this.state.selectedClimb} />
+            <Components.ClimbDetails
+              documentId={this.state.selectedClimb._id}
+            />
             : null
           }
 
-        </div>;
+        </>;
 
 }
 
