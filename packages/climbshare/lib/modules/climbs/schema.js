@@ -15,8 +15,7 @@ const schema = {
     type: String,
     canRead: ['guests'],
     canCreate: ['guests'],
-    canUpdate: ['guests'],
-    optional: true,
+    canUpdate: ['guests']
   },
   climbType: {
     label: 'Type of climb',
@@ -56,10 +55,13 @@ const schema = {
   },
   createdAt: {
     type: Date,
-    optional: true,
     canRead: ['guests'],
     canCreate: ['guests'],
     canUpdate: ['guests'],
+    onCreate: () => {
+      return new Date();
+    },
+    optional: true,
     hidden: true
   },
   cragId: {
@@ -68,6 +70,13 @@ const schema = {
     canCreate: ['guests'],
     canUpdate: ['guests'],
     hidden: true
+  },
+  description: {
+    type: String,
+    input: 'textarea',
+    canRead: ['guests'],
+    canCreate: ['guests'],
+    canUpdate: ['guests'],
   }
 };
 
