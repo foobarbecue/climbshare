@@ -12,7 +12,9 @@ import '../components/common/Toolbox.jsx'
 import '../components/climbs/ClimbsDisp.jsx'
 import '../components/common/ThreeScene.jsx'
 import '../components/common/FrontPage.jsx'
+import '../components/common/PrivacyPage.jsx'
 
+addRoute({ name: 'privacy', path: '/privacy', componentName: 'PrivacyPage'});
 addRoute({ name: 'climbs', path: '/climbs/', componentName: 'ClimbList'});
 addRoute({ name: 'crag', path: '/crag/:_id', componentName: 'CragDisp'});
 addRoute({ name: 'index', path: '/', componentName: 'CragMenu'});
