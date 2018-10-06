@@ -8,8 +8,8 @@ class ClimbDetails extends Component {
     else return (
       <div className={"climb-details-pane"}>
         <h3>{this.props.document.name} <i>{this.props.document.difficulty}</i></h3>
-        <p>{this.props.climbType}</p>
-        <p>Created by {this.props.document.user} on {this.props.document.createdAt}</p>
+        <p>{this.props.document.climbType}</p>
+        <p>Created by {this.props.document.userId} on {this.props.document.createdAt}</p>
         <h5>Description</h5>
         <p>{this.props.document.description}</p>
         <h5>References</h5>
@@ -19,8 +19,4 @@ class ClimbDetails extends Component {
   }
 }
 
-const withSingleOptions = {
-  collection: Climbs
-};
-
-registerComponent('ClimbDetails', ClimbDetails, [withSingle, withSingleOptions]);
+registerComponent('ClimbDetails', ClimbDetails,  [withSingle, {collection: Climbs}]);

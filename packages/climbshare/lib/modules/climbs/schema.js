@@ -10,6 +10,27 @@ const schema = {
     canRead: ['guests'],
     optional: true,
   },
+  userId: {
+    type: String,
+    optional: true,
+    canRead: ['guests'],
+    resolveAs: {
+      fieldName: 'user',
+      type: 'User',
+      resolver: (climb, args, context) => {
+        return context.Users.findOne(
+          { _id: climb.userId },
+          {
+            fields: context.Users.getViewableFields(
+              context.currentUser,
+              context.Users
+            ),
+          }
+        );
+      },
+      addOriginalField: true,
+    },
+  },
   name: {
     label: 'Name',
     type: String,
