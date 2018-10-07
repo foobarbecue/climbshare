@@ -1,4 +1,4 @@
-# Climba: Investigate the climb scene
+# Climba: the climb scene
  
 Climba is an open platform for virtual 3D climbing stuff. "Stuff" includes guides, route planning, simulations, games, and community building. "Climbing" includes indoors, outdoors, sport, trad. Probably not mountaineering, but maybe that too, someday.
 
