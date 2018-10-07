@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Components, registerComponent } from 'meteor/vulcan:core';
+import {Components, registerComponent, withSingle} from 'meteor/vulcan:core';
 import tools from '../../modules/tools.js';
+import Crags from "../../modules/crags/collection";
 
 class CragDisp extends Component {
 
@@ -25,8 +26,11 @@ class CragDisp extends Component {
 
   render = ()=>
         <>
+
+          <h1 className={"crag-title"}>Climba climbscene: {this.props.document ? this.props.document.name : null}</h1>
+
           <Components.ThreeScene
-            documentId={this.props.params._id}
+            crag={this.props.document}
             selectedClimb={this.state.selectedClimb}
 //          .selectedClimb alone doesn't trigger re-render
             selectedClimbId={this.state.selectedClimb ? this.state.selectedClimb._id : null}
@@ -57,6 +61,11 @@ class CragDisp extends Component {
 
         </>;
 
-}
+};
 
-registerComponent({name:'CragDisp', component: CragDisp });
+const CragDispAnnoyingWrapper = (props) => {
+  return <Components.CragDisp documentId={props.params._id} />
+};
+
+registerComponent('CragDisp', CragDisp, [withSingle, { collection: Crags}]);
+registerComponent('CragDispAnnoyingWrapper', CragDispAnnoyingWrapper);

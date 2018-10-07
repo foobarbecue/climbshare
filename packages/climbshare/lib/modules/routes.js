@@ -17,6 +17,6 @@ import '../components/common/PrivacyPage.jsx'
 
 addRoute({ name: 'privacy', path: '/privacy', componentName: 'PrivacyPage'});
 addRoute({ name: 'climbs', path: '/climbs/', componentName: 'ClimbList'});
-addRoute({ name: 'crag', path: '/crag/:_id', componentName: 'CragDisp'});
+addRoute({ name: 'crag', path: '/crag/:_id', componentName: 'CragDispAnnoyingWrapper'});
 addRoute({ name: 'index', path: '/', componentName: 'CragMenu'});
 addRoute({ name: 'climbsNew', path: '/climbs/new', componentName: 'ClimbsNewForm'});

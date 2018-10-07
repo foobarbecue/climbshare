@@ -20,21 +20,21 @@ class ClimbsDisp extends Component {
   render = () =>
     <>
       {(this.props.threeSceneRendered && !this.props.loading) ?
-          this.props.results.map(
-          climb =>
-            <Components.ClimbItem
-              climb={climb}
-              vertices={climb.vertices}
-              newClimbVerts={this.props.newClimbVerts}
-              scene={this.props.threescene}
-              key={climb._id}
-              threeSceneRendered={this.props.threeSceneRendered}
-              camera={this.props.camera}
-              cameraPosition={this.props.cameraPosition}
-              selectedClimb={this.props.selectedClimb}
-              selectedClimbId={this.props.selectedClimbId}
-              selectClimb={this.props.selectClimb}
-            />
+        this.props.results.map(
+        climb =>
+          <Components.ClimbItem
+            climb={climb}
+            vertices={climb.vertices}
+            newClimbVerts={this.props.newClimbVerts}
+            scene={this.props.threescene}
+            key={climb._id}
+            threeSceneRendered={this.props.threeSceneRendered}
+            camera={this.props.camera}
+            cameraPosition={this.props.cameraPosition}
+            selectedClimb={this.props.selectedClimb}
+            selectedClimbId={this.props.selectedClimbId}
+            selectClimb={this.props.selectClimb}
+          />
       ) : <p>waiting for threescene</p>}
     </>
 }

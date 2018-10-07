@@ -145,7 +145,7 @@ class ThreeScene extends Component{
   componentDidUpdate = (prevProps) => {
     if (!this.props.loading) {
       // if we've loaded a crag and need to switch to new one
-      if (!!this.cragMesh && (this.props.document !== prevProps.document)) {
+      if (!!this.cragMesh && (this.props.crag !== prevProps.crag)) {
         // remove old mesh & cleanup
         this.scene.remove(this.cragMesh);
         delete this.cragMesh; //TODO Could get rid of this and check scene.children.includes later instead
@@ -161,11 +161,11 @@ class ThreeScene extends Component{
         this.resetCameraPosition();
 
         // load new high res mesh
-        this.cragMesh = new NexusObject('/models3d/' + this.props.document.modelFilename,
+        this.cragMesh = new NexusObject('/models3d/' + this.props.crag.modelFilename,
           this.renderer,
           this.renderScene);
         let mat = new THREE.Matrix4();
-        let initialTransform = this.props.document.initialTransform;
+        let initialTransform = this.props.crag.initialTransform;
         mat.set.apply(mat, initialTransform);
         this.cragMesh.applyMatrix(mat);
         this.cragMesh.material.side = THREE.DoubleSide;
@@ -173,10 +173,10 @@ class ThreeScene extends Component{
 
         // Load low res version of mesh for raycasting.
         // This is a hack until https://github.com/cnr-isti-vclab/nexus/issues/9 is resolved.
-        if (this.props.document.hasOwnProperty("modelFilenameLoRes")) {
+        if (this.props.crag.hasOwnProperty("modelFilenameLoRes")) {
           PLYLoader(THREE); // super weird but using as advised in package instructions
           let plyloader = new THREE.PLYLoader;
-          plyloader.load('/models3d/' + this.props.document.modelFilenameLoRes, (geom) => {
+          plyloader.load('/models3d/' + this.props.crag.modelFilenameLoRes, (geom) => {
             this.cragMeshLoRes = new THREE.Mesh(geom);
             this.cragMeshLoRes.material.visible = false;
             this.cragMeshLoRes.applyMatrix(mat);
@@ -265,15 +265,14 @@ class ThreeScene extends Component{
           onWheel={this.move3DmouseTo2Dmouse} // TODO not working
         />
         <Components.ClimbsNewForm
-          cragId = {this.props.documentId}
+          crag = {this.props.crag}
           threeScene = {this.scene}
           show = {this.state.climbFormOpen}
           closeModal = {this.closeClimbForm}
           successCallback = {this.beginDrawingClimb}
         />
         <Components.ClimbsDisp
-          terms={{cragId: this.props.documentId}}
-          cragId = {this.props.documentId}
+          crag = {this.props.crag}
           threescene={this.scene}
           threeSceneRendered={this.state.threeSceneRendered}
           newClimbVerts={this.state.newClimbVerts}
@@ -288,12 +287,9 @@ class ThreeScene extends Component{
   }
 }
 
-const cragHoCOptions = {
-  collection: Crags
-};
 
 const climbHoCOptions = {
   collection: Climbs
 };
 
-registerComponent('ThreeScene', ThreeScene, withCurrentUser, withMessages, [withSingle, cragHoCOptions], [withUpdate, climbHoCOptions]);
+registerComponent('ThreeScene', ThreeScene, withCurrentUser, withMessages, [withUpdate, climbHoCOptions]);

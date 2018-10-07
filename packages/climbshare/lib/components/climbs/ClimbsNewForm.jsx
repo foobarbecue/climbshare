@@ -3,13 +3,13 @@ import { Components, registerComponent, getFragment } from 'meteor/vulcan:core';
 
 import Climbs from '../../modules/climbs/collection.js';
 
-const ClimbsNewForm = ({currentUser, closeModal, show, cragId, successCallback}) => (
+const ClimbsNewForm = ({currentUser, closeModal, show, crag, successCallback}) => (
   <Components.Modal show={show} onHide={closeModal} title={"Add a new climb"}>
     <Components.SmartForm
       collection={Climbs}
       successCallback={successCallback}
       onHide={closeModal}
-      prefilledProps={{cragId}}
+      prefilledProps={{cragId: crag._id}}
     />
   </Components.Modal>
 );

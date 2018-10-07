@@ -58,12 +58,18 @@
     color: black;
 }
 
-.toolbox-pane, .climb-details-pane, .dropdown-menu, .instructions-pane, button{
+.toolbox-pane, .climb-details-pane, .dropdown-menu, .instructions-pane, .crag-title, button{
     z-index: 50;
-    background:rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.4);
     border: thin black solid;
     align-self: start;
     padding: 5px;
+}
+
+.crag-title {
+    justify-self: center;
+    grid-column: 1 / 4;
+    border-radius: 0 0 10px 10px;
 }
 
 .toolbox-pane{
