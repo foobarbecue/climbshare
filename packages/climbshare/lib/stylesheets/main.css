@@ -89,15 +89,11 @@
     border-radius: 10px 10px 0 0;
 }
 
-.toolbox-pane img {
-    display: block;
-    padding: 5px;
-    border: 0;
-}
-
 .toolIcon{
     border-radius: 5px;
-    border: thin transparent;
+    padding: 5px;
+    border: thin transparent solid;
+    display: block;
 }
 
 .toolIcon.selected {
