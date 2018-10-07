@@ -101,16 +101,15 @@ class ThreeScene extends Component{
     this.frameId = window.requestAnimationFrame(this.animate)
   };
 
-  move3DmouseTo2Dmouse = (e) =>{
-
+  move3DmouseTo2Dmouse = (evt) =>{
       // don't move the mouse3D if we are orbiting the view
       // TODO this is doing a similar thing to this.controls.movedRecently so maybe share logic
-      if (!!this.controls && (this.controls.state !== this.controls.STATES.NONE)){
+      if (this.controls.state !== this.controls.STATES.NONE || evt.type==='wheel'){
+        this.setState({cameraPosition: this.camera.position.toArray()})
         return
       }
-      this.setState({cameraPosition: this.camera.position.toArray()}) //TODO do this for wheel too
-      this.mouse2D.x = (e.clientX / window.innerWidth) * 2 - 1;
-      this.mouse2D.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      this.mouse2D.x = (evt.clientX / window.innerWidth) * 2 - 1;
+      this.mouse2D.y = -(evt.clientY / window.innerHeight) * 2 + 1;
       this.mouse2D.z = 0.5;
       if (this.hasOwnProperty("cragMeshLoRes")){
           this.raycaster.setFromCamera(this.mouse2D, this.camera);
@@ -188,6 +187,8 @@ class ThreeScene extends Component{
   };
 
   onClick = (evt) => {
+    evt.preventDefault()
+
     //Ignore click if we are manipulating the 3D view controls
     if (!!this.controls && this.controls.recentlyMoved) {
       return null;

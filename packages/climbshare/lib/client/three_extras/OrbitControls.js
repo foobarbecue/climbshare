@@ -700,7 +700,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     if ( scope.enabled === false ) return;
 
-    event.preventDefault();
+    // event.preventDefault();
 
     switch ( event.button ) {
 
@@ -763,7 +763,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     if ( scope.enabled === false ) return;
 
-    event.preventDefault();
+    // event.preventDefault();
 
     switch ( scope.state ) {
 
@@ -814,8 +814,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     if ( scope.enabled === false || scope.enableZoom === false || ( scope.state !== scope.STATES.NONE && scope.state !== scope.STATES.ROTATE ) ) return;
 
-    event.preventDefault();
-    event.stopPropagation();
+    // event.preventDefault();
+    // event.stopPropagation();
 
     scope.dispatchEvent( startEvent );
 
@@ -837,7 +837,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     if ( scope.enabled === false ) return;
 
-    event.preventDefault();
+    // event.preventDefault();
 
     switch ( event.touches.length ) {
 
@@ -879,8 +879,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     if ( scope.enabled === false ) return;
 
-    event.preventDefault();
-    event.stopPropagation();
+    // event.preventDefault();
+    // event.stopPropagation();
 
     switch ( event.touches.length ) {
 
@@ -926,7 +926,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     if ( scope.enabled === false ) return;
 
-    event.preventDefault();
+    // event.preventDefault();
 
   }
 
