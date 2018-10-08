@@ -27,7 +27,7 @@ class CragDisp extends Component {
   render = ()=>
         <>
 
-          <h1 className={"crag-title"}>Climba climbscene: {this.props.document ? this.props.document.name : null}</h1>
+          <h1 className={"crag-title"}>{this.props.document ? this.props.document.name : null}</h1>
 
           <Components.ThreeScene
             crag={this.props.document}
@@ -38,9 +38,6 @@ class CragDisp extends Component {
             setActiveTool = {this.setActiveTool}
             activeTool={this.state.activeTool}
           />
-
-          {/*Probably get rid of this once we have a nice crag list page*/}
-          <Components.CragMenu />
 
           <Components.Toolbox
             setActiveTool = {this.setActiveTool}

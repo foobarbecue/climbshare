@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Vector3} from 'three';
-import {Components, registerComponent, withList, withCurrentUser} from 'meteor/vulcan:core'
+import {Components, registerComponent, withMulti, withCurrentUser} from 'meteor/vulcan:core'
 import Climbs from '../../modules/climbs/collection.js'
 import PropTypes from 'prop-types'
 
@@ -43,4 +43,4 @@ const listOptions = {
   collection: Climbs
 };
 
-registerComponent({name: 'ClimbsDisp', component: ClimbsDisp, hocs: [withCurrentUser, [withList, listOptions]]});
+registerComponent({name: 'ClimbsDisp', component: ClimbsDisp, hocs: [withCurrentUser, [withMulti, listOptions]]});

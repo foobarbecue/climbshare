@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import { Components, registerComponent, withSingle } from 'meteor/vulcan:core'
-import '../crags/CragMenu.jsx'
+import { Components, registerComponent } from 'meteor/vulcan:core'
 
-class FrontPage extends Component {
-    render(){
-        return <div><Component.CragMenu /></div>;
-    }
-}
+const FrontPage = () =>
+  <Components.CragList />
+
 
 
 registerComponent({name:'FrontPage', component: FrontPage });

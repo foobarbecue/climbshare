@@ -53,12 +53,24 @@
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-rows: 1fr auto 1fr;
+    grid-template-rows: auto 1fr auto 1fr;
     grid-template-columns: auto 1fr auto;
     color: black;
+    background-color: black;
 }
 
-.toolbox-pane, .climb-details-pane, .dropdown-menu, .instructions-pane, .crag-title, button{
+.site-header {
+    width: 100%;
+    display: grid;
+    grid-row: 1/2;
+    grid-column: 1/4;
+}
+
+.site-header h1{
+    grid-row: 1/2;
+}
+
+.toolbox-pane, .climb-details-pane, .dropdown-menu, .instructions-pane, .crag-title, .site-header, button{
     z-index: 50;
     background:rgba(255,255,255,0.4);
     border: thin black solid;
@@ -67,13 +79,15 @@
 }
 
 .crag-title {
-    justify-self: center;
+    justify-self: start;
     grid-column: 1 / 4;
-    border-radius: 0 0 10px 10px;
+    grid-row: 2;
+    border-radius: 0 0 10px 0;
+    border-top: none;
 }
 
 .toolbox-pane{
-    grid-row: 2;
+    grid-row: 3;
     grid-column: 1;
     border-radius: 0 10px 10px 0;
     left: 0;
@@ -81,7 +95,7 @@
 }
 
 .instructions-pane-wrapper {
-    grid-row: 3;
+    grid-row: 4;
     grid-column: 1 / 4;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -111,7 +125,7 @@
 }
 
 .climb-details-pane{
-    grid-row: 2;
+    grid-row: 3;
     grid-column: 3;
     border-radius: 10px 0 0 10px;
     right: 0;

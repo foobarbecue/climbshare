@@ -10,6 +10,12 @@ const Layout = ({children}) =>
     </Helmet>
     <Components.AccountsLoginForm />
     <div className="main">
+      <div className={"site-header"}>
+        {'CLI.MBA'.split("").map((letter)=>
+          <h1 key={letter}>{letter}</h1>
+        )}
+      </div>
+
       <Components.FlashMessages />
       {children}
 
