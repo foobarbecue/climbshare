@@ -92,6 +92,16 @@ const schema = {
       },
       addOriginalField: true
     }
+  },
+  area:{
+    type: String,
+    canRead: ['guests'],
+    optional: true
+  },
+  thumbnail: {
+    type: String,
+    canRead: ['guests'],
+    optional: true
   }
 };
 
