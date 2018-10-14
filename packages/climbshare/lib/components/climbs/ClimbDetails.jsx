@@ -3,6 +3,21 @@ import {Components, registerComponent, withSingle, withCurrentUser} from 'meteor
 import Climbs from '../../modules/climbs/collection.js'
 
 class ClimbDetails extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      showClimbEditForm: false
+    }
+  }
+
+  showClimbEditForm = () =>{
+    this.setState({showClimbEditForm:true})
+  };
+
+  hideClimbEditForm = () =>{
+    this.setState({showClimbEditForm:false})
+  };
+
   render = () => {
     if (this.props.loading) {return null}
     else return (
@@ -14,6 +29,14 @@ class ClimbDetails extends Component {
         <p>{this.props.document.description}</p>
         <h5>References</h5>
         <p>{this.props.document.references}</p>
+        <div onClick={this.showClimbEditForm}>
+          EDIT
+        </div>
+        <Components.ClimbsEditForm
+          climb={this.props.document}
+          show={this.state.showClimbEditForm}
+          hide={this.hideClimbEditForm}
+        />
       </div>
     )
   }

@@ -9,7 +9,7 @@ const ClimbsNewForm = ({currentUser, closeModal, show, crag, successCallback}) =
       collection={Climbs}
       successCallback={successCallback}
       onHide={closeModal}
-      prefilledProps={{cragId: crag._id}}
+      prefilledProps={{cragId: (crag ? crag._id : null)}}
     />
   </Components.Modal>
 );
