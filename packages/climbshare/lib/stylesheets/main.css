@@ -70,12 +70,14 @@
     grid-row: 1/2;
 }
 
-.toolbox-pane, .climb-details-pane, .dropdown-menu, .instructions-pane, .crag-title, .site-header, button{
+.toolbox-pane, .climb-details-pane, .dropdown-menu, .instructions-pane, .crag-title, .site-header, .btn-primary,
+.btn-primary.active, button{
     z-index: 50;
     background:rgba(255,255,255,0.4);
     border: thin black solid;
     align-self: start;
     padding: 5px;
+    color: black;
 }
 
 .crag-title {
