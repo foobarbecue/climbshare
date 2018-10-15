@@ -149,7 +149,6 @@ class ThreeScene extends Component{
   //TODO this code manually adds, removes, and changes which mesh is shown. There's probably a more elegant way.
   //for example, a child component for crags with mount and unmount methods
   componentDidUpdate = (prevProps) => {
-    if (!this.props.loading) {
       // if we've loaded a crag and need to switch to new one
       if (!!this.cragMesh && (this.props.crag !== prevProps.crag)) {
         // remove old mesh & cleanup
@@ -190,7 +189,6 @@ class ThreeScene extends Component{
           })
         }
       }
-    }
   };
 
   onClick = (evt) => {
