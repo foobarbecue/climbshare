@@ -48,11 +48,30 @@ class ThreeScene extends Component{
     this.resetCameraPosition();
 
     //grid
-    var grid = new THREE.GridHelper(100, 100);
+    const grid = new THREE.GridHelper(100, 100);
     grid.rotateX(Math.PI / 2);
     this.scene.add(grid);
 
+    //skybox
+    const skyboxLoader = new THREE.CubeTextureLoader();
+    skyboxLoader.setPath("/skybox/");
+    const textureCube = skyboxLoader.load([
+      'px.jpg', 'nx.jpg',
+      'py.jpg', 'ny.jpg',
+      'pz.jpg', 'nz.jpg']);
+    const shader = THREE.ShaderLib["cube"];
+    shader.uniforms["tCube"].value = textureCube;
+    const material = new THREE.ShaderMaterial({
+        fragmentShader: shader.fragmentShader,
+        vertexShader: shader.vertexShader,
+        uniforms: shader.uniforms,
+        depthWrite: false,
+        side: THREE.BackSide
+      }),
 
+    skybox = new THREE.Mesh(new THREE.BoxGeometry(100, 100, 100), material);
+    skybox.name = 'skybox';
+    this.scene.add(skybox);
 
     //action
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
