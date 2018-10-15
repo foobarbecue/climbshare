@@ -47,6 +47,13 @@ class ThreeScene extends Component{
     );
     this.resetCameraPosition();
 
+    //grid
+    var grid = new THREE.GridHelper(100, 100);
+    grid.rotateX(Math.PI / 2);
+    this.scene.add(grid);
+
+
+
     //action
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setClearColor('#000000');
