@@ -4,7 +4,7 @@ import Climbs from '../modules/climbs/collection.js'
 
 const seedCrags = [
   {
-    name: "streambed",
+    name: "Streambed",
     lat: -106.988561,
     lon: 34.005287,
     initialTransform: [1.0, 0.0, 0.0, 0.0,
@@ -15,7 +15,7 @@ const seedCrags = [
     modelFilenameLoRes: "streambed-lores.ply"
   },
   {
-    name: "pecks mystery",
+    name: "Peck's Mystery",
     lat: -106.988561,
     lon: 34.005287,
     initialTransform: [1.0, 0.0, 0.0, 0.0,
@@ -24,7 +24,19 @@ const seedCrags = [
       0.0, 0.0, 0.0, 1.0],
     modelFilename: "pecksm.nxz",
     modelFilenameLoRes: "pecksm-lores.ply"
-  }
+  },
+  {
+    name: "Waterfall Wall",
+    lat: -107.05690515,
+    lon: 34.24160587,
+    initialTransform:
+      [ 0.0, -1.0,   0.0,    0.0,
+        1.0, 0.0,   0.0,    1.0,
+        0.0, 0.0,   1.0,   -1680.0,
+        0.0, 0.0,   0.0,   1.0],
+    modelFilename: "waterfall_ps.nxz",
+    modelFilenameLoRes: "waterfall_ps-lores.ply"
+  },
 ];
 
 const seedClimbs = [
