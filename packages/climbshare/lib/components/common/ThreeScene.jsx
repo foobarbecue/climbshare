@@ -180,7 +180,7 @@ class ThreeScene extends Component{
       }
 
       // if there's no mesh loaded (either first load, or we just removed successfully)
-      if (!this.cragMesh) {
+      if (!this.cragMesh && this.props.crag) {
         // reset camera -- need this on first load as well as switching mesh
         this.resetCameraPosition();
 
