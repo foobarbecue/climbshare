@@ -189,9 +189,10 @@ class ThreeScene extends Component{
           this.renderer,
           this.renderScene);
         let mat = new THREE.Matrix4();
-        let initialTransform = this.props.crag.initialTransform;
-        mat.set.apply(mat, initialTransform);
-        this.cragMesh.applyMatrix(mat);
+        if (!!this.props.crag.initialTransform){
+          mat.set.apply(mat, this.props.crag.initialTransform);
+          this.cragMesh.applyMatrix(mat);
+        }
         this.cragMesh.material.side = THREE.DoubleSide;
         this.scene.add(this.cragMesh);
 
