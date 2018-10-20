@@ -306,6 +306,7 @@ class ThreeScene extends Component{
           selectedClimb={this.props.selectedClimb}
           selectedClimbId={this.props.selectedClimbId}
           selectClimb={this.props.selectClimb}
+          terms={{cragId: this.props.crag ? this.props.crag._id : ''}}
         />
         </>
     )
