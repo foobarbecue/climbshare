@@ -1,4 +1,7 @@
 # Climba: the climb scene
+
+[![Join the chat at https://gitter.im/climbshare/Lobby](https://badges.gitter.im/climbshare/Lobby.svg)](https://gitter.im/climbshare/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
  
 Climba is an open platform for virtual 3D climbing stuff. "Stuff" includes guides, route planning, simulations, games, and community building. "Climbing" includes indoors, outdoors, sport, trad. Probably not mountaineering, but maybe that too, someday.
 
