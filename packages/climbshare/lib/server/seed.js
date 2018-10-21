@@ -43,9 +43,9 @@ const seedCrags = [
     lat: -108.17636826,
     lon: 32.84763351,
     initialTransform:
-      [ 0.0, -1.0,   0.0,    0.0,
-        1.0, 0.0,   0.0,    1.0,
-        0.0, 0.0,   1.0,   -1705.0,
+      [ 0.0, -0.5,   0.0,    0.0,
+        0.5, 0.0,   0.0,    1.0,
+        0.0, 0.0,   0.5,   0.0,
         0.0, 0.0,   0.0,   1.0],
     modelFilename: "north_and_red_walls.nxz",
     modelFilenameLoRes: "north_and_red_walls-lores.ply"
@@ -249,7 +249,7 @@ Meteor.startup(()=>{
     console.log('// creating dummy climbs');
     seedClimbs.map(document => {
       document.cragId = Crags.findOne({name:document.cragName})._id;
-      console.log(document);
+      // console.log(document);
       newMutation({
         collection: Climbs,
         document,
