@@ -18,10 +18,11 @@ const seedCrags = [
     name: "Peck's Mystery",
     lat: -106.988561,
     lon: 34.005287,
-    initialTransform: [1.0, 0.0, 0.0, 0.0,
-      0.0, -0.309, -0.951, -4.7312,
-      0.0, 0.951, -0.309, 1.6171,
-      0.0, 0.0, 0.0, 1.0],
+    initialTransform:
+      [1, -0, 0, 0,
+        0, 0, 1, -3,
+       -0, -1, 0, 1.1,
+        0, 0, 0, 1],
     modelFilename: "pecksm.nxz",
     modelFilenameLoRes: "pecksm-lores.ply"
   },
@@ -37,6 +38,28 @@ const seedCrags = [
     modelFilename: "waterfall_ps.nxz",
     modelFilenameLoRes: "waterfall_ps-lores.ply"
   },
+  {
+    name: "North Wall and Red Wall",
+    lat: -108.17636826,
+    lon: 32.84763351,
+    initialTransform:
+      [ 0.0, -1.0,   0.0,    0.0,
+        1.0, 0.0,   0.0,    1.0,
+        0.0, 0.0,   1.0,   -1705.0,
+        0.0, 0.0,   0.0,   1.0],
+    modelFilename: "north_and_red_walls.nxz",
+    modelFilenameLoRes: "north_and_red_walls-lores.ply"
+  },
+  {
+    name: "Tut Boulder",
+    modelFilename: "tut.nxz",
+    initialTransform:
+      [1, 0, 0, 0,
+        0, 0.0007963267107332639, -0.9999996829318347, 0,
+        0, 0.9999996829318347, 0.0007963267107332639, 7,
+        0, 0, 0, 1],
+    modelFilenameLoRes: "tut-lores.ply"
+  },
 ];
 
 const seedClimbs = [
@@ -44,7 +67,7 @@ const seedClimbs = [
     name: "Right Roof",
     climbType: "prob",
     difficulty: "V3",
-    cragName: "streambed",
+    cragName: "Streambed",
     vertices: [
       [
         -6.741744,
@@ -81,7 +104,7 @@ const seedClimbs = [
   name: "High Traverse",
     climbType: "prob",
     difficulty: "V0",
-    cragName: "streambed",
+    cragName: "Streambed",
     vertices: [
     [
       -8.1331,
