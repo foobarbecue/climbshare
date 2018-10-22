@@ -1,4 +1,5 @@
-# see http://docs.vulcanjs.org/packages
+# see http://docs.vulcanjs.org/package
+ostrio:files
 
 vulcan:core
 
@@ -11,6 +12,7 @@ vulcan:i18n-en-us
 accounts-password@1.5.1
 accounts-facebook
 accounts-google
+react-meteor-data
 
 ############ Your Packages ############
 

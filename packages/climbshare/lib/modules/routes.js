@@ -16,8 +16,12 @@ import '../components/common/ThreeScene.jsx'
 import '../components/common/FrontPage.jsx'
 import '../components/common/PrivacyPage.jsx'
 
+import '../components/crags/CragFileDisp.jsx'
+import '../components/crags/CragUpload.jsx'
+
 addRoute({ name: 'privacy', path: '/privacy', componentName: 'PrivacyPage'});
 addRoute({ name: 'climbs', path: '/climbs/', componentName: 'ClimbList'});
 addRoute({ name: 'crag', path: '/crag/:_id', componentName: 'CragDispAnnoyingWrapper'});
 addRoute({ name: 'index', path: '/', componentName: 'CragList'});
 addRoute({ name: 'climbsNew', path: '/climbs/new', componentName: 'ClimbsNewForm'});
+addRoute({ name: 'cragUpload', path: '/cragupload', componentName: 'CragUpload'});

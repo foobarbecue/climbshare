@@ -11,7 +11,7 @@ const Layout = ({children}) =>
     <Components.AccountsLoginForm />
     <div className="main">
       <div className={"site-header"}>
-        {'CLI.MBA'.split("").map((letter)=>
+        {'CLIMBA'.split("").map((letter)=>
           <h1 key={letter}>{letter}</h1>
         )}
       </div>
