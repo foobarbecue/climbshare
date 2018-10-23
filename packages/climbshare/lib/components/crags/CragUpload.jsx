@@ -13,7 +13,8 @@ class FileUploadComponent extends Component {
     this.state = {
       uploading: [],
       progress: 0,
-      inProgress: false
+      inProgress: false,
+      message: ''
     };
 
     this.uploadIt = this.uploadIt.bind(this);

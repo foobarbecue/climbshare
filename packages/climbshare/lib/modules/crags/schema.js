@@ -1,3 +1,4 @@
+import CragUpload from '../../components/crags/CragUpload.jsx'
 
 const schema = {
   _id: {
@@ -59,6 +60,14 @@ const schema = {
   },
   'initialTransform.$': {
     type: Number
+  },
+  modelUrl:{
+    label: '3D model URL',
+    type: String,
+    canRead: ['guests'],
+    canCreate: ['members'],
+    canUpdate: ['members'],
+    input: CragUpload
   },
   modelFilename:{
     type: String,

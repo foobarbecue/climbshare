@@ -18,6 +18,7 @@ import '../components/common/PrivacyPage.jsx'
 
 import '../components/crags/CragFileDisp.jsx'
 import '../components/crags/CragUpload.jsx'
+import '../components/crags/CragsNewForm.jsx'
 
 addRoute({ name: 'privacy', path: '/privacy', componentName: 'PrivacyPage'});
 addRoute({ name: 'climbs', path: '/climbs/', componentName: 'ClimbList'});

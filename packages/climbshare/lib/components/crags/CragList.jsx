@@ -13,6 +13,9 @@ const CragList = ({results = []}) => {
       </Link>
     </div>
   )}
+    <Components.ModalTrigger label="Upload">
+      <Components.CragsNewForm />
+    </Components.ModalTrigger>
   </div>
 };
 
