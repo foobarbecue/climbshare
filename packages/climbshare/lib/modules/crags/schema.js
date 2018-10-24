@@ -89,6 +89,10 @@ const schema = {
     canRead: ['guests'],
     canCreate: ['guests'],
     canUpdate: ['guests'],
+    onCreate: () => {
+      return new Date();
+    },
+    hidden: true
   },
   climbs: {
     type: Object,
@@ -100,7 +104,8 @@ const schema = {
         return context.Climbs.find({cragName:crag.name}).fetch();
       },
       addOriginalField: true
-    }
+    },
+    optional: true
   },
   area:{
     type: String,
