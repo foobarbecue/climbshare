@@ -14,7 +14,7 @@ class FileUploadComponent extends Component {
       uploading: [],
       progress: 0,
       inProgress: false,
-      message: ''
+      message: 'uploadificateit'
     };
 
     this.uploadIt = this.uploadIt.bind(this);
@@ -63,10 +63,12 @@ class FileUploadComponent extends Component {
 
           // Reset our state for the next file
           self.setState({
-            uploading: [],
+            // uploading: [],
             progress: 0,
-            inProgress: false
+            inProgress: false,
           });
+
+          self.props.updateCurrentValues({[self.props.path]: fileObj._id})
         })
 
         uploadInstance.on('error', function (error, fileObj) {
@@ -110,67 +112,31 @@ class FileUploadComponent extends Component {
 
   render() {
     debug("Rendering FileUpload",this.props.docsReadyYet);
-    if (this.props.files && this.props.docsReadyYet) {
 
-      let fileCursors = this.props.files;
-
-      // Run through each file that the user has stored
-      // (make sure the subscription only sends files owned by this user)
-      let display = fileCursors.map((aFile, key) => {
-        // console.log('A file: ', aFile.link(), aFile.get('name'))
-        let link = CragFiles.findOne({_id: aFile._id}).link();  //The "view/download" link
-
-        // Send out components that show details of each file
-        return <div key={'file' + key}>
-          <Components.CragFileDisp
-            fileName={aFile.name}
-            fileUrl={link}
-            fileId={aFile._id}
-            fileSize={aFile.size}
-          />
-        </div>
-      })
 
       return <div>
-        <div className="row">
-          <div className="col-md-12">
+        <div className="form-group row">
+          <div className="control-label col-sm-3">
             <p>Upload New File:</p>
             <input type="file" id="fileinput" disabled={this.state.inProgress} ref="fileinput"
                    onChange={this.uploadIt}/>
           </div>
-        </div>
 
-        <div className="row m-t-sm m-b-sm">
-          <div className="col-md-6">
+
+          <div className="col-sm-9">
 
             {this.showUploads()}
 
           </div>
           <div className="col-md-6">
           </div>
+
         </div>
 
-        {display}
-
       </div>
-    }
-    else return <div>Loading file list</div>;
   }
 }
 
-const CragUpload = withTracker( ( props ) => {
-  if (Meteor.isClient) {
-    const filesHandle = Meteor.subscribe('cragfiles.all');
-    const docsReadyYet = filesHandle.ready();
-    const files = CragFiles.find({}, {sort: {name: 1}}).fetch();
+registerComponent({name: 'CragUpload', component: FileUploadComponent});
 
-    return {
-      docsReadyYet,
-      files,
-    };
-  } else {
-    return {}
-  }
-})(FileUploadComponent);
-
-registerComponent({name: 'CragUpload', component: CragUpload});
+export default FileUploadComponent;

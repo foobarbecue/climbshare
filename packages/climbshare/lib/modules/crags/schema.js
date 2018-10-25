@@ -61,7 +61,7 @@ const schema = {
   'initialTransform.$': {
     type: Number
   },
-  modelUrl:{
+  uploadedFile:{
     label: '3D model URL',
     type: String,
     canRead: ['guests'],
