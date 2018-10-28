@@ -11,7 +11,7 @@ class FileUploadComponent extends Component {
     super(props);
 
     this.state = {
-      uploading: [],
+      uploading: false,
       progress: 0,
       inProgress: false,
       message: 'uploadificateit'
@@ -63,7 +63,6 @@ class FileUploadComponent extends Component {
 
           // Reset our state for the next file
           self.setState({
-            // uploading: [],
             progress: 0,
             inProgress: false,
           });
@@ -88,52 +87,28 @@ class FileUploadComponent extends Component {
     }
   }
 
-  // This is our progress bar, bootstrap styled
-  // Remove this function if not needed
-  showUploads() {
-    console.log('**********************************', this.state.uploading);
-
-    if (!_.isEmpty(this.state.uploading)) {
-      return <div>
-        {this.state.uploading.file.name}
-
-        <div className="progress progress-bar-default">
-          <div style={{width: this.state.progress + '%'}} aria-valuemax="100"
-               aria-valuemin="0"
-               aria-valuenow={this.state.progress || 0} role="progressbar"
-               className="progress-bar">
-            <span className="sr-only">{this.state.progress}% Complete (success)</span>
-            <span>{this.state.progress}%</span>
-          </div>
-        </div>
-      </div>
-    }
-  }
-
   render() {
     debug("Rendering FileUpload",this.props.docsReadyYet);
 
 
-      return <div>
-        <div className="form-group row">
-          <div className="control-label col-sm-3">
-            <p>Upload New File:</p>
+      return <div className="form-group row">
+          <label className="control-label col-sm-3">
+            Upload New File:
+          </label>
+
+
+          <div>
             <input type="file" id="fileinput" disabled={this.state.inProgress} ref="fileinput"
                    onChange={this.uploadIt}/>
+                <div>
+                  {!!this.state.uploading ?
+                    <progress max={100} value={this.state.progress}>
+                  {this.state.progress} %
+                    </progress>
+                    : null}
+                </div>
           </div>
-
-
-          <div className="col-sm-9">
-
-            {this.showUploads()}
-
-          </div>
-          <div className="col-md-6">
-          </div>
-
         </div>
-
-      </div>
   }
 }
 
