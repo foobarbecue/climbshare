@@ -1,4 +1,6 @@
 const tools = [
+  {name: null,
+    instructions: 'Left mouse button to rotate, right to pan, wheel to zoom'},
   {name: 'addClimb',
     instructions: 'Click on the rock to add a climb.'},
   {name: 'drawClimb',

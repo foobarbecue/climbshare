@@ -6,11 +6,12 @@ const Toolbox = (props) =>
   <div className={"toolbox-pane"}>
 
     {tools.map((tool) => {
+        if (tool.name) {
           return (<img
             className={
               (props.activeTool && (tool.name === props.activeTool.name))
-              ? 'toolIcon selected'
-              : 'toolIcon'}
+                ? 'toolIcon selected'
+                : 'toolIcon'}
             onClick={() => {
               props.setActiveTool(tool)
             }}
@@ -18,6 +19,7 @@ const Toolbox = (props) =>
             key={tool.name}
           />)
         }
+      }
     )}
   </div>;
 
