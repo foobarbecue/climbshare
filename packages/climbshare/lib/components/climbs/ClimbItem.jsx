@@ -16,9 +16,8 @@ class ClimbItem extends Component {
 
   addToScene = () =>{
     // "Curvify" segments and add to scene
-    let vertices =  this.props.climb.vertices || this.props.newClimbVerts;
-    if (vertices.length > 1){
-      vertices = vertices.map((vertex) => new Vector3(... vertex));
+    if (this.props.vertices.length > 1){
+      let vertices = this.props.vertices.map((vertex) => new Vector3(... vertex));
       const color = (this.props.climb._id === this.props.selectedClimbId) ? 'red' : 'white';
       let material = new LineBasicMaterial({color: color});
       let climbCurvified = curvify(vertices, new THREE.Vector3(0,-1,0), material); // TODO probably worth optimizing
@@ -38,8 +37,7 @@ class ClimbItem extends Component {
 
   componentWillMount = () => {
     // If the climb has more than one vertex, (re)draw it on the three scene
-    const vertices =  this.props.climb.vertices || this.props.newClimbVerts;
-    if (vertices.length > 1) {
+    if (this.props.vertices.length > 1) {
       this.removeFromScene();
       this.addToScene();
     }
@@ -50,9 +48,8 @@ class ClimbItem extends Component {
   };
 
   getLabelPositionStyle = () =>{
-    const vertices =  this.props.climb.vertices || this.props.newClimbVerts;
-    if (vertices.length > 1) {
-      let pos3D = vertices[0];
+    if (this.props.vertices.length > 1) {
+      let pos3D = this.props.vertices[0];
       pos3D = new Vector3(...pos3D);
       const pos2D = pos3D.project(this.props.camera);
       const style = {
@@ -65,8 +62,7 @@ class ClimbItem extends Component {
   };
 
   render = () => {
-    const vertices =  this.props.climb.vertices || this.props.newClimbVerts;
-    if (vertices.length > 1){
+    if (this.props.vertices.length > 1){
       return (
         <div
           className={"climb-label"}

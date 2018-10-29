@@ -147,7 +147,7 @@ class ThreeScene extends Component{
       }
 
       // If the user is drawing a new climb, then animate the last segment to follow the mouse
-      if (this.state.newClimbVerts.length > 0){
+      if ((this.state.newClimbVerts.length > 0) && (['addClimb','drawClimb'].includes(this.props.activeTool.name))){
         const lastVertIndex = this.state.newClimbVerts.length -1;
         const startPos = new THREE.Vector3( ... this.state.newClimbVerts[lastVertIndex]);
         const terminalSegment = curvify([startPos, this.mouse3D.position]);
@@ -212,7 +212,7 @@ class ThreeScene extends Component{
   };
 
   onClick = (evt) => {
-    evt.preventDefault()
+    evt.preventDefault();
 
     //Ignore click if we are manipulating the 3D view controls
     if (!!this.controls && this.controls.recentlyMoved) {
@@ -221,15 +221,18 @@ class ThreeScene extends Component{
 
     switch (this.props.activeTool.name) { //TODO maybe move tool logic into tools.js
       case 'addClimb':
-        // User clicked on the rock. If not logged in, prompt for login.
-        if (!this.props.currentUser) {
-
-          let res = this.props.flash({key: 'users.please_log_in', message: 'Please log in to create or edit climbs.'});
-          return null;
-        }
-
         //If a climb isn't in progress, start one
-          this.setState({climbFormOpen: true});
+        if (evt.button == 0) {
+          this.props.setActiveTool(tools[2]);
+          this.addVertexToNewClimb(this.mouse3D.position);
+
+          // User clicked on the rock. If not logged in, prompt for login.
+          if (!this.props.currentUser) {
+
+            let res = this.props.flash({key: 'users.please_log_in', message: 'Please log in to create or edit climbs.'});
+            return null;
+          }
+        }
         break;
 
       case 'drawClimb':
@@ -240,24 +243,34 @@ class ThreeScene extends Component{
             return null;
           }
 
-          //Right mouse click: finish climb
-          if (evt.button == 2) {
-            this.addVertexToNewClimb(this.mouse3D.position);
-            const verticesForDB = (this.state.newClimbVerts.concat([this.mouse3D.position.toArray()]));
-            this.props.updateClimb({
-              selector: {_id: this.state.newClimbId},
-              data: {'vertices': verticesForDB}
-            });
-            this.setState({newClimbId: '', newClimbVerts: []});
-            this.newClimb = null;
-            this.props.setActiveTool(tools[0]) // TODO enum or make setActiveTool take string or something
-          }
+
         }
         break;
 
         // TODO rest of the tools
     }
 
+  };
+
+  onDoubleClick = (evt) =>{
+    evt.preventDefault();
+
+    //Ignore click if we are manipulating the 3D view controls
+    if (!!this.controls && this.controls.recentlyMoved) {
+      return null;
+    }
+
+    //Double click: finish climb
+    this.addVertexToNewClimb(this.mouse3D.position);
+    const verticesForDB = (this.state.newClimbVerts.concat([this.mouse3D.position.toArray()]));
+    // this.props.updateClimb({
+    //   selector: {_id: this.state.newClimbId},
+    //   data: {'vertices': verticesForDB}
+    // });
+    // this.setState({newClimbId: '', newClimbVerts: []});
+    this.newClimb = null;
+    this.setState({climbFormOpen: true});
+    this.props.setActiveTool(tools[0]); // TODO enum or make setActiveTool take string or something
   };
 
   addVertexToNewClimb = (position) => {
@@ -272,11 +285,9 @@ class ThreeScene extends Component{
     this.setState({climbFormOpen:false})
   };
 
-  beginDrawingClimb = (document) => {
-    this.setState({climbFormOpen:false, newClimbId: document._id});
-    this.newClimb = document;
-    this.addVertexToNewClimb(this.mouse3D.position);
-    this.props.setActiveTool(tools[1]);
+  endDrawingClimb = (document) => {
+    this.setState({climbFormOpen:false, newClimbId: '', newClimbVerts: []});
+    this.props.setActiveTool(tools[0]);
   };
 
   render = () => {
@@ -287,15 +298,17 @@ class ThreeScene extends Component{
           ref={(mount) => { this.mount = mount }}
           onClick={this.onClick}
           onContextMenu={this.onClick} // need this because onClick doesn't trigger on right click
+          onDoubleClick={this.onDoubleClick}
           onMouseMove={this.move3DmouseTo2Dmouse}
           onWheel={this.move3DmouseTo2Dmouse} // TODO not working
         />
         <Components.ClimbsNewForm
           crag = {this.props.crag}
+          vertices = {this.state.newClimbVerts}
           threeScene = {this.scene}
           show = {this.state.climbFormOpen}
           closeModal = {this.closeClimbForm}
-          successCallback = {this.beginDrawingClimb}
+          successCallback = {this.endDrawingClimb}
         />
         <Components.ClimbsDisp
           crag = {this.props.crag}

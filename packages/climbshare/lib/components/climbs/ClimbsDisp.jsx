@@ -25,7 +25,6 @@ class ClimbsDisp extends Component {
           <Components.ClimbItem
             climb={climb}
             vertices={climb.vertices}
-            newClimbVerts={this.props.newClimbVerts}
             scene={this.props.threescene}
             key={climb._id}
             threeSceneRendered={this.props.threeSceneRendered}
@@ -36,6 +35,17 @@ class ClimbsDisp extends Component {
             selectClimb={this.props.selectClimb}
           />
       ) : <p>waiting for threescene</p>}
+
+      {/*Climb currently being drawn*/}
+      <Components.ClimbItem
+        climb={{climb:{_id:'newclimb'}}}
+        vertices={this.props.newClimbVerts}
+        scene={this.props.threescene}
+        key={'newclimb'}
+        threeSceneRendered={this.props.threeSceneRendered}
+        camera={this.props.camera}
+        cameraPosition={this.props.cameraPosition}
+      />
     </>
 }
 
