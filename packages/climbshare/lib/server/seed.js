@@ -12,7 +12,8 @@ const seedCrags = [
       0.0, 0.951, -0.309, 1.6171,
       0.0, 0.0, 0.0, 1.0],
     modelFilename: "streambed.nxz",
-    modelFilenameLoRes: "streambed-lores.ply"
+    modelFilenameLoRes: "streambed-lores.ply",
+    thumbnail: "streambed.jpg"
   },
   {
     name: "Peck's Mystery",
@@ -24,7 +25,8 @@ const seedCrags = [
        -0, -1, 0, 1.1,
         0, 0, 0, 1],
     modelFilename: "pecksm.nxz",
-    modelFilenameLoRes: "pecksm-lores.ply"
+    modelFilenameLoRes: "pecksm-lores.ply",
+    thumbnail: "pecksm.jpg"
   },
   {
     name: "Waterfall Wall",
@@ -48,7 +50,8 @@ const seedCrags = [
         0.0, 0.0,   0.5,   0.0,
         0.0, 0.0,   0.0,   1.0],
     modelFilename: "north_and_red_walls.nxz",
-    modelFilenameLoRes: "north_and_red_walls-lores.ply"
+    modelFilenameLoRes: "north_and_red_walls-lores.ply",
+    thumbnail: "north_and_red_walls.jpg",
   },
   {
     name: "Tut Boulder",

@@ -49,8 +49,8 @@
 }
 
 .main {
-    position: fixed;
-    height: 100%;
+    /*position: fixed;*/
+    min-height: 100%;
     width: 100%;
     display: grid;
     grid-template-rows: auto 1fr auto 1fr;

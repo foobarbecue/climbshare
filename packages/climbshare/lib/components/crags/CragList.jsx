@@ -8,7 +8,7 @@ const CragList = ({results = []}) => {
   {results.map(crag =>
     <div className={"crag-item"}>
       <Link to={`/crag/${crag._id}`}>
-        <img className={"crag-thumb"} src={crag.thumbnail} key={crag._id}></img>
+        <img className={"crag-thumb"} src={`/crag_thumbs/${crag.thumbnail}`} key={crag._id}></img>
         <h4>{crag.name}</h4>
       </Link>
     </div>
