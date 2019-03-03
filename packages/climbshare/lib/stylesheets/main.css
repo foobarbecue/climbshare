@@ -49,7 +49,7 @@
 }
 
 .main {
-    position: fixed;
+    position: absolute;
     min-height: 100%;
     width: 100%;
     display: grid;
@@ -78,6 +78,10 @@
     align-self: start;
     padding: 5px;
     color: black;
+}
+
+.crag-list {
+    position: relative;
 }
 
 .crag-title {
