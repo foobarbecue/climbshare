@@ -52,7 +52,7 @@
     "lodash": "^4.17.10",
     "mailchimp": "^1.1.6",
     "marked": "^0.3.19",
-    "metascraper": "^1.0.6",
+    "metascraper": "^3.11.12",
     "meteor-node-stubs": "^0.2.3",
     "mingo": "^0.8.1",
     "moment": "^2.13.0",
