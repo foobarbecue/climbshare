@@ -51,7 +51,7 @@
     "juice": "^1.11.0",
     "lodash": "^4.17.10",
     "mailchimp": "^1.1.6",
-    "marked": "^0.3.19",
+    "marked": "^4.0.10",
     "metascraper": "^1.0.6",
     "meteor-node-stubs": "^0.2.3",
     "mingo": "^0.8.1",
